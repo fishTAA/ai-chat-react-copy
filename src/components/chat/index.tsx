@@ -7,6 +7,9 @@ import { ChatHeader } from "./ChatHeader";
 import { ChatMessages } from "./ChatMessages";
 import useWebSocket from 'react-use-websocket';
 import { ChatCommunication, decodeMessage } from "./utils";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface ChatParams {
   width?: number;
@@ -19,8 +22,8 @@ const Chat = (chatParams: ChatParams) => {
   const [tokenCookie, setTokenCookie] = useCookies(['token']);
   const [messages, setMessages] = useState<Array<ChatCommunication>>([]);
 
-  const socketUrl = 'ws://localhost:8080';
-  const endPoint = 'http://localhost:8000';
+  const socketUrl = process.env.WS_URL ||'ws://localhost:8080';
+  const endPoint = process.env.API_URL || 'http://localhost:8000';
 
   const {
     sendMessage,
