@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {
-  createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { routes } from './routes';
+import { Content, Footer, Hero } from 'react-bulma-components';
+import { NavigationBar } from './components/NavigationBar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <NavigationBar />
     <RouterProvider router={routes} />
   </React.StrictMode>
 );
