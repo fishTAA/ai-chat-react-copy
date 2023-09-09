@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
 import { Container, Content, Footer, Heading, Hero } from 'react-bulma-components';
-import Chat from '../../components/Chat';
+import Chat from '../../components/chat';
 
 function App() {
   return (

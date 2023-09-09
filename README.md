@@ -46,3 +46,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 Bulma was used as the UI framework. Developer would like to explore more of this framework.
 
 Initially, Tailwind and MUI were the options, but resorted to Bulma because it is free and it's something new to the eye.
+
+### Icon Sets
+
+This project will use Font Awesome. This will make things easier and there will be only one set of [icon packs](https://fontawesome.com/v5/docs/web/use-with/react#get-started).
