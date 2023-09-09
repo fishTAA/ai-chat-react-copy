@@ -8,14 +8,17 @@ import {
 import { routes } from './routes';
 import { Content, Footer, Hero } from 'react-bulma-components';
 import { NavigationBar } from './components/NavigationBar';
+import { CookiesProvider } from 'react-cookie';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <NavigationBar />
-    <RouterProvider router={routes} />
+    <CookiesProvider defaultSetOptions={{ path: '/' }}>
+      <NavigationBar />
+      <RouterProvider router={routes} />
+    </CookiesProvider>
   </React.StrictMode>
 );
 
