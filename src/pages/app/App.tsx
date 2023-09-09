@@ -1,28 +1,37 @@
 import React from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
+import { Container, Content, Footer, Heading, Hero } from 'react-bulma-components';
+import Chat from '../../components/Chat';
 
 function App() {
   return (
-    <>
-    <NavigationBar />
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Hero
+        hasNavbar={true}
+        size="fullheight"
+        color="info"
+      >
+        <Hero.Body>
+          <Container>
+            <Heading>OUR AI Chat</Heading>
+            <Heading subtitle size={3}>
+              This page contains a chat component
+            </Heading>
+            <img src="http://dummy-images.com/abstract/dummy-480x270-Map.jpg" />
+          </Container>
+        </Hero.Body>
+        <Hero.Footer p={5}>
+          <Content style={{ textAlign: 'center' }}>
+              <strong>Created</strong> by{' '}
+              <a href="https://www.linkedin.com/in/srilan-catalinio/">Srilan Catalinio</a>.
+          </Content>
+        </Hero.Footer>
+      </Hero>
+      <Chat 
+        width={400}
+      />
     </div>
-    </>
   );
 }
 
