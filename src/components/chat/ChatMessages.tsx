@@ -1,11 +1,22 @@
 import { Box } from "react-bulma-components";
 import { ChatBubble } from "./ChatBubble";
 import { ChatCommunication } from "./utils";
+import { useEffect, useRef } from "react";
 
 interface ChatMessagesProps {
   messages: Array<ChatCommunication>
 }
 export const ChatMessages = (props: ChatMessagesProps) => {
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(()=> {
+    scrollToBottom();
+  }, [props.messages])
+
   return (
     <Box 
       shadowless 
@@ -37,6 +48,7 @@ export const ChatMessages = (props: ChatMessagesProps) => {
             );
           })
         }
+        <div ref={messagesEndRef} />
       </Box>
     </Box> 
   )
