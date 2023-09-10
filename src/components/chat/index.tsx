@@ -19,8 +19,8 @@ const Chat = (chatParams: ChatParams) => {
   const [tokenCookie, setTokenCookie] = useCookies(['token']);
   const [messages, setMessages] = useState<Array<ChatCommunication>>([]);
 
-  const socketUrl = process.env.WS_URL ||'ws://localhost:8000';
-  const endPoint = process.env.API_URL || 'http://localhost:8000';
+  const socketUrl = process.env.REACT_APP_WS_URL ||'ws://localhost:8000';
+  const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const {
     sendMessage,
