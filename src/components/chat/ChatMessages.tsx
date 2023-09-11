@@ -43,7 +43,9 @@ export const ChatMessages = (props: ChatMessagesProps) => {
             return (<ChatBubble 
               key={i}
               sender={chat.message.sender} 
-              timeSent={chat.message.dateSent} 
+              timeSent={new Date(chat.message.dateSent!)} 
+              fileName={chat.fileName}
+              type={chat.format}
               message={chat.message.messageBody} />
             );
           })

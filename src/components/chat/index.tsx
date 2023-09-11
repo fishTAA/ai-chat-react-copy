@@ -1,7 +1,7 @@
-import { faWindowMaximize, faWindowMinimize, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPaperclip, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { Box, Button, Container, Form, Heading, Icon, Section } from "react-bulma-components";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Box, Button, Container, Form, Notification, Icon } from "react-bulma-components";
 import { useCookies } from 'react-cookie';
 import { ChatHeader } from "./ChatHeader";
 import { ChatMessages } from "./ChatMessages";
@@ -18,9 +18,19 @@ interface ChatParams {
 const Chat = (chatParams: ChatParams) => {
   const [tokenCookie, setTokenCookie] = useCookies(['token']);
   const [messages, setMessages] = useState<Array<ChatCommunication>>([]);
+  const [loadingSend, setLoadingSend] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
+  const [minimized, setMinimized] = useState(false);
+  const [message, setMessage] = useState<string>("");
+  const [sessionToken, setSessionToken] = useState<string>("");
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const hiddenFileInput = useRef< null | HTMLInputElement>(null);
 
   const socketUrl = process.env.REACT_APP_WS_URL ||'ws://localhost:8000';
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const width = chatParams.width || 400;
+  const height = chatParams.height || 400;
 
   const {
     sendMessage,
@@ -49,19 +59,39 @@ const Chat = (chatParams: ChatParams) => {
       }
     }
   });
-
-  const width = chatParams.width || 400;
-  const height = chatParams.height || 400;
-  const [minimized, setMinimized] = useState(false);
-  const [message, setMessage] = useState<string>("");
-  const [sessionToken, setSessionToken] = useState<string>("");
   const sendMessageToServer = () => {
-    const encryptedMessage = chatMessage(message, sessionToken)
-    sendMessage(encryptedMessage);
-    setMessage("");
+    if (selectedFile) {
+      setLoadingSend(true);
+      const data = new FormData() 
+      data.append('file', selectedFile)
+      fetch(`${endPoint}/uploadFile`, {
+        method: "post",
+        headers: {
+          "Authorization": `${sessionToken}`,
+        },
+        body: data
+      }).then((res)=> {
+        return res.json()
+      }).then((res)=> {
+        setMessages([
+          ...messages, 
+          res
+        ])
+        setSelectedFile(null);
+      }).finally(()=> {
+        setLoadingSend(false);
+      })
+      return;
+    }
+    if (message) {
+      const encryptedMessage = chatMessage(message, sessionToken)
+      sendMessage(encryptedMessage);
+      setMessage("");
+    }
   }
 
   const retrieveMessages = () => {
+    setPageLoading(true);
     fetch(`${endPoint}/getMessages`,{
       headers: {
         "Authorization": `${sessionToken}`
@@ -72,6 +102,8 @@ const Chat = (chatParams: ChatParams) => {
       setMessages(res)
     }).catch((e) => {
       console.error(e);
+    }).finally(() => {
+      setPageLoading(false);
     })
   }
 
@@ -114,6 +146,23 @@ const Chat = (chatParams: ChatParams) => {
     }
   }, []);
 
+
+  const handleKeyPress = (e: any) => {
+    if(e.key === 'Enter'){
+      sendMessageToServer();
+    }
+  }
+  const selectFile = (e: any) => {
+    hiddenFileInput?.current?.click();
+  };
+
+	const fileSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e && e.target && e.target.files && e.target.files[0]) {
+      const selected = e.target.files[0];
+      setSelectedFile(selected);
+    }
+	};
+
   return (
     <Box 
       style={{
@@ -131,7 +180,20 @@ const Chat = (chatParams: ChatParams) => {
       <ChatHeader setMinimized={setMinimized} minimized={minimized} />
       {!minimized &&
         <Container style={{display: "flex", flexDirection: "column", margin: 5}}>
-          <ChatMessages messages={messages}/>
+          {!pageLoading ?
+           <ChatMessages messages={messages}/> :
+           <Box
+              shadowless
+              style={{
+                padding: 0,
+                marginBottom: 0,
+                flexGrow: 1,
+                textAlign: "center"
+              }}
+           >
+            Loading...
+           </Box>
+          }
           <Box 
             shadowless 
             style={{
@@ -147,16 +209,58 @@ const Chat = (chatParams: ChatParams) => {
                   display: "flex",
                 }}
               >
-                <Form.Input
-                  onChange={(e)=>setMessage(e.target.value)}
-                  style={{
-                    flexGrow: 1,
-                  }}
-                  value={message}
-                  size="small" placeholder="Type your message here..."
-                />
+                {selectedFile ?
+                  <>
+                    <Notification
+                      style={{
+                        flexGrow: 1,
+                        paddingTop: 6,
+                        paddingBottom: 6,
+                        fontSize: 12,
+                      }}
+                    >
+                      {selectedFile.name}
+                    </Notification>
+                    <Button 
+                      size="small"
+                      onClick={()=>setSelectedFile(null)}
+                    >
+                      <Icon size="small">
+                        <FontAwesomeIcon icon={faTrash}  size="sm"/>
+                      </Icon>
+                    </Button>
+                  </>:<>
+                    <Form.Input
+                      onChange={(e)=>setMessage(e.target.value)}
+                      style={{
+                        flexGrow: 1,
+                      }}
+                      onKeyDown={handleKeyPress}
+                      value={message}
+                      size="small" placeholder="Type your message here..."
+                    />
+                    <input 
+                      type="file" 
+                      name="file" 
+                      hidden
+                      onChange={(e)=> {
+                        fileSelected(e)
+                      }}
+                      ref={hiddenFileInput} 
+                    />
+                    <Button 
+                      size="small"
+                      onClick={selectFile}
+                    >
+                      <Icon size="small">
+                        <FontAwesomeIcon icon={faPaperclip}  size="sm"/>
+                      </Icon>
+                    </Button>
+                  </>
+                }
                 <Button 
                   size="small"
+                  loading={loadingSend}
                   onClick={sendMessageToServer}
                 >
                   Send
