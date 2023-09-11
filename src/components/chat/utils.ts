@@ -3,6 +3,8 @@ export interface ChatCommunication {
 	authIssue?: boolean,
   method?: 'send' | 'receive', 
 	message: Message,
+	format?: 'text' | 'file',
+	fileName?: string,
 }
 
 export interface Message {

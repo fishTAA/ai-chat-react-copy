@@ -1,10 +1,14 @@
-import { Box, Columns, Heading } from "react-bulma-components";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Columns, Heading, Icon } from "react-bulma-components";
 
 interface ChatBubbleParams {
   sender?: String;
-  timeSent?: String;
+  timeSent?: Date;
   message?: String;
   position?: "left" | "right";
+  type?: 'text' | 'file';
+  fileName?: string;
 }
 
 export const ChatBubble = (params: ChatBubbleParams) => {
@@ -56,7 +60,16 @@ export const ChatBubble = (params: ChatBubbleParams) => {
             overflowWrap: "anywhere",
           }}
         >
-          {params.message}
+          {params.type && params.type == 'file' ? 
+            <>
+              <Icon size="small">
+                <FontAwesomeIcon icon={faPaperclip}  size="1x"/>
+              </Icon>
+              {params.fileName}
+            </>
+            :
+            <>{params.message}</>
+          } 
         </Box>
         <Box
           shadowless
@@ -69,10 +82,10 @@ export const ChatBubble = (params: ChatBubbleParams) => {
         >
           <span style={{
             marginLeft: "auto",
-            color: "GrayText",
+            color: "#dbdbdb",
             fontSize: 8,
           }}>
-            {params.timeSent}
+            {params.timeSent?.toLocaleTimeString()}
           </span>
         </Box>
       </Box>

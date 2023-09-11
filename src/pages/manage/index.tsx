@@ -78,7 +78,6 @@ function Manage() {
     }).then((res)=> {
       return res.json()
     }).then((res)=> {
-      console.log("res", res)
       setSettingsData(res);
     }).finally(()=> {
       setLoadingSave(false);
@@ -106,7 +105,6 @@ function Manage() {
     }).then((res)=> {
       return res.json()
     }).then((res)=> {
-      console.log("res", res)
       setTestResults(res.related);
     }).finally(()=> {
       setLoadingTest(false);
