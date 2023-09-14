@@ -182,45 +182,33 @@ const Chat = (chatParams: ChatParams) => {
         padding: 0,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        height: minimized? "auto" : chatParams.fullHeight? "100%": height,
+        height: minimized? "auto" : chatParams.fullHeight? "calc(100%-50px)": height,
         position: chatParams.fullWidth? "absolute" : "fixed", 
         bottom: 0,
         right: 10,
+        top: chatParams.fullHeight? (chatParams.fullWidth? 50 : 0 ) : 'unset', 
         width: chatParams.fullWidth? "100%": width,
       }} color="black">
-      <ChatHeader setMinimized={setMinimized} minimized={minimized} />
+      {!!!chatParams.fullHeight && <ChatHeader setMinimized={setMinimized} minimized={minimized} />}
       {!minimized &&
         <Container style={{display: "flex", flexDirection: "column", margin: 5}}>
           {!pageLoading ?
-           <ChatMessages messages={messages}/> :
-           <Box
-              shadowless
-              style={{
-                padding: 0,
-                marginBottom: 0,
-                flexGrow: 1,
-                textAlign: "center"
-              }}
-           >
-            Loading...
-           </Box>
-          }
-          {
-            notification && notificationShown && (
-              <Box 
-                shadowless 
+            <ChatMessages
+              messages={messages}
+              notificationShown={notificationShown}
+              notification={notification}
+            /> :
+            <Box
+                shadowless
                 style={{
                   padding: 0,
-                  fontSize: 12,
-                  marginLeft: 10,
-                  marginRight: 10,
                   marginBottom: 0,
-                  color: "#9c9c9c"
+                  flexGrow: 1,
+                  textAlign: "center"
                 }}
-              >
-                {notification}
-              </Box>
-            )
+            >
+              Loading...
+            </Box>
           }
           <Box 
             shadowless 

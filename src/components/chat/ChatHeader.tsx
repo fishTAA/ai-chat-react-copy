@@ -17,6 +17,7 @@ export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
         display: "flex",
         paddingTop: 10, 
         paddingBottom: 10,
+        width: "100%",
       }}
     >
       <Heading 

@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import App from "../pages/app/App";
 import Manage from "../pages/manage";
+import FullChat from "../pages/app/FullChat";
 
 export const routes = createBrowserRouter([
   {
@@ -14,5 +15,9 @@ export const routes = createBrowserRouter([
   {
     path: "/manage",
     element: <Manage />
+  },
+  {
+    path: "/full-chat",
+    element: <FullChat />
   }
 ]);

@@ -24,7 +24,7 @@ export const NavigationBar = () => {
           className={`navbar-menu ${menuOpen ? "is-active" : ""}`}>
       <Navbar.Container align="right">
         <Navbar.Item href="/">Home</Navbar.Item>
-        <Navbar.Item href="#">Full Screen Chat</Navbar.Item>
+        <Navbar.Item href="/full-chat">Full Screen Chat</Navbar.Item>
       </Navbar.Container>
       <Navbar.Container align="left">
         <Navbar.Item href="/manage">Manage</Navbar.Item>
