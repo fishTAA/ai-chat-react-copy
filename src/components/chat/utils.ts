@@ -1,5 +1,5 @@
 export interface ChatCommunication {
-	type: 'message' | 'connection',
+	type: 'message' | 'connection' | 'notification' | 'remove-notification',
 	authIssue?: boolean,
   method?: 'send' | 'receive', 
 	message: Message,

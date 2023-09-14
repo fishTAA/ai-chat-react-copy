@@ -21,6 +21,8 @@ const Chat = (chatParams: ChatParams) => {
   const [loadingSend, setLoadingSend] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
   const [minimized, setMinimized] = useState(false);
+  const [notificationShown, setNotificationShow] = useState(false);
+  const [notification, setNotification] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [sessionToken, setSessionToken] = useState<string>("");
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -56,6 +58,15 @@ const Chat = (chatParams: ChatParams) => {
           ...messages, 
           data
         ])
+      }
+      console.log(data.type)
+      if (data.type === "notification") {
+        setNotificationShow(true);
+        setNotification(data.message?.messageBody || "")
+      }
+      if (data.type === "remove-notification") {
+        setNotificationShow(false);
+        setNotification("");
       }
     }
   });
@@ -193,6 +204,23 @@ const Chat = (chatParams: ChatParams) => {
            >
             Loading...
            </Box>
+          }
+          {
+            notification && notificationShown && (
+              <Box 
+                shadowless 
+                style={{
+                  padding: 0,
+                  fontSize: 12,
+                  marginLeft: 10,
+                  marginRight: 10,
+                  marginBottom: 0,
+                  color: "#9c9c9c"
+                }}
+              >
+                {notification}
+              </Box>
+            )
           }
           <Box 
             shadowless 
