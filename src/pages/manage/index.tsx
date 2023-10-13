@@ -5,7 +5,8 @@ import Chat from '../../components/chat';
 interface TestInterface {
   _id: string,
   input: string,
-  score: number
+  score: number,
+  solution?: string
 }
 interface SettingsInterface {
   enableEmbedding: boolean,
@@ -17,6 +18,8 @@ function Manage() {
   const [loadingEmbedding, setLoadingEmbedding] = useState(false);
   const [loadingTest, setLoadingTest] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
+  const [documentTitle, setDocumentTitle] = useState("");
+  const [documentKeyword, setDocumentKeyword] = useState("");
   const [document, setDocument] = useState("");
   const [testDocument, setTestDocument] = useState("");
   const [embeddingNotification, setEmbeddingNotification] = useState<any>(<></>);
@@ -36,7 +39,9 @@ function Manage() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        input: document,
+        title: documentTitle, 
+        keyword: document, 
+        input: documentKeyword
       })
     }).then(()=> {
       setDocument("");
@@ -100,7 +105,7 @@ function Manage() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        input: testDocument,
+        keyword: testDocument,
       })
     }).then((res)=> {
       return res.json()
@@ -134,10 +139,38 @@ function Manage() {
               {embeddingNotification}
               <Form.Field>
                 <Form.Control>
+                  {/* Topic Area */}
+                  <Form.Label>
+                    Title
+                  </Form.Label>
+                  <Form.Control>
+                    <Form.Input
+                      onChange={(e)=>setDocumentTitle(e.target.value)}
+                      placeholder="Once a upon a time"
+                      type="text"
+                    />
+                  </Form.Control>
+
+                  {/* keywords Area */}
+                  <Form.Label>
+                    Keywords
+                  </Form.Label>
+                  <Form.Control>
+                    <Form.Input
+                      onChange={(e)=>setDocumentKeyword(e.target.value)}
+                      placeholder="e.g. mouse problem"
+                      type="text"
+                    />
+                  </Form.Control>
+
+                  {/* description area */}
+                  <Form.Label>
+                    Description / Solution
+                  </Form.Label>
                   <Form.Textarea
                     onChange={(e)=>setDocument(e.target.value)}
                     value={document}
-                    placeholder="Input document"
+                    placeholder="tell me a story :>"
                   />
                 </Form.Control>
               </Form.Field>
@@ -155,8 +188,8 @@ function Manage() {
                 <Form.Control>
                   <Form.Textarea
                     onChange={(e)=>setTestDocument(e.target.value)}
-                    value={testDocument}
-                    placeholder="Input document"
+                    // value={testDocument}
+                    placeholder="Search"
                   />
                 </Form.Control>
               </Form.Field>
@@ -180,8 +213,9 @@ function Manage() {
                         Document
                       </th>
                       <th>
-                        Score
+                        Solution
                       </th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -192,8 +226,11 @@ function Manage() {
                             {test.input.substring(0, 100)}...
                           </td>
                           <td>
-                            {test.score}
+                            {test.solution}
                           </td>
+                          {/* <td>
+                            {test.score}
+                          </td> */}
                         </tr>
                         );
                     })}
