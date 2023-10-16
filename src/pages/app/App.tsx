@@ -1,61 +1,236 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form } from 'react-bulma-components';
 import Chat from '../../components/chat';
+import { Ticket } from '../../components/Ticket';
 
 function App() {
+  const [document, setDocument] = useState("");
+
   return (
     <div>
       <Hero
         hasNavbar={true}
         size="fullheight"
-        color="info"
+        
+        // color="primary"
+        style={{
+          paddingTop: 100,
+          backgroundColor:'#A7C6ED',
+
+        }}  
       >
-        <Hero.Body>
+        <Hero.Body
+        >
           <Container>
-            <Columns>
-              <Columns.Column>
-                <Heading>AI Chat</Heading>
-                <Heading subtitle size={3}>
-                  This page contains a chat component.<br/>
-                  You can easily customize this component.
-                </Heading>
-                <Heading subtitle size={3}>
-                </Heading>
-                <img src="images/dummy.jpg" />
-              </Columns.Column>
-              <Columns.Column>
-                <Card style={{ width: 400, margin: 'auto' }}>
-                  <Card.Image
-                    size="4by3"
-                    src="http://bulma.io/images/placeholders/1280x960.png"
+          <Form.Field
+          style={{
+            paddingInline: 100,
+          }}
+          >
+                <Form.Control>
+                  <Form.Textarea
+                    onChange={(e)=>setDocument(e.target.value)}
+                    value={document}
+                    placeholder="Search"
+                    style={{
+                      borderRadius: 20,
+                      maxHeight: "50px",
+                      minHeight: "50px",
+                      overflow: "hidden",
+                      resize:"none"
+                    }}
                   />
-                  <Card.Content>
-                    <Media>
-                      <Media.Item renderAs="figure" align="center">
-                        <img
-                          alt="64x64"
-                          width="350"
-                          src="images/scr.png"
-                        />
-                      </Media.Item>
-                    </Media>
-                    <Content>
-                      We're excited to announce a limited-time offer of free usage for our service! 
-                      For a limited period, you can take advantage of our complete range of features without any charges. 
-                      Don't wait any longer – start using our product/service for free today!
-                    </Content>
-                  </Card.Content>
+                </Form.Control>
+              </Form.Field>
+
+<section>
+            <Columns
+            style={{
+              paddingTop: 20
+            }}>
+              <Columns.Column
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+              <Card style={{  width: '90%', margin: 10, minHeight: '100%'}}>
+                    <Card.Content>
+                      <Media>
+                        <Media.Item>
+                          <Heading size={4}
+                          style={{
+                            color:"black",
+                            }}
+                            >
+                              Add 8x8 Site Cookies (Chrome)
+                            </Heading>
+                        
+                        </Media.Item>
+                      </Media>
+                      <Content>
+                      Resolves the following error: “"dialog box is already opened”
+                      </Content>
+                    </Card.Content>
                 </Card>
               </Columns.Column>
+              <Columns.Column
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+              <Card style={{  width: '90%', margin: 10, minHeight: '100%'}}>
+                    <Card.Content>
+                      <Media>
+                        <Media.Item>
+                          <Heading size={4}
+                          style={{
+                            color:"black",
+                            }}
+                            >
+                              Add 8x8 Site Cookies (Edge)
+                            </Heading>
+                        
+                        </Media.Item>
+                      </Media>
+                      <Content>
+                      Resolves the following error: “"dialog box is already opened”
+                      </Content>
+                    </Card.Content>
+                </Card>
+
+
+              </Columns.Column>
+              <Columns.Column
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+              <Card style={{ width: '90%', margin: 10, minHeight: '100%'}}>
+                    <Card.Content>
+                      <Media>
+                        <Media.Item>
+                          <Heading size={4}
+                          style={{
+                            color:"black",
+                            }}
+                            >
+                              8x8 Browser Pop-ups
+                            </Heading>
+                        
+                        </Media.Item>
+                      </Media>
+                      <Content>
+                      Resolves the issue of 8x8 creating pop-ups on new tabs
+                      </Content>
+                    </Card.Content>
+                </Card>
+              </Columns.Column>
+              
             </Columns>
+            </section>
+
+            <section>
+            <Columns
+            style={{
+              paddingTop: 20
+            }}>
+              <Columns.Column
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+              <Card style={{  width: '90%', margin: 10, minHeight: '100%'}}>
+                    <Card.Content>
+                      <Media>
+                        <Media.Item>
+                          <Heading size={4}
+                          style={{
+                            color:"black",
+                            }}
+                            >
+                              8x8 opening multiple windows on Zoho (Chrome)
+                            </Heading>
+                        
+                        </Media.Item>
+                      </Media>
+                      <Content>
+                      Fix for 8x8 opening multiple windows on Zoho (Chrome)
+                      </Content>
+                    </Card.Content>
+                </Card>
+              </Columns.Column>
+              <Columns.Column
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                 <Card style={{  width: '90%', margin: 10, minHeight: '100%' }}>
+                    <Card.Content>
+                      <Media>
+                        <Media.Item>
+                          <Heading size={4}
+                          style={{
+                            color:"black",
+                            }}
+                            >
+                              Article 5
+                            </Heading>
+                        
+                        </Media.Item>
+                      </Media>
+                      <Content>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                        iaculis mauris. <a>@bulmaio</a>.<a href="#1">#css</a>{' '}
+                        <a href="#2">#responsive</a>
+                      </Content>
+                    </Card.Content>
+                 </Card>
+
+              </Columns.Column>
+              <Columns.Column
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+               <Card style={{ width: '90%', margin: 10, minHeight: '100%', backgroundColor: '#e9eda7', cursor: 'pointer'  }}>
+                    <Card.Content>
+                      <Media>
+                        <Media.Item>
+                          <Heading size={4}
+                          style={{
+                            color:"black",
+                            }}
+                            >
+                              Submit Ticket
+                            </Heading>
+                        
+                        </Media.Item>
+                      </Media>
+                      <Content>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                        iaculis mauris. <a>@bulmaio</a>.<a href="#1">#css</a>{' '}
+                        <a href="#2">#responsive</a>
+                      </Content>
+                    </Card.Content>
+                </Card>
+              </Columns.Column>
+              
+            </Columns>
+            </section>
           </Container>
         </Hero.Body>
         <Hero.Footer p={5}>
           <Content style={{ textAlign: 'center' }}>
               <strong>Created</strong> by{' '}
-              <a href="https://www.linkedin.com/in/srilan-catalinio/">Srilan Catalinio</a>.
+              <a>LaSson and ToLay</a>.
           </Content>
         </Hero.Footer>
       </Hero>
@@ -63,6 +238,8 @@ function App() {
         width={400}
       />
     </div>
+
+    
   );
 }
 

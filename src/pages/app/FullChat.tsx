@@ -6,13 +6,21 @@ import Chat from '../../components/chat';
 
 function FullChat() {
   return (
-    <div style={{marginTop: 40}}>
+    <Hero
+    style={{
+      backgroundColor: '#A7C6ED'
+    }} >
+    <div style={{marginTop: 40}}
+    
+    
+    >
       <Chat 
         fullWidth
         fullHeight
-        width={400}
+        width={400} 
       />
     </div>
+    </Hero>
   );
 }
 

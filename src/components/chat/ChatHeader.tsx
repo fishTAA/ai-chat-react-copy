@@ -12,12 +12,14 @@ interface ChatHeaderParams {
 export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
   return (
   <Box 
-      backgroundColor="grey"
+      // backgroundColor="blue"
       style={{
+        backgroundColor: "#002d72",
         display: "flex",
         paddingTop: 10, 
         paddingBottom: 10,
         width: "100%",
+        
       }}
     >
       <Heading 
