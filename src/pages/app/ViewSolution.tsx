@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
 import { Card, Columns, Container, Content, Footer, Heading, Hero, Media } from 'react-bulma-components';
@@ -22,7 +22,10 @@ function App() {
   const [document, setDocument ] = useState<DocumentUpload |null>(null)
   const urlparam = useParams();
   const strurlparam = JSON.stringify(urlparam.id)
- 
+  
+  useEffect(() => {
+    retrieveDocumentData();
+  }, []);
   
   console.log(strurlparam)
   console.log(`${endPoint}/findDocument?id=${urlparam.id}`)
@@ -39,7 +42,7 @@ function App() {
   }
 
   retrieveDocumentData();
-   retrieveDocumentData();
+  const containsHTML = (str: string) => /<\/?[a-z][\s\S]*>/.test(str);
   // console.log(headingdata)
 
   return (
@@ -73,10 +76,6 @@ function App() {
                 
                   {document?.title}
                   
-                  
-                  {document?.title}
-
-                  
                 </Heading>
 
                 <div
@@ -84,10 +83,11 @@ function App() {
                   paddingInline: '10%',
                   textAlign: 'justify',
                 }}>
-                  
-                  {document?.solution}
-                
-                  {document?.solution}
+                    {document?.solution && containsHTML(document.solution) ? (
+                      <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
+                    ) : (
+                      <p>{document?.solution}</p>
+                    )}  
                 </div>
               </Container> 
         </Hero.Body>
