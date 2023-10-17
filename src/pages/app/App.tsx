@@ -103,7 +103,7 @@ function App() {
                 minHeight: "50px",
                 overflow: "hidden",
                 resize:"none",
-                borderLeft: 'non'
+                borderLeft: 'none'
               }}
               >Clear</Button>
             </Form.Control>
