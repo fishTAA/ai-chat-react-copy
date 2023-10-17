@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
 import { Card, Columns, Container, Content, Footer, Heading, Hero, Media } from 'react-bulma-components';
 import Chat from '../../components/chat';
+import { useParams } from 'react-router-dom';
+
 export interface DocumentUpload {
   input: string;
   solution?: string ;
@@ -10,17 +12,25 @@ export interface DocumentUpload {
   uploadDate: string;
   embedding: [Number];
   score?: number;
+  
 }
 
-function ViewSolution() {
+function App() {
 
 
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const [document, setDocument ] = useState<DocumentUpload |null>(null)
+  const urlparam = useParams();
+  const strurlparam = JSON.stringify(urlparam.id)
+ 
   
+  console.log(strurlparam)
+  console.log(`${endPoint}/findDocument?id=${urlparam.id}`)
+
   
   const retrieveDocumentData = () => {
-    fetch("http://localhost:8000/findDocument?id=6529a54a2e8f5df090798122")
+    fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
+    // fetch('http://localhost:8000/findDocument?id=6529a54a2e8f5df090798122')
     .then((res)=>res.json())
     .then((res)=>{
         console.log(res);
@@ -28,6 +38,7 @@ function ViewSolution() {
     })
   }
 
+  retrieveDocumentData();
    retrieveDocumentData();
   // console.log(headingdata)
 
@@ -59,6 +70,9 @@ function ViewSolution() {
                   padding: 20,
                   fontWeight: 'bolder',
                 }}>
+                
+                  {document?.title}
+                  
                   
                   {document?.title}
 
@@ -70,6 +84,8 @@ function ViewSolution() {
                   paddingInline: '10%',
                   textAlign: 'justify',
                 }}>
+                  
+                  {document?.solution}
                 
                   {document?.solution}
                 </div>
@@ -83,4 +99,4 @@ function ViewSolution() {
   );
 }
 
-export default ViewSolution;
+export default App;
