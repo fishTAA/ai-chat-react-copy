@@ -76,7 +76,11 @@ function App() {
                     
                       
                       style={{
-                      borderRadius: 20,
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                      borderTopLeftRadius: 20,
+                      borderBottomLeftRadius: 20,
+                      borderRight: 'none',
                       maxHeight: "50px",
                       minHeight: "50px",
                       overflow: "hidden",
@@ -90,12 +94,16 @@ function App() {
               onClick={()=>setDocument('')}
 
               style={{
-                borderRadius: "20px",
+                
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 20,
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
                 maxHeight: "50px",
                 minHeight: "50px",
                 overflow: "hidden",
-                resize:"none"
-
+                resize:"none",
+                borderLeft: 'non'
               }}
               >Clear</Button>
             </Form.Control>
