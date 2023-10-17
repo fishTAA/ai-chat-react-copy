@@ -5,6 +5,7 @@ import Chat from '../../components/chat';
 interface TestInterface {
   _id: string,
   input: string,
+  title: string,
   score: number,
   solution?: string
 }
@@ -215,7 +216,9 @@ function Manage() {
                       <th>
                         Solution
                       </th>
-                      
+                      <th>
+                        Score
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -228,9 +231,9 @@ function Manage() {
                           <td>
                             {test.solution}
                           </td>
-                          {/* <td>
+                          <td>
                             {test.score}
-                          </td> */}
+                          </td>
                         </tr>
                         );
                     })}

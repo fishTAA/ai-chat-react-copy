@@ -6,6 +6,7 @@ import {
 import App from "../pages/app/App";
 import Manage from "../pages/manage";
 import FullChat from "../pages/app/FullChat";
+import ViewSolution from "../pages/app/ViewSolution";
 
 export const routes = createBrowserRouter([
   {
@@ -19,5 +20,9 @@ export const routes = createBrowserRouter([
   {
     path: "/full-chat",
     element: <FullChat />
+  },
+  {
+    path: "/view-solution/:id",
+    element: <ViewSolution />
   }
 ]);

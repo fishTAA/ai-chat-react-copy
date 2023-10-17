@@ -15,8 +15,8 @@ function FullChat() {
     
     >
       <Chat 
-        fullWidth
-        fullHeight
+        // fullWidth
+        // fullHeight
         width={400} 
       />
     </div>
