@@ -55,33 +55,62 @@ function App() {
         style={{
           paddingTop: 100,
           backgroundColor:'#A7C6ED',
-
         }}  
       >
         <Hero.Body
         >
           <Container>
+          <Form.Field kind="addons">
+            <Form.Control fullwidth>
+              <Form.Input
+                    onChange={(e)=>setDocument(e.target.value)}
+                    value={document}
+                    placeholder="Search"
+                    
+                    style={{
+                      borderRadius: "20px",
+                      maxHeight: "50px",
+                      minHeight: "50px",
+                      overflow: "hidden",
+                      resize:"none"
+
+                    }}
+                    />
+            </Form.Control>
+            <Form.Control>
+              <Button
+              onClick={()=>setDocument('')}
+
+              style={{
+                borderRadius: "20px",
+                maxHeight: "50px",
+                minHeight: "50px",
+                overflow: "hidden",
+                resize:"none"
+
+              }}
+              >Clear</Button>
+            </Form.Control>
+          </Form.Field>
           <Form.Field
           style={{
             paddingInline: 100,
           }}
           >
                 <Form.Control>
-                  <Form.Input
+                  <Form.Textarea
                     onChange={(e)=>setDocument(e.target.value)}
-                    onKeyDown={(e)=>{
-                      if (e.key === `Enter`)
-                        handleTestEmbeddings()
-                      }}
-                      value={document}
-                      placeholder="Search"
-                      style={{
+                    value={document}
+                    placeholder="Search"
+                    style={{
                       borderRadius: 20,
                       maxHeight: "50px",
                       minHeight: "50px",
                       overflow: "hidden",
                       resize:"none"
+
                     }}
+
                   />
                 </Form.Control>
               </Form.Field>
