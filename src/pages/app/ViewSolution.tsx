@@ -5,7 +5,7 @@ import { Card, Columns, Container, Content, Footer, Heading, Hero, Media } from 
 import Chat from '../../components/chat';
 export interface DocumentUpload {
   input: string;
-  solution?: string;
+  solution?: string ;
   title?: string;
   uploadDate: string;
   embedding: [Number];
@@ -28,25 +28,26 @@ function ViewSolution() {
     })
   }
 
-  // retrieveDocumentData();
+   retrieveDocumentData();
   // console.log(headingdata)
 
   return (
     
-    <div>
+    <div
+    style={{
+      
+    }}>
       <Hero
         hasNavbar={true}
-        size="fullheight"
-
-        // color="primary"
+        
         style={{
           backgroundColor:'#A7C6ED',
-          
         }} >
         <Hero.Body 
         style={{
             padding: 10,
-            
+            paddingTop: 100,
+            alignItems: 'unset'  
           }} >
         <Container
         style={{
@@ -55,35 +56,22 @@ function ViewSolution() {
                 <Heading
                 
                 style={{
-                  padding: 10,
+                  padding: 20,
                   fontWeight: 'bolder',
-                  
                 }}>
-                  Add 8x8 Site Cookies
-                  {/* {document?.title} */}
+                  
+                  {document?.title}
+
+                  
                 </Heading>
 
                 <div
                 style={{
                   paddingInline: '10%',
-                  textAlign: 'justify'
+                  textAlign: 'justify',
                 }}>
-                  
-                  Resolves the following error: “"dialog box is already opened”
-
-For Edge, navigate to Settings, Cookie and site Permissions then manage and delete cookies and site data
-
-For Chrome, navigate to Settings, Privacy and Security then Site Settings, scroll down to Cookie and Site Data
-
-Add the following sites
-
-sso.8x8.com
-
-Cloud8.8x8.com
-
-Make sure to check “Include third-party cookies on this site”
                 
-                  {/* {document?.solution} */}
+                  {document?.solution}
                 </div>
               </Container> 
         </Hero.Body>
