@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 export interface DocumentUpload {
   input: string;
-  solution?: string;
+  solution?: string ;
   title?: string;
   uploadDate: string;
   embedding: [Number];
@@ -39,24 +39,26 @@ function App() {
   }
 
   retrieveDocumentData();
+   retrieveDocumentData();
   // console.log(headingdata)
 
   return (
     
-    <div>
+    <div
+    style={{
+      
+    }}>
       <Hero
         hasNavbar={true}
-        size="fullheight"
-
-        // color="primary"
+        
         style={{
           backgroundColor:'#A7C6ED',
-          
         }} >
         <Hero.Body 
         style={{
             padding: 10,
-            
+            paddingTop: 100,
+            alignItems: 'unset'  
           }} >
         <Container
         style={{
@@ -65,24 +67,27 @@ function App() {
                 <Heading
                 
                 style={{
-                  padding: 10,
+                  padding: 20,
                   fontWeight: 'bolder',
-                  
                 }}>
                 
                   {document?.title}
+                  
+                  
+                  {document?.title}
+
                   
                 </Heading>
 
                 <div
                 style={{
                   paddingInline: '10%',
-                  textAlign: 'justify'
+                  textAlign: 'justify',
                 }}>
                   
                   {document?.solution}
                 
-                  {/* {document?.solution} */}
+                  {document?.solution}
                 </div>
               </Container> 
         </Hero.Body>
