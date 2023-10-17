@@ -60,15 +60,23 @@ function App() {
         <Hero.Body
         >
           <Container>
+            
           <Form.Field kind="addons">
             <Form.Control fullwidth>
               <Form.Input
                     onChange={(e)=>setDocument(e.target.value)}
+                    onKeyDown={(e)=>{
+                      if (e.key === `Enter`)
+                        handleTestEmbeddings()
+                      }}
+                      
                     value={document}
                     placeholder="Search"
                     
-                    style={{
-                      borderRadius: "20px",
+                    
+                      
+                      style={{
+                      borderRadius: 20,
                       maxHeight: "50px",
                       minHeight: "50px",
                       overflow: "hidden",
@@ -92,28 +100,13 @@ function App() {
               >Clear</Button>
             </Form.Control>
           </Form.Field>
+
           <Form.Field
           style={{
             paddingInline: 100,
           }}
           >
-                <Form.Control>
-                  <Form.Textarea
-                    onChange={(e)=>setDocument(e.target.value)}
-                    value={document}
-                    placeholder="Search"
-                    style={{
-                      borderRadius: 20,
-                      maxHeight: "50px",
-                      minHeight: "50px",
-                      overflow: "hidden",
-                      resize:"none"
-
-                    }}
-
-                  />
-                </Form.Control>
-              </Form.Field>
+          </Form.Field>
 
 <section>
             <Columns
