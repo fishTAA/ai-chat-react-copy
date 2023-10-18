@@ -91,7 +91,11 @@ function App() {
             </Form.Control>
             <Form.Control>
               <Button
-              onClick={()=>setDocument('')}
+              onClick={()=>{
+                setDocument('');
+                setTestResults([]);
+
+              }}
 
               style={{
                 
