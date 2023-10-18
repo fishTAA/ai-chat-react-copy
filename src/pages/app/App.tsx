@@ -4,6 +4,7 @@ import { NavigationBar } from '../../components/NavigationBar';
 import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { Ticket } from '../../components/Ticket';
+import { FooterSection } from '../../components/Footer';
 import Manage from '../manage';
 import { useLocation, useNavigate, useParams,} from "react-router-dom";
 
@@ -57,10 +58,8 @@ function App() {
           backgroundColor:'#A7C6ED',
         }}  
       >
-        <Hero.Body
-        >
-          <Container>
-            
+        <Hero.Body>
+          <Container> 
           <Form.Field kind="addons">
             <Form.Control fullwidth>
               <Form.Input
@@ -71,10 +70,7 @@ function App() {
                       }}
                       
                     value={document}
-                    placeholder="Search"
-                    
-                    
-                      
+                    placeholder="Search"                      
                       style={{
                       borderTopRightRadius: 0,
                       borderBottomRightRadius: 0,
@@ -85,7 +81,6 @@ function App() {
                       minHeight: "50px",
                       overflow: "hidden",
                       resize:"none"
-
                     }}
                     />
             </Form.Control>
@@ -103,11 +98,11 @@ function App() {
                 borderBottomRightRadius: 20,
                 borderTopLeftRadius: 0,
                 borderBottomLeftRadius: 0,
+                borderLeft: 'none',
                 maxHeight: "50px",
                 minHeight: "50px",
                 overflow: "hidden",
                 resize:"none",
-                borderLeft: 'none'
               }}
               >Clear</Button>
             </Form.Control>
@@ -194,24 +189,16 @@ function App() {
             </Columns.Column>
             </Columns>
             </section>
-              <Columns
-              style={{
-                display: 'flex' ,
-                flexDirection: 'column',
-                alignItems: 'center'
-              }}>
-              
-              </Columns>
-              
-
           </Container>
         </Hero.Body>
-        <Hero.Footer p={5}>
-          <Content style={{ textAlign: 'center' }}>
+       
+        <Hero.Footer p={1}>
+        <FooterSection />
+          {/* <Content style={{ textAlign: 'center' }}>
               <strong>Created</strong> by{' '}
               <a>LaSson and ToLay</a>.
-          </Content>
-        </Hero.Footer>
+          </Content> */}
+        </Hero.Footer> 
       </Hero>
       <Chat 
         width={400}
