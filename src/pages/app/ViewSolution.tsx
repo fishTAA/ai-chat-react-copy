@@ -50,10 +50,11 @@ function App() {
     <div
     style={{
       
-    }}>
+    }}
+    >
       <Hero
         hasNavbar={true}
-        
+        size="fullheight"
         style={{
           backgroundColor:'#A7C6ED',
         }} >
