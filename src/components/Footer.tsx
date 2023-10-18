@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { Box, Block, Icon, Form, Button, Hero, Footer, Container, Content } from "react-bulma-components";
-import elay from '../media/elay.jpg';
 
 export const FooterSection =() => {
     
@@ -47,8 +46,6 @@ return(
                   CC BY NC SA 4.0
                 </a>
                 . */}
-                <img src={elay} className="App-logo" alt="logo"
-                  style={{ width: '100px', height: 'auto' }} />
               </p>
             </Content>
           </Container>
