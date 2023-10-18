@@ -22,7 +22,7 @@ export const routes = createBrowserRouter([
     element: <FullChat />
   },
   {
-    path: "/view-solution/:id",
+    path: "/view-solution/:id/:query",
     element: <ViewSolution />
   }
 ]);
