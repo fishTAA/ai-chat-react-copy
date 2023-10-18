@@ -6,7 +6,7 @@ import Chat from '../../components/chat';
 import { Ticket } from '../../components/Ticket';
 import { FooterSection } from '../../components/Footer';
 import Manage from '../manage';
-import { useLocation, useNavigate, useParams,} from "react-router-dom";
+import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
 
 function App() {
   interface TestInterface {
@@ -130,7 +130,7 @@ function App() {
                       }}>
                       <Card style={{  maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
                         onClick={()=> {
-                          navigate('view-solution/'+res._id)
+                          navigate('view-solution/'+res._id+'/'+document)
                         }}>
                             <Card.Content>
                               <Media>
@@ -205,8 +205,8 @@ function App() {
       />
     </div>
 
-    
   );
 }
 
 export default App;
+

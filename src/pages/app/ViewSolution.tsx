@@ -3,9 +3,9 @@ import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
 import { Card, Columns, Container, Content, Footer, Heading, Hero, Media } from 'react-bulma-components';
 import Chat from '../../components/chat';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-export interface DocumentUpload {
+ export interface DocumentUpload {
   input: string;
   solution?: string ;
   title?: string;
@@ -13,6 +13,13 @@ export interface DocumentUpload {
   embedding: [Number];
   score?: number;
   
+}
+interface TestInterface {
+  _id: string,
+  input: string,
+  title: string,
+  score: number,
+  solution?: string
 }
 
 function App() {
@@ -22,28 +29,62 @@ function App() {
   const [document, setDocument ] = useState<DocumentUpload |null>(null)
   const urlparam = useParams();
   const strurlparam = JSON.stringify(urlparam.id)
-  
-  useEffect(() => {
-    retrieveDocumentData();
-  }, []);
-  
-  console.log(strurlparam)
-  console.log(`${endPoint}/findDocument?id=${urlparam.id}`)
+  const [loadingTest, setLoadingTest] = useState(false);
+  const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
+  const [urlQuery, setUrlQuery] = useState("");
+  let navigate = useNavigate();
 
-  
+
   const retrieveDocumentData = () => {
     fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
-    // fetch('http://localhost:8000/findDocument?id=6529a54a2e8f5df090798122')
     .then((res)=>res.json())
     .then((res)=>{
         console.log(res);
         setDocument(res as DocumentUpload)
     })
   }
+  useEffect(() => {
+    if(urlQuery)
+    handleTestEmbeddings();
+  }, [urlQuery]);
 
-  retrieveDocumentData();
+  
+  useEffect(() => {
+   retrieveDocumentData()
+  }, [urlparam.id]);
+  
   const containsHTML = (str: string) => /<\/?[a-z][\s\S]*>/.test(str);
   // console.log(headingdata)
+  useEffect(() => {
+    const query  = JSON.stringify(urlparam.query)
+    setUrlQuery(query);
+    console.log("query",query)
+  }, []);
+
+
+  const handleTestEmbeddings = () => {
+    setLoadingTest(true);
+    fetch(`${endPoint}/testEmbedding`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        keyword: urlQuery,
+      })
+    }).then((res)=> {
+      return res.json()
+    }).then((res)=> {
+      setTestResults(res.related);
+      console.log(res.related);
+    }).finally(()=> {
+      setLoadingTest(false);
+    })
+  }
+
+
+
+
 
   return (
     
@@ -92,7 +133,52 @@ function App() {
                 </div>
               </Container> 
         </Hero.Body>
+        {testResults.map((res)=>{   
+            if(document?.title != res.title){
+              return (
+                <Columns.Column className='is-one-third'
+                style={{
+                  display: 'flex' ,
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}>
+                <Card style={{  maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
+                  onClick={()=> {
 
+                    // clear url
+                    // navigate('/')
+                  
+
+                    const cleanURL = urlQuery.replace(/"/g, '');
+                    navigate('/view-solution/'+res._id+'/'+cleanURL)
+                      
+                  }}>
+                      <Card.Content>
+                        <Media>
+                          <Media.Item>
+                            <Heading
+                            
+                            size={4}
+                            style={{
+                              color:"black",
+                              }}
+                              >
+                                {res.title}
+                              </Heading>
+                          
+                          </Media.Item>
+                        </Media>
+                        <Content>
+                          {res.input}
+                        </Content>
+                      </Card.Content>
+                  </Card>
+
+                  
+                </Columns.Column> 
+              )
+            }                      
+        })}       
         
       </Hero>
 
