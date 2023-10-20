@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Progress, Block, Message } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Block, Section } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FooterSection } from '../../components/Footer';
 import { BeatLoader } from 'react-spinners';
-
  export interface DocumentUpload {
   input: string;
   solution?: string ;
@@ -92,113 +92,119 @@ function App() {
 
   return (
     
-    <div
-    style={{
-      
-    }}
-    >
+    <div 
+    style={{}}>
       <Hero
         hasNavbar={true}
         size="fullheight"
         style={{
+          display: 'flex',
+          flexDirection: 'column',
           backgroundColor:'#A7C6ED',
         }} >
-        <Hero.Body 
-        style={{
-            padding: 10,
-            paddingTop: 100,
-            alignItems: 'unset'  
-          }} >
-          <Container
-            style={{
-            }}>    
-            {loadingTest? (
-              <>
-              <Block style={{
-                    display: 'flex' ,
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                  }}>
-                  <BeatLoader color="#36d7b7"
-                          size={35} />
-              </Block>
-            </>
-            ):null}
-              
-                <Heading
-                
-                style={{
-                  padding: 20,
-                  fontWeight: 'bolder',
-                }}>
-                
-                  {document?.title}
-                  
-                </Heading>
+        <Hero.Body paddingless>
+          <Columns style={{ margin: 'none', marginTop: '10%', flexGrow: 1,
+        overflowX: 'hidden', overflowY: 'hidden', whiteSpace: 'pre-wrap'
+        }}>
+            <Columns.Column size="three-quarters"
+            style={{display: 'flex' ,
+            flexDirection: 'column',
+            paddingInline: 0,
+            }}>
+              <Container 
+              style={{
+                  paddingTop: 0,
+                  minHeight: '100%',
+                  marginInline: 0,
+                }} >
+                  <Section style={{ minHeight: '100%', paddingTop: 0}}>
+                    <Container> 
 
-                <div
-                style={{
-                  paddingInline: '10%',
-                  textAlign: 'justify',
-                }}>
-                    
-                    {document?.solution && containsHTML(document.solution) ? (
-                      <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
-                    ) : (
-                      <p>{document?.solution}</p>
-                    )}  
-                </div>
-              </Container> 
-        </Hero.Body>
-
-        {testResults.map((res)=>{   
-            if(document?.title != res.title){
-              return (
-                <Columns.Column className='is-one-third'
-                style={{
-                  display: 'flex' ,
-                  flexDirection: 'column',
-                  alignItems: 'center'
-                }}>
-                <Card style={{  maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
-                  onClick={()=> {
-
-
-                    window.scrollTo({top:0,left:0,behavior:'smooth'})
-                    setLoadingTest(true)
-                    const cleanURL = urlQuery.replace(/"/g, '');
-                    navigate('/view-solution/'+res._id+'/'+cleanURL)
+                      <Heading
+                      style={{
+                        padding: 20,
+                        paddingTop: 0,
+                        fontWeight: 'bolder',
+                         }}>
                       
-                  }}>
-                      <Card.Content>
-                        <Media>
-                          <Media.Item>
-                            <Heading
-                            
-                            size={4}
-                            style={{
-                              color:"black",
-                              }}
-                              >
-                                {res.title}
-                              </Heading>
-                          
-                          </Media.Item>
-                        </Media>
-                        <Content>
-                          {res.input}
-                        </Content>
-                      </Card.Content>
-                  </Card>
+                        {document?.title}
+                        
+                      </Heading>
 
-                  
-                </Columns.Column> 
-              )
-            }                      
-        })}       
-        
+                      <Section
+                      style={{
+                        display: 'flex' ,
+                        flexDirection: 'column',
+                        justifyContent: 'space-evenly',
+                        paddingInline: '10%',
+                        backgroundColor: 'white',
+                        minHeight: '100%',
+                        textAlign: 'justify',
+                        borderRadius: 9,
+                        boxShadow: '0px 0px 5px #888888',
+                        
+                        }}>
+
+                          {document?.solution && containsHTML(document.solution) ? (
+                            <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
+                          ) : (
+                            <p style={{ whiteSpace: 'pre-wrap'}}>{document?.solution}</p>
+                        )}  
+                      </Section>
+
+                    </Container> 
+                  </Section>
+              </Container>
+            </Columns.Column>
+
+            <Columns.Column 
+              size="one-quarter"
+              style={{ 
+              backgroundColor: 'white',                  
+              display: 'flex' ,
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              borderRadius: 9,
+              boxShadow: '0px 0px 5px #888888',
+              }}>
+              <div style={{
+                        display: 'flex' ,
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}>
+                <Content style={{ fontWeight: 'bolder', fontSize: 30, textAlign: 'center' }}> RELATED TOPICS </Content>
+                {testResults.map((res)=>{
+                  if(document?.title != res.title){
+                    return (
+                      <Container
+                      style={{
+                        alignItems: 'center',
+                        margin: '2px'
+                      }}>
+
+                        <Block style={{
+                        cursor: 'pointer',
+                        margin: 10,
+                        }}
+                          onClick={()=> {
+                            const cleanURL = urlQuery.replace(/"/g, '');
+                            navigate('/view-solution/'+res._id+'/'+cleanURL)  
+                            }}>
+                            {res.title}
+                        </Block>
+
+                        </Container> 
+                  )
+                  }                      
+                })} 
+                </div>
+                
+            </Columns.Column>
+          </Columns>      
+        </Hero.Body>
+        <FooterSection />
       </Hero>
-
     </div>
   );
 }
