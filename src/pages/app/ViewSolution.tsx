@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Progress, Block, Message } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { useParams, useNavigate } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
 
  export interface DocumentUpload {
   input: string;
@@ -33,14 +34,17 @@ function App() {
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [urlQuery, setUrlQuery] = useState("");
   let navigate = useNavigate();
-
+  
 
   const retrieveDocumentData = () => {
+    setLoadingTest(true);
     fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
     .then((res)=>res.json())
     .then((res)=>{
         console.log(res);
         setDocument(res as DocumentUpload)
+    }).finally(()=> {
+      setLoadingTest(false);
     })
   }
   useEffect(() => {
@@ -105,10 +109,22 @@ function App() {
             paddingTop: 100,
             alignItems: 'unset'  
           }} >
-        <Container
-        style={{
-          
-        }}>  
+          <Container
+            style={{
+            }}>    
+            {loadingTest? (
+              <>
+              <Block style={{
+                    display: 'flex' ,
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}>
+                  <BeatLoader color="#36d7b7"
+                          size={35} />
+              </Block>
+            </>
+            ):null}
+              
                 <Heading
                 
                 style={{
@@ -125,6 +141,7 @@ function App() {
                   paddingInline: '10%',
                   textAlign: 'justify',
                 }}>
+                    
                     {document?.solution && containsHTML(document.solution) ? (
                       <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
                     ) : (
@@ -133,6 +150,7 @@ function App() {
                 </div>
               </Container> 
         </Hero.Body>
+
         {testResults.map((res)=>{   
             if(document?.title != res.title){
               return (
@@ -145,10 +163,9 @@ function App() {
                 <Card style={{  maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
                   onClick={()=> {
 
-                    // clear url
-                    // navigate('/')
-                  
 
+                    window.scrollTo({top:0,left:0,behavior:'smooth'})
+                    setLoadingTest(true)
                     const cleanURL = urlQuery.replace(/"/g, '');
                     navigate('/view-solution/'+res._id+'/'+cleanURL)
                       
