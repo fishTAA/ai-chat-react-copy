@@ -95,7 +95,7 @@ const Chat = (chatParams: ChatParams) => {
       return;
     }
     if (message) {
-      const encryptedMessage = chatMessage(message, sessionToken)
+      const encryptedMessage = chatMessage("",message, sessionToken)
       sendMessage(encryptedMessage);
       setMessage("");
     }
