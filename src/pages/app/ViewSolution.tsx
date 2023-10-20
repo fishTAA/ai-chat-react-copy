@@ -89,32 +89,38 @@ function App() {
 
   return (
     
-    <div>
+    <div 
+    style={{}}>
       <Hero
         hasNavbar={true}
         size="fullheight"
         style={{
+          display: 'flex',
+          flexDirection: 'column',
           backgroundColor:'#A7C6ED',
         }} >
         <Hero.Body paddingless>
-          <Columns style={{ margin: 'none', height: '-webkit-fill-available', marginTop: '10%'}}>
-            <Columns.Column size={9} 
+          <Columns style={{ margin: 'none', marginTop: '10%', flexGrow: 1,
+        overflowX: 'hidden', overflowY: 'hidden', whiteSpace: 'pre-wrap'
+        }}>
+            <Columns.Column size="three-quarters"
             style={{display: 'flex' ,
             flexDirection: 'column',
-            justifyContent: 'space-evenly',
+            paddingInline: 0,
             }}>
               <Container 
               style={{
-                  padding: 10,
-                  // paddingTop: 100,
-                  minHeight: '100%'
+                  paddingTop: 0,
+                  minHeight: '100%',
+                  marginInline: 0,
                 }} >
-                  <Section style={{ minHeight: '100%'}}>
+                  <Section style={{ minHeight: '100%', paddingTop: 0}}>
                     <Container> 
 
                       <Heading
                       style={{
                         padding: 20,
+                        paddingTop: 0,
                         fontWeight: 'bolder',
                          }}>
                       
@@ -132,13 +138,14 @@ function App() {
                         minHeight: '100%',
                         textAlign: 'justify',
                         borderRadius: 9,
-                        boxShadow: '0px 0px 5px #888888'
+                        boxShadow: '0px 0px 5px #888888',
+                        
                         }}>
 
                           {document?.solution && containsHTML(document.solution) ? (
                             <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
                           ) : (
-                            <p >{document?.solution}</p>
+                            <p style={{ whiteSpace: 'pre-wrap'}}>{document?.solution}</p>
                         )}  
                       </Section>
 
@@ -147,32 +154,35 @@ function App() {
               </Container>
             </Columns.Column>
 
-            <Columns.Column style={{ 
-
+            <Columns.Column 
+              size="one-quarter"
+              style={{ 
               backgroundColor: 'white',                  
               display: 'flex' ,
               flexDirection: 'column',
-              justifyContent: 'flex-start'
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              borderRadius: 9,
+              boxShadow: '0px 0px 5px #888888',
               }}>
-                
+              <div style={{
+                        display: 'flex' ,
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}>
                 <Content style={{ fontWeight: 'bolder', fontSize: 30, textAlign: 'center' }}> RELATED TOPICS </Content>
-                {/* <div style={{ position: 'fixed' }}> */}
                 {testResults.map((res)=>{
                   if(document?.title != res.title){
                     return (
                       <Container
                       style={{
-                        display: 'flex' ,
-                        flexDirection: 'column',
                         alignItems: 'center',
-                        maxHeight: '25px'
+                        margin: '2px'
                       }}>
 
                         <Block style={{
-                        border: '1px solid',
-                        borderRadius: 6,
-                        cursor: 'pointer'
-                          // maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'
+                        cursor: 'pointer',
+                        margin: 10,
                         }}
                           onClick={()=> {
                             const cleanURL = urlQuery.replace(/"/g, '');
@@ -185,7 +195,7 @@ function App() {
                   )
                   }                      
                 })} 
-                {/* </div> */}
+                </div>
                 
             </Columns.Column>
           </Columns>      
