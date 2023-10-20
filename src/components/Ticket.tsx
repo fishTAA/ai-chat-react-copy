@@ -1,80 +1,52 @@
 import React, {useState} from 'react';
-import { Box, Block, Icon, Form, Button } from "react-bulma-components";
+import { Box, Block, Icon, Form, Button, Container } from "react-bulma-components";
 
 export const Ticket = () => {
-        const [username, setUsername] = useState('bulma');
-        const [email, setEmail] = useState('hello@');
+        const [username, setUsername] = useState('Name');
+        const [email, setEmail] = useState('@trajector.com');
         const [subject, setSubject] = useState('');
         const [message, setMessage] = useState('');
         const [tocAgreed, setTocAgreed] = useState(false);
         const [questionValue, setQuestionValue] = useState('');
       
         return (
+          <Container
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', zIndex: 99, minWidth: '-webkit-fill-available'}}>
           <form
           style={{
-            position: 'absolute',
-            width: '50%',
-            padding: '10px', 
-            margin: 5,
-            borderRadius: 6,
-            zIndex: 100,
+            minHeight: 100,
+            minWidth: '200px',
+            padding: '20px', 
+            margin: 80,
+            borderRadius: 10,
             background: 'white',
            }}
            >
             <Form.Field >
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control>
                 <Form.Input
-                  color="success"
                   value={username}
                   onChange={(e) => {
                     return setUsername(e.target.value);
                   }}
                 />
-                <Icon align="left" size="small">
-                  <i className="fas fa-user" />
-                </Icon>
-                <Icon align="right" size="small">
-                  <i className="fas fa-check" />
-                </Icon>
               </Form.Control>
-              <Form.Help color="success">This username is available</Form.Help>
             </Form.Field>
       
             <Form.Field>
               <Form.Label>Email</Form.Label>
               <Form.Control>
                 <Form.Input
-                  color="danger"
                   value={email}
                   onChange={(e) => {
                     return setEmail(e.target.value);
                   }}
                 />
-                <Icon align="left" size="small">
-                  <i className="fas fa-envelope" />
-                </Icon>
-                <Icon align="right" size="small">
-                  <i className="fas fa-exclamation-triangle" />
-                </Icon>
+              
               </Form.Control>
-              <Form.Help color="danger">This email is invalid</Form.Help>
             </Form.Field>
       
-            <Block renderAs="fieldset" disabled>
-              <Form.Field>
-                <Form.Label>Label Text</Form.Label>
-                <Form.Control>
-                  <Form.Input placeholder="Inside a field set" />
-                </Form.Control>
-              </Form.Field>
-              <Form.Field>
-                <Form.Label>Another disabled field</Form.Label>
-                <Form.Control>
-                  <Form.Input placeholder="Another nside a field set" />
-                </Form.Control>
-              </Form.Field>
-            </Block>
             <Form.Field>
               <Form.Label>Subject</Form.Label>
               <Form.Field kind="group">
@@ -85,41 +57,35 @@ export const Ticket = () => {
                       return setSubject(e.target.value);
                     }}
                   >
-                    <option value="select-dropdown">Select dropdown</option>
-                    <option value="with-options">With options</option>
+                    <option value="ticket-class"> Ticket Classification </option>
+                    <option value="crm"> CRM Issues </option>
+                    <option value="hardware"> Hardware Issues </option>
+                    <option value="software"> Software Issues </option>
+                    <option value="8x8"> 8x8 Issues </option>
+                    <option value="bria"> Bria Issues </option>
                   </Form.Select>
                 </Form.Control>
-                <Form.Control fullwidth loading>
-                  <Form.Input placeholder="With loading state" />
+                <Form.Control fullwidth>
+                  <Form.Input placeholder="Specify Topic" />
                 </Form.Control>
               </Form.Field>
             </Form.Field>
       
             <Form.Field>
               <Form.Label>Message</Form.Label>
-              <Form.Textarea
+              <Form.Control>
+                <Form.Textarea placeholder="Describe the issue."
                 value={message}
                 onChange={(e) => {
                   return setMessage(e.target.value);
                 }}
               />
-            </Form.Field>
-      
-            <Form.Field>
-              <Form.Control>
-                <Form.Checkbox
-                  checked={tocAgreed}
-                  onChange={(e) => {
-                    return setTocAgreed(e.target.checked);
-                  }}
-                >
-                  {'  '}I agree to the <a href="#">terms and conditions</a>
-                </Form.Checkbox>
               </Form.Control>
             </Form.Field>
-      
+                
             <Form.Field>
-              <Form.Control>
+            <Form.Label> Are other people experiencing this problem?</Form.Label>
+        <Form.Control>
                 <Form.Radio
                   value="yes"
                   name="question"
@@ -128,7 +94,7 @@ export const Ticket = () => {
                     return setQuestionValue(e.target.value);
                   }}
                 >
-                  {'  '}Yes
+                  {'  '} Yes
                 </Form.Radio>
                 <Form.Radio
                   value="no"
@@ -138,11 +104,11 @@ export const Ticket = () => {
                     return setQuestionValue(e.target.value);
                   }}
                 >
-                  {'  '}No
+                  {'  '} No
                 </Form.Radio>
               </Form.Control>
             </Form.Field>
-      
+
             <Form.Field kind="group">
               <Form.Control>
                 <Button color="link">Submit</Button>
@@ -154,5 +120,7 @@ export const Ticket = () => {
               </Form.Control>
             </Form.Field>
           </form>
+          </Container>
         );
 }
+
