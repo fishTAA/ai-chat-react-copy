@@ -6,12 +6,11 @@ export const FooterSection =() => {
 
 return(
     <div style={{
-      margin: '0rem',
-      marginTop: '100px'
+
     }}
      >
     <Hero 
-    size="halfheight"
+    // size="halfheight"
     style={{
         width: '-webkit-fill-available' 
     }}>

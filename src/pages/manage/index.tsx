@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Form, Heading, Notification, Section, Table, Tile } from 'react-bulma-components';
+import { Hero, Box, Button, Container, Form, Heading, Notification, Section, Table, Tile } from 'react-bulma-components';
 import Chat from '../../components/chat';
+import { FooterSection } from '../../components/Footer';
 
 interface TestInterface {
   _id: string,
@@ -122,12 +123,14 @@ function Manage() {
   }, [])
 
   return (
-    <Container 
+    <Hero 
+    hasNavbar={true}
+    size="fullheight"
       style={{
-        marginTop: 50,
+        backgroundColor:'#A7C6ED',
       }}
     >
-      <Box>
+      <Box style={{margin: 20, marginTop: '100px', padding: 0, paddingTop: '20px'}}>
         <Section style={{paddingTop: 0, paddingBottom: 0, marginBottom: 15}}>
           <Heading size={3}>
             Embeddings
@@ -177,7 +180,7 @@ function Manage() {
               </Form.Field>
               <Form.Field kind="group">
                 <Form.Control>
-                  <Button color="link" onClick={handleCreateEmbeddings} loading={loadingEmbedding}>Create Embedding</Button>
+                  <Button style={{boxShadow: '0px 0px 5px #888888'}} color="link" onClick={handleCreateEmbeddings} loading={loadingEmbedding}>Create Embedding</Button>
                 </Form.Control>
               </Form.Field>
             </Section>
@@ -196,7 +199,7 @@ function Manage() {
               </Form.Field>
               <Form.Field kind="group">
                 <Form.Control>
-                  <Button 
+                  <Button style={{boxShadow: '0px 0px 5px #888888'}}
                     color="link"
                     onClick={handleTestEmbeddings}
                     loading={loadingTest}
@@ -284,7 +287,8 @@ function Manage() {
           </Box>
         </Section>
       </Box>
-    </Container>
+      <FooterSection/>
+    </Hero>
   );
 }
 
