@@ -119,7 +119,18 @@ function App() {
                 }} >
                   <Section style={{ minHeight: '100%', paddingTop: 0}}>
                     <Container> 
-
+                    {loadingTest? (
+            <>
+              <Block style={{
+              display: 'flex' ,
+              flexDirection: 'column',
+              alignItems: 'center', 
+              }}>
+                <BeatLoader color="#36d7b7"
+                    size={35} />
+              </Block>
+          </>
+          ):null}
                       <Heading
                       style={{
                         padding: 20,

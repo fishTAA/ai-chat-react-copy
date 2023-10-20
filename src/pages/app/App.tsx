@@ -212,8 +212,9 @@ function App() {
               <a>LaSson and ToLay</a>.
           </Content> 
         </Hero.Footer>  */}
-        <FooterSection />
+        
       </Hero>
+      <FooterSection />
       <Chat 
         width={400}
       />
