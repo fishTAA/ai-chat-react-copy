@@ -12,6 +12,7 @@ export const NavigationBar = () => {
     margin: 10 ,
     borderRadius: 6,
     zIndex: 100,
+    boxShadow: '0px 0px 5px #888888'
    }}>
     <Navbar.Brand>
       <Navbar.Item renderAs="a" href="/">
