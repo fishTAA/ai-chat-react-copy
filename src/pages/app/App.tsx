@@ -204,16 +204,9 @@ function App() {
             </section>
           </Container>
         </Hero.Body>
-       
-        {/* <Hero.Footer p={1}>
-        <FooterSection />
-          <Content style={{ textAlign: 'center' }}>
-              <strong>Created</strong> by{' '}
-              <a>LaSson and ToLay</a>.
-          </Content> 
-        </Hero.Footer>  */}
         
       </Hero>
+      <FooterSection />
       <FooterSection />
       <Chat 
         width={400}
