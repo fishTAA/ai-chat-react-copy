@@ -8,6 +8,7 @@ import { FooterSection } from '../../components/Footer';
 import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
 import { BeatLoader } from 'react-spinners';
+import image from '../../media/image.png';
 
 function App() {
   interface TestInterface {
@@ -62,7 +63,10 @@ function App() {
         // color="primary"
         style={{
           paddingTop: 100,
-          backgroundColor:'#A7C6ED',
+          backgroundImage: `url(${image})`,
+          height: '100vh',
+          backgroundSize: 'cover',
+          // backgroundColor:'#A7C6ED',
         }}  
       >
         <Hero.Body>
