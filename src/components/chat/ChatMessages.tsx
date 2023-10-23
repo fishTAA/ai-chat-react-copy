@@ -7,11 +7,15 @@ interface ChatMessagesProps {
   messages: Array<ChatCommunication>,
   notification?: string,
   notificationShown: boolean,
+  userinput: string,
+
+
 }
 export const ChatMessages = (props: ChatMessagesProps) => {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const chatContentsRef = useRef<null | HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState(0);
+  
   
 
   const scrollToBottom = () => {
@@ -61,7 +65,10 @@ export const ChatMessages = (props: ChatMessagesProps) => {
               fileName={chat.fileName}
               type={chat.format}
               message={chat.message.messageBody}
-              title = {chat.message.messageTitle} />
+              title = {chat.message.messageTitle} 
+              id= {chat.message.messageID}
+              userinput={props.userinput}/>
+             
             );
           })
         }
