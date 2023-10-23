@@ -54,6 +54,7 @@ function App() {
       < Ticket setShowTicketForm={setShowTicketForm} />
     )}
     <div>
+      <NavigationBar/>
       <Hero
         hasNavbar={true}
         size="fullheight"
