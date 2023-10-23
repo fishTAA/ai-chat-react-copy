@@ -9,6 +9,7 @@ interface ChatBubbleParams {
   position?: "left" | "right";
   type?: 'text' | 'file';
   fileName?: string;
+  title?: string;
 }
 
 export const ChatBubble = (params: ChatBubbleParams) => {
@@ -49,6 +50,23 @@ export const ChatBubble = (params: ChatBubbleParams) => {
           flexDirection: 'column',
         }}
       >
+
+        <Box
+          shadowless
+          style={{
+            margin: 0,
+            padding: 0,
+            background: "none",
+            color: "white",
+            fontSize: 14,
+            overflowWrap: "anywhere",
+          }}
+        >
+          {
+            <>{params.title}</>
+          } 
+        </Box>
+        
         <Box
           shadowless
           style={{

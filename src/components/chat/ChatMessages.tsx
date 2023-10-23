@@ -60,7 +60,8 @@ export const ChatMessages = (props: ChatMessagesProps) => {
               timeSent={new Date(chat.message.dateSent!)} 
               fileName={chat.fileName}
               type={chat.format}
-              message={chat.message.messageBody} />
+              message={chat.message.messageBody}
+              title = {chat.message.messageTitle} />
             );
           })
         }

@@ -1,13 +1,14 @@
 export interface ChatCommunication {
 	type: 'message' | 'connection' | 'notification' | 'remove-notification',
 	authIssue?: boolean,
-  method?: 'send' | 'receive', 
+	method?: 'send' | 'receive', 
 	message: Message,
 	format?: 'text' | 'file',
 	fileName?: string,
 }
 
 export interface Message {
+	messageTitle?: string,
 	messageBody?: string,
 	dateSent?: string,
 	sender?: string,
@@ -26,15 +27,16 @@ export const decodeMessage = (comm?: string): ChatCommunication => {
   return decoded;
 }
 
-export const chatMessage = (message: string, token: string) => {
+export const chatMessage = (messageTitle: string, message: string, token: string) => {
 	const chat: ChatCommunication = {
 		type: 'message',
 		authIssue: false,
-    method: 'send',
+    	method: 'send',
 		message: {
+			messageTitle: messageTitle,
 			messageBody: message,
 			sender: '_self',
-      senderToken: token,
+      		senderToken: token,
 		}
 	}
 	return JSON.stringify(chat)
