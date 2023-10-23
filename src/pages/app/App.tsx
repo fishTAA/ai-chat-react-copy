@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { Ticket } from '../../components/Ticket';
 import { FooterSection } from '../../components/Footer';
 import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
+import { BeatLoader } from 'react-spinners';
 
 function App() {
   interface TestInterface {
@@ -20,6 +21,7 @@ function App() {
   let navigate = useNavigate();
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const [loadingTest, setLoadingTest] = useState(false);
+  const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
 
@@ -47,6 +49,10 @@ function App() {
   
 
   return (
+    <>
+    { showTicketForm && (
+      < Ticket setShowTicketForm={setShowTicketForm} />
+    )}
     <div>
       <NavigationBar/>
       <Hero
@@ -113,7 +119,19 @@ function App() {
           style={{
             paddingInline: 100,
           }}
-          >
+            >
+            {loadingTest? (
+            <>
+              <Block style={{
+              display: 'flex' ,
+              flexDirection: 'column',
+              alignItems: 'center', 
+              }}>
+                <BeatLoader color="#36d7b7"
+                    size={35} />
+              </Block>
+          </>
+          ):null}
           </Form.Field>
 
 <section>
@@ -166,6 +184,7 @@ function App() {
                         alignItems: 'center'
                       }}>
                 <Card 
+                  onClick={()=>setShowTicketForm(true)}
                   style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#e9eda7', cursor: 'pointer'  }}>
                   <Card.Content>
                     <Media>
@@ -186,19 +205,22 @@ function App() {
                       <a href="#2">#responsive</a>
                     </Content>
                   </Card.Content>
+
+                  
               </Card>    
             </Columns.Column>
             </Columns>
             </section>
           </Container>
         </Hero.Body>
+        
       </Hero>
       <FooterSection />
       <Chat 
         width={400}
       />
     </div>
-
+    </>
   );
 }
 

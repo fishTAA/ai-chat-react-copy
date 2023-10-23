@@ -15,6 +15,9 @@ interface ChatParams {
   fullHeight?: boolean;
 };
 
+
+
+export 
 const Chat = (chatParams: ChatParams) => {
   const [tokenCookie, setTokenCookie] = useCookies(['token']);
   const [messages, setMessages] = useState<Array<ChatCommunication>>([]);
@@ -26,9 +29,9 @@ const Chat = (chatParams: ChatParams) => {
   const [message, setMessage] = useState<string>("");
   const [sessionToken, setSessionToken] = useState<string>("");
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+  const [query, setQuery] = useState<string>("")
   const hiddenFileInput = useRef< null | HTMLInputElement>(null);
-
+ 
   const socketUrl = process.env.REACT_APP_WS_URL ||'ws://localhost:8000';
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const width = chatParams.width || 400;
@@ -95,7 +98,8 @@ const Chat = (chatParams: ChatParams) => {
       return;
     }
     if (message) {
-      const encryptedMessage = chatMessage(message, sessionToken)
+      setQuery(message)
+      const encryptedMessage = chatMessage("","",message, sessionToken)
       sendMessage(encryptedMessage);
       setMessage("");
     }
@@ -157,12 +161,12 @@ const Chat = (chatParams: ChatParams) => {
     }
   }, []);
 
-
   const handleKeyPress = (e: any) => {
     if(e.key === 'Enter'){
       sendMessageToServer();
     }
   }
+
   const selectFile = (e: any) => {
     hiddenFileInput?.current?.click();
   };
@@ -197,6 +201,7 @@ const Chat = (chatParams: ChatParams) => {
               messages={messages}
               notificationShown={notificationShown}
               notification={notification}
+              userinput={query}
             /> :
             <Box
                 shadowless
@@ -247,11 +252,14 @@ const Chat = (chatParams: ChatParams) => {
                     </Button>
                   </>:<>
                     <Form.Input
-                      onChange={(e)=>setMessage(e.target.value)}
-                      style={{
-                        flexGrow: 1,
-                      }}
-                      onKeyDown={handleKeyPress}
+                      onChange={(e)=>{
+                        setMessage(e.target.value);
+                        }}
+                          style={{
+                          flexGrow: 1,
+                        }}
+                      onKeyDown={
+                        handleKeyPress}
                       value={message}
                       size="small" placeholder="Type your message here..."
                     />

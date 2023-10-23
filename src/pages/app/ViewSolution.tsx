@@ -5,7 +5,7 @@ import { Card, Columns, Container, Content, Footer, Heading, Hero, Block, Sectio
 import Chat from '../../components/chat';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FooterSection } from '../../components/Footer';
-
+import { BeatLoader } from 'react-spinners';
  export interface DocumentUpload {
   input: string;
   solution?: string ;
@@ -34,14 +34,17 @@ function App() {
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [urlQuery, setUrlQuery] = useState("");
   let navigate = useNavigate();
-
+  
 
   const retrieveDocumentData = () => {
+    setLoadingTest(true);
     fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
     .then((res)=>res.json())
     .then((res)=>{
         console.log(res);
         setDocument(res as DocumentUpload)
+    }).finally(()=> {
+      setLoadingTest(false);
     })
   }
   useEffect(() => {
@@ -116,7 +119,18 @@ function App() {
                 }} >
                   <Section style={{ minHeight: '100%', paddingTop: 0}}>
                     <Container> 
-
+                    {loadingTest? (
+            <>
+              <Block style={{
+              display: 'flex' ,
+              flexDirection: 'column',
+              alignItems: 'center', 
+                                    }}>
+                <BeatLoader color="#36d7b7"
+                    size={35} />
+                                  </Block>
+                               </>
+                       ):null}
                       <Heading
                       style={{
                         padding: 20,
@@ -201,6 +215,9 @@ function App() {
           </Columns>      
         </Hero.Body>
         <FooterSection />
+        {/* <Chat 
+        width={400}
+      /> */}
       </Hero>
     </div>
   );

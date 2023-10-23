@@ -1,7 +1,8 @@
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Columns, Heading, Icon } from "react-bulma-components";
-
+import { useNavigate,useLocation } from "react-router-dom";
+import { chatMessage } from "./utils";
 interface ChatBubbleParams {
   sender?: String;
   timeSent?: Date;
@@ -9,10 +10,21 @@ interface ChatBubbleParams {
   position?: "left" | "right";
   type?: 'text' | 'file';
   fileName?: string;
+  title?: string;
+  id?: string;
+  userinput: string;
 }
 
 export const ChatBubble = (params: ChatBubbleParams) => {
+ 
+
+
+const navigate = useNavigate();
+const location = useLocation();
+  
   return (
+    
+    
     <Box shadowless
       style={{
         padding: 0,
@@ -25,6 +37,14 @@ export const ChatBubble = (params: ChatBubbleParams) => {
         flexDirection: 'column',
         alignItems: params.sender === '_self' ? "end" : "start",
       }}
+      onClick={() => {
+        if (params.sender === 'AI Chat') {
+          console.log("userinput", params.userinput);
+          // navigate('view-solution/' + params.id + '/' + params.userinput,{state:{...Location.state},});
+          navigate('view-solution/' + params.id + '/' + params.userinput)
+        }
+      }}
+    
     >
       <Box
         shadowless
@@ -35,7 +55,9 @@ export const ChatBubble = (params: ChatBubbleParams) => {
           fontWeight: "bold",
           textAlign: params.sender === '_self' ? "right": "left",
         }}
+       
       >
+      
         {params.sender === '_self' ? 'Me' : params.sender}
       </Box>
       <Box
@@ -49,6 +71,7 @@ export const ChatBubble = (params: ChatBubbleParams) => {
           flexDirection: 'column',
         }}
       >
+
         <Box
           shadowless
           style={{
@@ -59,18 +82,43 @@ export const ChatBubble = (params: ChatBubbleParams) => {
             fontSize: 14,
             overflowWrap: "anywhere",
           }}
+          
+         
         >
+          {
+            <>{params.title}</>
+          } 
+        </Box>
+        
+        <Box
+        
+          shadowless
+          style={{
+            margin: 0,
+            padding: 0,
+            background: "none",
+            color: "white",
+            fontSize: 14,
+            overflowWrap: "anywhere",
+          }}
+       
+        >
+          
           {params.type && params.type == 'file' ? 
             <>
+            
               <Icon size="small">
                 <FontAwesomeIcon icon={faPaperclip}  size="1x"/>
               </Icon>
+              
               {params.fileName}
             </>
             :
-            <>{params.message}</>
+            <>{params.message} </>
           } 
+          
         </Box>
+
         <Box
           shadowless
           style={{
