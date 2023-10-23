@@ -94,8 +94,9 @@ export const Ticket = () => {
                     return setQuestionValue(e.target.value);
                   }}
                 >
-                  {'  '} Yes
+                  {'  '} Yes - Others have this issue too 
                 </Form.Radio>
+                <br />
                 <Form.Radio
                   value="no"
                   name="question"

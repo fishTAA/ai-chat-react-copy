@@ -19,7 +19,7 @@ root.render(
   <React.StrictMode>
     <CookiesProvider defaultSetOptions={{ path: '/' }}>
       <NavigationBar />
-      {/* <Ticket /> */}
+      < Ticket />
       <RouterProvider router={routes} />
     </CookiesProvider>
   </React.StrictMode>
