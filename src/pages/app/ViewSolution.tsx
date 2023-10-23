@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Block, Section } from 'react-bulma-components';
+import { Columns, Container, Heading, Hero, Block, Section } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FooterSection } from '../../components/Footer';
+
 import { BeatLoader } from 'react-spinners';
  export interface DocumentUpload {
   input: string;
@@ -25,7 +26,6 @@ interface TestInterface {
 
 function App() {
 
-
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const [document, setDocument ] = useState<DocumentUpload |null>(null)
   const urlparam = useParams();
@@ -35,6 +35,15 @@ function App() {
   const [urlQuery, setUrlQuery] = useState("");
   let navigate = useNavigate();
   
+  //collapsing RELATED TOPICS
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const contentStyle = {
+    display: collapsed ? 'none' : 'block',
+  };
 
   const retrieveDocumentData = () => {
     setLoadingTest(true);
@@ -86,14 +95,13 @@ function App() {
     })
   }
 
-
+  
 
 
 
   return (
     
-    <div 
-    style={{}}>
+    <div style={{flexGrow: 1}}>
       <Hero
         hasNavbar={true}
         size="fullheight"
@@ -102,11 +110,14 @@ function App() {
           flexDirection: 'column',
           backgroundColor:'#A7C6ED',
         }} >
+          <NavigationBar/>
         <Hero.Body paddingless>
           <Columns style={{ margin: 'none', marginTop: '10%', flexGrow: 1,
         overflowX: 'hidden', overflowY: 'hidden', whiteSpace: 'pre-wrap'
         }}>
-            <Columns.Column size="three-quarters"
+            <Columns.Column 
+            className = 'InfoBox'
+            size="three-quarters"
             style={{display: 'flex' ,
             flexDirection: 'column',
             paddingInline: 0,
@@ -132,6 +143,7 @@ function App() {
                                </>
                        ):null}
                       <Heading
+                      className='titleBox'
                       style={{
                         padding: 20,
                         paddingTop: 0,
@@ -143,6 +155,7 @@ function App() {
                       </Heading>
 
                       <Section
+                      className='solutionsBox'
                       style={{
                         display: 'flex' ,
                         flexDirection: 'column',
@@ -169,6 +182,7 @@ function App() {
             </Columns.Column>
 
             <Columns.Column 
+            className='Related Topics'
               size="one-quarter"
               style={{ 
               backgroundColor: 'white',                  
@@ -182,18 +196,17 @@ function App() {
               <div style={{
                         display: 'flex' ,
                         flexDirection: 'column',
-                        alignItems: 'flex-start',
+                        alignItems: 'flex-start'
                       }}>
-                <Content style={{ fontWeight: 'bolder', fontSize: 30, textAlign: 'center' }}> RELATED TOPICS </Content>
+                    <Block className = 'relatedTopics' style={{ backgroundColor: '#002D72', color: 'white', cursor: 'pointer', padding: 5,fontWeight: 'bolder', fontSize: 30, textAlign: 'center', borderRadius: 6, boxShadow: '0px 0px 5px #888888'}}
+                    onClick={toggleCollapse}
+                    >                    
+                      RELATED TOPICS
+                    </Block>
                 {testResults.map((res)=>{
                   if(document?.title != res.title){
                     return (
-                      <Container
-                      style={{
-                        alignItems: 'center',
-                        margin: '2px'
-                      }}>
-
+                      <Container className='relatedTopicsTitle' style={contentStyle}>
                         <Block style={{
                         cursor: 'pointer',
                         margin: 10,
