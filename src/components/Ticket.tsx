@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Box, Block, Icon, Form, Button, Container } from "react-bulma-components";
+import { Box, Block, Icon, Form, Button, Container, Notification} from "react-bulma-components";
 
 
 interface TicketProps {
@@ -7,12 +7,56 @@ interface TicketProps {
 }
 
 export const Ticket = (props: TicketProps) => {
-  const [username, setUsername] = useState('Name');
+  const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('@trajector.com');
-  const [subject, setSubject] = useState('');
+  const [ticketClassification, setTicketClassification] = useState('');
+  const [specificTopic, setSpecificTopic] = useState('');
   const [message, setMessage] = useState('');
   const [tocAgreed, setTocAgreed] = useState(false);
   const [questionValue, setQuestionValue] = useState('');
+  const [submittingNotification, setSubmittingNotification] = useState<any>(<></>);
+
+  const resetForm = () => {
+    setUsername('');
+    setEmail('');
+    setTicketClassification('');
+    setMessage('');
+    setQuestionValue('');
+  };
+
+  const submitTicketForm = () => {
+    fetch(`${endPoint}/submitForm`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: username,
+        email: email,
+        ticketClassification: ticketClassification,
+        specificTopic: specificTopic,
+        message: message,
+        questionValue: questionValue
+      })
+    }).then(() => {
+      setSubmittingNotification(
+        <Notification color="success">
+          Ticket Created
+        </Notification>
+      );
+      resetForm();
+      window.location.replace('/');
+    })
+    .catch((error) => {
+      setSubmittingNotification(
+        <Notification color="danger">
+          Error: {error.message}
+        </Notification>
+      );
+    });
+  }
 
   return (
     <Container
@@ -53,16 +97,15 @@ export const Ticket = (props: TicketProps) => {
       </Form.Field>
 
       <Form.Field>
-        <Form.Label>Subject</Form.Label>
-        <Form.Field kind="group">
+        <Form.Label>Ticket Classification</Form.Label>
+        <Form.Field style={{ display: "flex" }}>
           <Form.Control>
             <Form.Select
-              value={subject}
+              value={ticketClassification}
               onChange={(e) => {
-                return setSubject(e.target.value);
+                return setTicketClassification(e.target.value);
               }}
-            >
-              <option value="ticket-class"> Ticket Classification </option>
+            >x
               <option value="crm"> CRM Issues </option>
               <option value="hardware"> Hardware Issues </option>
               <option value="software"> Software Issues </option>
@@ -71,7 +114,11 @@ export const Ticket = (props: TicketProps) => {
             </Form.Select>
           </Form.Control>
           <Form.Control fullwidth>
-            <Form.Input placeholder="Specify Topic" />
+            <Form.Input placeholder="Specify Topic" 
+             value={specificTopic}
+             onChange={(e) => {
+               return setSpecificTopic(e.target.value);
+             }}/>
           </Form.Control>
         </Form.Field>
       </Form.Field>
@@ -116,18 +163,27 @@ export const Ticket = (props: TicketProps) => {
       </Form.Field>
 
       <Form.Field kind="group">
-        <Form.Control>
-          <Button color="link" onClick={()=>
-            props.setShowTicketForm(false)
-            }>Submit</Button>
-        </Form.Control>
-        <Form.Control>
-          <Button color="link" colorVariant="light" onClick={()=>props.setShowTicketForm(false)}>
-            Cancel
-          </Button>
-        </Form.Control>
-      </Form.Field>
-    </form>
+          <Form.Control>
+            <Button color="link"
+             onClick={submitTicketForm}>
+              Submit
+            </Button>
+          </Form.Control>
+          <Form.Control>
+            <Button
+              color="link"
+              colorVariant="light"
+              onClick={() => {
+                resetForm();
+                props.setShowTicketForm(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </Form.Control>
+        </Form.Field>
+        {submittingNotification}
+      </form>
     </Container>
   );
 }
