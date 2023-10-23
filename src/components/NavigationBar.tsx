@@ -2,8 +2,10 @@ import * as React from "react";
 import { Navbar } from "react-bulma-components";
 import logo from '../media/Trajector Main Logo_Color.png';
 
+
 export const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
+ 
   return (
    <Navbar
    style={{
@@ -12,7 +14,8 @@ export const NavigationBar = () => {
     margin: 10 ,
     borderRadius: 6,
     zIndex: 100,
-    boxShadow: '0px 0px 5px #888888'
+    boxShadow: '0px 0px 5px #888888',
+    backgroundColor: 'white'
    }}>
     <Navbar.Brand>
       <Navbar.Item renderAs="a" href="/">
@@ -45,6 +48,14 @@ export const NavigationBar = () => {
           href="/manage"
         >
           Manage
+        </Navbar.Item>
+        <Navbar.Item 
+          style={{
+            borderRadius: "6px"
+          }}
+          href="/login"
+        >
+          Login Test
         </Navbar.Item>
       </Navbar.Container>
     </Navbar.Menu>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Hero, Box, Button, Container, Form, Heading, Notification, Section, Table, Tile } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { FooterSection } from '../../components/Footer';
-
+import { NavigationBar } from '../../components/NavigationBar';
 interface TestInterface {
   _id: string,
   input: string,
@@ -130,6 +130,7 @@ function Manage() {
         backgroundColor:'#A7C6ED',
       }}
     >
+      <NavigationBar/>
       <Box style={{margin: 20, marginTop: '100px', padding: 0, paddingTop: '20px'}}>
         <Section style={{paddingTop: 0, paddingBottom: 0, marginBottom: 15}}>
           <Heading size={3}>
