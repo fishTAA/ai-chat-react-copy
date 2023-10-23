@@ -86,7 +86,7 @@ const location = useLocation();
          
         >
           {
-            <>{params.message}</>
+            <>{params.title}</>
           } 
         </Box>
         
@@ -114,9 +114,8 @@ const location = useLocation();
               {params.fileName}
             </>
             :
-            <>{params.title} </>
+            <>{params.message} </>
           } 
-
           
         </Box>
 

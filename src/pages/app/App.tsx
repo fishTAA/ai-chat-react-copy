@@ -21,6 +21,7 @@ function App() {
   let navigate = useNavigate();
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const [loadingTest, setLoadingTest] = useState(false);
+  const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
 
@@ -48,6 +49,10 @@ function App() {
   
 
   return (
+    <>
+    { showTicketForm && (
+      < Ticket setShowTicketForm={setShowTicketForm} />
+    )}
     <div>
       <NavigationBar/>
       <Hero
@@ -179,6 +184,7 @@ function App() {
                         alignItems: 'center'
                       }}>
                 <Card 
+                  onClick={()=>setShowTicketForm(true)}
                   style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#e9eda7', cursor: 'pointer'  }}>
                   <Card.Content>
                     <Media>
@@ -199,6 +205,8 @@ function App() {
                       <a href="#2">#responsive</a>
                     </Content>
                   </Card.Content>
+
+                  
               </Card>    
             </Columns.Column>
             </Columns>
@@ -212,7 +220,7 @@ function App() {
         width={400}
       />
     </div>
-
+    </>
   );
 }
 
