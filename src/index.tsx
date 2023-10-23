@@ -18,7 +18,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <CookiesProvider defaultSetOptions={{ path: '/' }}>
-      <NavigationBar />
+      {/* <NavigationBar /> */}
       {/* <Ticket /> */}
       <RouterProvider router={routes} />
     </CookiesProvider>

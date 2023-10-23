@@ -48,6 +48,7 @@ function App() {
 
   return (
     <div>
+      <NavigationBar/>
       <Hero
         hasNavbar={true}
         size="fullheight"
