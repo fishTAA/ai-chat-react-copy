@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { Ticket } from '../../components/Ticket';
 import { FooterSection } from '../../components/Footer';
 import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
+import { BeatLoader } from 'react-spinners';
 
 function App() {
   interface TestInterface {
@@ -117,7 +118,19 @@ function App() {
           style={{
             paddingInline: 100,
           }}
-          >
+            >
+            {loadingTest? (
+            <>
+              <Block style={{
+              display: 'flex' ,
+              flexDirection: 'column',
+              alignItems: 'center', 
+              }}>
+                <BeatLoader color="#36d7b7"
+                    size={35} />
+              </Block>
+          </>
+          ):null}
           </Form.Field>
 
 <section>
@@ -199,6 +212,7 @@ function App() {
             </section>
           </Container>
         </Hero.Body>
+        
       </Hero>
       <FooterSection />
       <Chat 
