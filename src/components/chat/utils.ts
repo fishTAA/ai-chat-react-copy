@@ -8,6 +8,7 @@ export interface ChatCommunication {
 }
 
 export interface Message {
+	messageID?: string,
 	messageTitle?: string,
 	messageBody?: string,
 	dateSent?: string,
@@ -27,12 +28,13 @@ export const decodeMessage = (comm?: string): ChatCommunication => {
   return decoded;
 }
 
-export const chatMessage = (messageTitle: string, message: string, token: string) => {
+export const chatMessage = (messageID: string, messageTitle: string, message: string, token: string) => {
 	const chat: ChatCommunication = {
 		type: 'message',
 		authIssue: false,
     	method: 'send',
 		message: {
+			messageID: messageID,
 			messageTitle: messageTitle,
 			messageBody: message,
 			sender: '_self',

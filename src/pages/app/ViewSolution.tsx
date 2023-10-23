@@ -125,12 +125,12 @@ function App() {
               display: 'flex' ,
               flexDirection: 'column',
               alignItems: 'center', 
-              }}>
+                                    }}>
                 <BeatLoader color="#36d7b7"
                     size={35} />
-              </Block>
-          </>
-          ):null}
+                                  </Block>
+                               </>
+                       ):null}
                       <Heading
                       style={{
                         padding: 20,
@@ -215,6 +215,9 @@ function App() {
           </Columns>      
         </Hero.Body>
         <FooterSection />
+        {/* <Chat 
+        width={400}
+      /> */}
       </Hero>
     </div>
   );

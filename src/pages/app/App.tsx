@@ -207,7 +207,6 @@ function App() {
         
       </Hero>
       <FooterSection />
-      <FooterSection />
       <Chat 
         width={400}
       />
