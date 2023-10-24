@@ -56,7 +56,7 @@ function App() {
     )}
     <div style={{
       backgroundImage: `url(${image})`,
-      height: '100vh',
+      height: '100%',
       backgroundSize: 'cover',
       backgroundAttachment: 'fixed'
     }}>
