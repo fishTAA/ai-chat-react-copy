@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block, Section } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { Ticket } from '../../components/Ticket';
 import { FooterSection } from '../../components/Footer';
@@ -54,22 +54,20 @@ function App() {
     { showTicketForm && (
       < Ticket setShowTicketForm={setShowTicketForm} />
     )}
-    <div>
+    <div style={{
+      backgroundImage: `url(${image})`,
+      height: '100vh',
+      backgroundSize: 'cover',
+      backgroundAttachment: 'fixed'
+    }}>
       <NavigationBar/>
       <Hero
         hasNavbar={true}
-        size="fullheight"
-        
-        // color="primary"
-        style={{
-          paddingTop: 100,
-          backgroundImage: `url(${image})`,
-          height: '100vh',
-          backgroundSize: 'cover',
-          // backgroundColor:'#A7C6ED',
-        }}  
+        size="fullheight"  
       >
-        <Hero.Body>
+        <Hero.Body style={{
+          paddingTop: 100,
+          }}>
           <Container> 
           <Form.Field kind="addons">
             <Form.Control fullwidth>
@@ -83,6 +81,7 @@ function App() {
                     value={document}
                     placeholder="Search"                      
                       style={{
+                      boxShadow: '2px 2px 5px 0px #888888',
                       borderTopRightRadius: 0,
                       borderBottomRightRadius: 0,
                       borderTopLeftRadius: 20,
@@ -91,7 +90,8 @@ function App() {
                       maxHeight: "50px",
                       minHeight: "50px",
                       overflow: "hidden",
-                      resize:"none"
+                      resize:"none",
+                      marginTop: -50,
                     }}
                     />
             </Form.Control>
@@ -104,7 +104,7 @@ function App() {
               }}
 
               style={{
-                
+                boxShadow: '2px 2px 5px 0px #888888',
                 borderTopRightRadius: 20,
                 borderBottomRightRadius: 20,
                 borderTopLeftRadius: 0,
@@ -114,6 +114,7 @@ function App() {
                 minHeight: "50px",
                 overflow: "hidden",
                 resize:"none",
+                marginTop: -50,
               }}
               >Clear</Button>
             </Form.Control>
@@ -138,7 +139,7 @@ function App() {
           ):null}
           </Form.Field>
 
-<section>
+          <section>
             <Columns
             style={{
               paddingTop: 20
@@ -151,7 +152,7 @@ function App() {
                         flexDirection: 'column',
                         alignItems: 'center'
                       }}>
-                      <Card style={{  maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
+                      <Card style={{maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
                         onClick={()=> {
                           navigate('view-solution/'+res._id+'/'+document)
                         }}>
@@ -161,9 +162,6 @@ function App() {
                                   <Heading
                                   
                                   size={4}
-                                  style={{
-                                    color:"black",
-                                    }}
                                     >
                                       {res.title}
                                     </Heading>
@@ -189,13 +187,13 @@ function App() {
                       }}>
                 <Card 
                   onClick={()=>setShowTicketForm(true)}
-                  style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#e9eda7', cursor: 'pointer'  }}>
+                  style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#307FE2', cursor: 'pointer'  }}>
                   <Card.Content>
                     <Media>
                       <Media.Item>
                         <Heading size={4}
                         style={{
-                          color:"black",
+                          color:"white",
                           }}
                           >
                             Submit Ticket
@@ -203,25 +201,22 @@ function App() {
                       
                       </Media.Item>
                     </Media>
-                    <Content>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-                      iaculis mauris. <a>@bulmaio</a>.<a href="#1">#css</a>{' '}
-                      <a href="#2">#responsive</a>
+                    <Content style={{
+                          color:"white",
+                          }}>
+                      Can't find what you're looking for? Submit a ticket!
                     </Content>
                   </Card.Content>
-
-                  
               </Card>    
             </Columns.Column>
             </Columns>
             </section>
           </Container>
         </Hero.Body>
-        
-      </Hero>
+        </Hero>
       <FooterSection />
       <Chat 
-        width={400}
+        width={350}
       />
     </div>
     </>
