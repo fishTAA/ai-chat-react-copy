@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
-import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block } from 'react-bulma-components';
+import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block, Section } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { Ticket } from '../../components/Ticket';
 import { FooterSection } from '../../components/Footer';
@@ -54,22 +54,20 @@ function App() {
     { showTicketForm && (
       < Ticket setShowTicketForm={setShowTicketForm} />
     )}
-    <div>
+    <div style={{
+      backgroundImage: `url(${image})`,
+      height: '100vh',
+      backgroundSize: 'cover',
+      backgroundAttachment: 'fixed'
+    }}>
       <NavigationBar/>
       <Hero
         hasNavbar={true}
-        size="fullheight"
-        
-        // color="primary"
-        style={{
-          paddingTop: 100,
-          backgroundImage: `url(${image})`,
-          height: '100vh',
-          backgroundSize:'contain',
-          // backgroundColor:'#A7C6ED',
-        }}  
+        size="fullheight"  
       >
-        <Hero.Body>
+        <Hero.Body style={{
+          paddingTop: 100,
+          }}>
           <Container> 
           <Form.Field kind="addons">
             <Form.Control fullwidth>
@@ -141,7 +139,7 @@ function App() {
           ):null}
           </Form.Field>
 
-<section>
+          <section>
             <Columns
             style={{
               paddingTop: 20
@@ -209,17 +207,14 @@ function App() {
                       Can't find what you're looking for? Submit a ticket!
                     </Content>
                   </Card.Content>
-
-                  
               </Card>    
             </Columns.Column>
             </Columns>
             </section>
           </Container>
         </Hero.Body>
-        <FooterSection />
-      </Hero>
-      
+        </Hero>
+      <FooterSection />
       <Chat 
         width={350}
       />
