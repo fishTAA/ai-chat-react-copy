@@ -5,7 +5,7 @@ import { Columns, Container, Heading, Hero, Block, Section } from 'react-bulma-c
 import Chat from '../../components/chat';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FooterSection } from '../../components/Footer';
-
+import image from '../../media/image.png';
 import { BeatLoader } from 'react-spinners';
  export interface DocumentUpload {
   input: string;
@@ -108,6 +108,9 @@ function App() {
         style={{
           display: 'flex',
           flexDirection: 'column',
+          backgroundImage: `url(${image})`,
+          height: '100vh',
+          backgroundSize: 'cover',
           backgroundColor:'#A7C6ED',
         }} >
           <NavigationBar/>

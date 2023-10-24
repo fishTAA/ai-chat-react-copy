@@ -17,12 +17,12 @@ return(
       <Hero.Header renderAs="footer" />
       <Hero.Footer>
         <Footer style={{
-          background: '#307FE2'
+          background: '#071D49'
         }}>
           <Container>
             <Content style={{ textAlign: 'center' }}>
               <p style={ {
-                color: 'black'
+                color: 'white'
               }}> 
               The website is created through a collaboration of Globaltek interns at 
               <a href="https://www.feutech.edu.ph/"
