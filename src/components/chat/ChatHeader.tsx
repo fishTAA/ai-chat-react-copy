@@ -14,11 +14,12 @@ export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
   <Box 
       // backgroundColor="blue"
       style={{
-        backgroundColor: "#002d72",
+        backgroundColor: "#307FE2",
         display: "flex",
         paddingTop: 10, 
         paddingBottom: 10,
         width: "100%",
+       
         
       }}
     >

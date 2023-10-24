@@ -65,7 +65,7 @@ function App() {
           paddingTop: 100,
           backgroundImage: `url(${image})`,
           height: '100vh',
-          backgroundSize: 'cover',
+          backgroundSize:'contain',
           // backgroundColor:'#A7C6ED',
         }}  
       >
@@ -83,6 +83,7 @@ function App() {
                     value={document}
                     placeholder="Search"                      
                       style={{
+                      boxShadow: '2px 2px 5px 0px #888888',
                       borderTopRightRadius: 0,
                       borderBottomRightRadius: 0,
                       borderTopLeftRadius: 20,
@@ -91,7 +92,8 @@ function App() {
                       maxHeight: "50px",
                       minHeight: "50px",
                       overflow: "hidden",
-                      resize:"none"
+                      resize:"none",
+                      marginTop: -50,
                     }}
                     />
             </Form.Control>
@@ -104,7 +106,7 @@ function App() {
               }}
 
               style={{
-                
+                boxShadow: '2px 2px 5px 0px #888888',
                 borderTopRightRadius: 20,
                 borderBottomRightRadius: 20,
                 borderTopLeftRadius: 0,
@@ -114,6 +116,7 @@ function App() {
                 minHeight: "50px",
                 overflow: "hidden",
                 resize:"none",
+                marginTop: -50,
               }}
               >Clear</Button>
             </Form.Control>
@@ -151,7 +154,7 @@ function App() {
                         flexDirection: 'column',
                         alignItems: 'center'
                       }}>
-                      <Card style={{  maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
+                      <Card style={{maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
                         onClick={()=> {
                           navigate('view-solution/'+res._id+'/'+document)
                         }}>
@@ -161,9 +164,6 @@ function App() {
                                   <Heading
                                   
                                   size={4}
-                                  style={{
-                                    color:"black",
-                                    }}
                                     >
                                       {res.title}
                                     </Heading>
@@ -189,13 +189,13 @@ function App() {
                       }}>
                 <Card 
                   onClick={()=>setShowTicketForm(true)}
-                  style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#e9eda7', cursor: 'pointer'  }}>
+                  style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#307FE2', cursor: 'pointer'  }}>
                   <Card.Content>
                     <Media>
                       <Media.Item>
                         <Heading size={4}
                         style={{
-                          color:"black",
+                          color:"white",
                           }}
                           >
                             Submit Ticket
@@ -203,10 +203,10 @@ function App() {
                       
                       </Media.Item>
                     </Media>
-                    <Content>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-                      iaculis mauris. <a>@bulmaio</a>.<a href="#1">#css</a>{' '}
-                      <a href="#2">#responsive</a>
+                    <Content style={{
+                          color:"white",
+                          }}>
+                      Can't find what you're looking for? Submit a ticket!
                     </Content>
                   </Card.Content>
 
@@ -217,11 +217,11 @@ function App() {
             </section>
           </Container>
         </Hero.Body>
-        
+        <FooterSection />
       </Hero>
-      <FooterSection />
+      
       <Chat 
-        width={400}
+        width={350}
       />
     </div>
     </>

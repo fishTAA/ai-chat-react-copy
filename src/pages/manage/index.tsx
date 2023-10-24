@@ -3,6 +3,7 @@ import { Hero, Box, Button, Container, Form, Heading, Notification, Section, Tab
 import Chat from '../../components/chat';
 import { FooterSection } from '../../components/Footer';
 import { NavigationBar } from '../../components/NavigationBar';
+import image from '../../media/image.png';
 interface TestInterface {
   _id: string,
   input: string,
@@ -128,6 +129,9 @@ function Manage() {
     size="fullheight"
       style={{
         backgroundColor:'#A7C6ED',
+        backgroundImage: `url(${image})`,
+        height: '100vh',
+        backgroundSize: 'cover',
       }}
     >
       <NavigationBar/>

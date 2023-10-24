@@ -60,7 +60,7 @@ export const Ticket = (props: TicketProps) => {
 
   return (
     <Container
-    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', zIndex: 99, minWidth: '-webkit-fill-available'}}>
+    style={{ backgroundColor: 'rgba(0,0,0,.2)', backdropFilter: 'blur(3px)', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', zIndex: 99, minWidth: '-webkit-fill-available'}}>
     <form
     style={{
       minHeight: 100,
