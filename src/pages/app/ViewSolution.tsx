@@ -101,22 +101,25 @@ function App() {
 
   return (
     
-    <div style={{flexGrow: 1}}>
+    <div style={{
+    backgroundImage: `url(${image})`,
+    height: '100vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center'
+    }}>
       <Hero
         hasNavbar={true}
         size="fullheight"
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundImage: `url(${image})`,
-          height: '100vh',
-          backgroundSize: 'cover',
-          backgroundColor:'#A7C6ED',
+          flexGrow: 1,
+          marginBottom: 50,
         }} >
           <NavigationBar/>
-        <Hero.Body paddingless>
-          <Columns style={{ margin: 'none', marginTop: '10%', flexGrow: 1,
-        overflowX: 'hidden', overflowY: 'hidden', whiteSpace: 'pre-wrap'
+        <Hero.Body paddingless marginless>
+          <Columns style={{ 
+            marginTop: 150,
+           flexGrow: 1,
+           overflowX: 'hidden', overflowY: 'hidden'
         }}>
             <Columns.Column 
             className = 'InfoBox'
@@ -124,6 +127,7 @@ function App() {
             style={{display: 'flex' ,
             flexDirection: 'column',
             paddingInline: 0,
+            
             }}>
               <Container 
               style={{
@@ -165,7 +169,7 @@ function App() {
                         justifyContent: 'space-evenly',
                         paddingInline: '10%',
                         backgroundColor: 'white',
-                        minHeight: '100%',
+                        // minHeight: '100%',
                         textAlign: 'justify',
                         borderRadius: 9,
                         boxShadow: '0px 0px 5px #888888',
@@ -184,14 +188,16 @@ function App() {
               </Container>
             </Columns.Column>
 
-            <Columns.Column 
+            <Columns.Column>
+            <Section 
             className='Related Topics'
               size="one-quarter"
               style={{ 
-              backgroundColor: 'white',                  
+              marginTop: 5,
               display: 'flex' ,
               flexDirection: 'column',
-              justifyContent: 'flex-start',
+              justifyContent: 'spacely-evenly',
+              backgroundColor: 'white',                  
               alignItems: 'center',
               borderRadius: 9,
               boxShadow: '0px 0px 5px #888888',
@@ -199,7 +205,7 @@ function App() {
               <div style={{
                         display: 'flex' ,
                         flexDirection: 'column',
-                        alignItems: 'flex-start'
+                        // alignItems: 'flex-start'
                       }}>
                     <Block className = 'relatedTopics' style={{ backgroundColor: '#002D72', color: 'white', cursor: 'pointer', padding: 5,fontWeight: 'bolder', fontSize: 30, textAlign: 'center', borderRadius: 6, boxShadow: '0px 0px 5px #888888'}}
                     onClick={toggleCollapse}
@@ -226,14 +232,12 @@ function App() {
                   }                      
                 })} 
                 </div>
-                
+            </Section>   
             </Columns.Column>
-          </Columns>      
+          </Columns>   
+         
         </Hero.Body>
-        <FooterSection />
-        {/* <Chat 
-        width={400}
-      /> */}
+            <FooterSection />
       </Hero>
     </div>
   );

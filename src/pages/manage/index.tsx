@@ -155,7 +155,7 @@ function Manage() {
                   <Form.Control>
                     <Form.Input
                       onChange={(e)=>setDocumentTitle(e.target.value)}
-                      placeholder="Once a upon a time"
+                      placeholder="Enter Title"
                       type="text"
                     />
                   </Form.Control>
