@@ -103,23 +103,23 @@ function App() {
     
     <div style={{
     backgroundImage: `url(${image})`,
-    height: '100vh',
+    height: '100%',
     backgroundSize: 'cover',
-    backgroundPosition: 'center'
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
     }}>
       <Hero
         hasNavbar={true}
         size="fullheight"
         style={{
           flexGrow: 1,
-          marginBottom: 50,
         }} >
           <NavigationBar/>
         <Hero.Body paddingless marginless>
           <Columns style={{ 
             marginTop: 150,
            flexGrow: 1,
-           overflowX: 'hidden', overflowY: 'hidden'
+           overflowX: 'hidden', overflowY: 'hidden', 
         }}>
             <Columns.Column 
             className = 'InfoBox'
