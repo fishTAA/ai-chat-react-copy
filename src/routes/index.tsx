@@ -8,6 +8,8 @@ import Manage from "../pages/manage";
 import FullChat from "../pages/app/FullChat";
 import ViewSolution from "../pages/app/ViewSolution";
 import Login from "../pages/login/login";
+import { MsalProvider } from "@azure/msal-react";
+import { pca } from "../authconfig";
 
 export const routes = createBrowserRouter([
   {
@@ -28,6 +30,6 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />
+    element: (<MsalProvider instance={pca}><Login /></MsalProvider>)
   }
 ]);
