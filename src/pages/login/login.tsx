@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Box, Hero, Heading } from 'react-bulma-components';
 import { MsalProvider, useMsal } from '@azure/msal-react';
 import { loginRequest,pca } from '../../authconfig';
+import logo from '../../media/Trajector Main Logo_Color.png';
+import background from '../../media/MountainWavesBlue.png';
+
+
 
 function Login() {
   const { instance, accounts } = useMsal();
@@ -25,8 +29,17 @@ function Login() {
     instance.logout();
   };
 
+
+
+
   return (
-      <div style={{ background: 'linear-gradient(220deg, #307FE2 0%, #EF3340 100%)', flexGrow: 1 }}>
+      <div style={{   
+      backgroundImage: `url(${background})`,
+      height: '100%',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      flexGrow: 1 }}>
         <Hero
           size="fullheight"
           style={{
@@ -46,6 +59,7 @@ function Login() {
               boxShadow: '0px 0px 5px #2e2c29',
             }}
           >
+            <img src={logo} className='trajectorLogo' alt='Trajector Logo' style={{marginBottom: 24}}/>
               <Heading style={{ textAlign: 'center' }}>Login</Heading>
               <Button.Group align="center">
                 <Button
