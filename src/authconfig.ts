@@ -1,4 +1,4 @@
-import { Configuration, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
+import { BrowserCacheLocation, Configuration, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
 
 export const configuration: Configuration = {
     auth: {
@@ -8,7 +8,7 @@ export const configuration: Configuration = {
       postLogoutRedirectUri: "/login"
     },
     cache: {
-      cacheLocation: "localStorage",
+      cacheLocation: BrowserCacheLocation.LocalStorage, // "sessionStorage",
       storeAuthStateInCookie: true
    },
 
@@ -27,7 +27,6 @@ export const configuration: Configuration = {
 
 export const loginRequest: PopupRequest = {
    scopes: ["User.Read"],
-   
  };
 export  const logoutRequest = {
    postLogoutRedirectUri: "https://login.microsoftonline.com/common/oauth2/v2.0/logout? post_logout_redirect_uri=http://localhost:3000/login",
