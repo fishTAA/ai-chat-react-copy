@@ -4,9 +4,13 @@ export const configuration: Configuration = {
     auth: {
       clientId: "dbd4e6df-ae87-427d-a5a1-2dc06f241a24",
       authority: "https://login.microsoftonline.com/studentfeutech.onmicrosoft.com",
-      redirectUri:'/',
+      redirectUri:'/app',
       postLogoutRedirectUri: "/"
     },
+    cache: {
+      cacheLocation: "localStorage",
+      storeAuthStateInCookie: true
+   },
 
     system: {
         loggerOptions: {
@@ -23,7 +27,7 @@ export const configuration: Configuration = {
 
 export const loginRequest: PopupRequest = {
    scopes: ["User.Read"],
-   redirectUri: "/",
+   
  };
 
  export const pca = new PublicClientApplication(configuration);

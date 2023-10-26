@@ -2,15 +2,28 @@ import React from 'react';
 import { Button, Box, Hero, Heading } from 'react-bulma-components';
 import { MsalProvider, useMsal } from '@azure/msal-react';
 import { loginRequest,pca } from '../../authconfig';
+import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
 
 function Login() {
   const { instance, accounts } = useMsal();
+
+if (accounts.length > 0) {
+    pca.setActiveAccount(accounts[0]);
+}
+
+pca.addEventCallback((event: EventMessage) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+        const payload = event.payload as AuthenticationResult;
+        const account = payload.account;
+        pca.setActiveAccount(account);
+    }
+});
 
   const handleLogin = async () => {
     try {
       if (accounts.length === 0) {
         // No authenticated accounts, initiate login
-        await instance.loginPopup(loginRequest);
+        await instance.loginRedirect(loginRequest);
       } else {
         // User is already authenticated
         console.log('User is already logged in.');
@@ -22,7 +35,9 @@ function Login() {
   };
 
   const handleLogout = () => {
-    instance.logout();
+    instance.logoutRedirect({
+      postLogoutRedirectUri: 'http://localhost:3000',
+  })
   };
 
   return (

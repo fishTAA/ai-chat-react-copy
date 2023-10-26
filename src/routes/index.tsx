@@ -14,7 +14,12 @@ import { pca } from "../authconfig";
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (<MsalProvider instance={pca}><Login /></MsalProvider>)
+  },
+  {
+    path: "/app",
+    element: (<MsalProvider instance={pca}><App /></MsalProvider>)
+    // element: <App/>
   },
   {
     path: "/manage",
@@ -27,9 +32,6 @@ export const routes = createBrowserRouter([
   {
     path: "/view-solution/:id/:query",
     element: <ViewSolution />
-  },
-  {
-    path: "/login",
-    element: (<MsalProvider instance={pca}><Login /></MsalProvider>)
   }
+ 
 ]);

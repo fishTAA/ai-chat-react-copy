@@ -9,8 +9,11 @@ import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
 import { BeatLoader } from 'react-spinners';
 import image from '../../media/image.png';
-
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal } from "@azure/msal-react";
+import { InteractionType } from '@azure/msal-browser';
 function App() {
+  
+  const {login, result, error} = useMsalAuthentication(InteractionType.Redirect)
   interface TestInterface {
     _id: string,
     input: string,
@@ -25,6 +28,7 @@ function App() {
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
+  const msal = useMsal();
 
   const handleTestEmbeddings = () => {
       setLoadingTest(true);
@@ -51,6 +55,8 @@ function App() {
 
   return (
     <>
+    
+  <AuthenticatedTemplate>
     { showTicketForm && (
       < Ticket setShowTicketForm={setShowTicketForm} />
     )}
@@ -219,7 +225,15 @@ function App() {
         width={350}
       />
     </div>
+
+      </AuthenticatedTemplate>
+    
+    <UnauthenticatedTemplate>
+    <p>At least one account is signed in!</p>
+  
+    </UnauthenticatedTemplate>
     </>
+    
   );
 }
 
