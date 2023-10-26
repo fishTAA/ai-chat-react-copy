@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { Button, Box, Hero, Heading } from 'react-bulma-components';
 import { MsalProvider, useMsal, useAccount } from '@azure/msal-react';
 import { loginRequest,logoutRequest,pca } from '../../authconfig';
@@ -6,8 +6,6 @@ import { PublicClientApplication, EventType, EventMessage, AuthenticationResult 
 import { useNavigate } from 'react-router-dom';
 import logo from '../../media/Trajector Main Logo_Color.png';
 import background from '../../media/MountainWavesBlue.png';
-
-
 
 function Login() {
   const { instance, accounts } = useMsal();
@@ -77,13 +75,6 @@ function Login() {
                   onClick={handleLogin}
                 >
                   Microsoft Azure
-                </Button>
-
-                <Button
-                  style={{ backgroundColor: '#0078d4', color: 'white' }}
-                  onClick={handleLogout}
-                >
-                  Logout
                 </Button>
               </Button.Group>
           </Box>

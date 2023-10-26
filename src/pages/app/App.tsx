@@ -28,7 +28,7 @@ function App() {
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
   const { instance, inProgress } = useMsal();
-  const account = localStorage.getItem("account") || "";
+  const account = localStorage.getItem("account") || "{}";
 
   const userAccount = useAccount(JSON.parse(account));
   
