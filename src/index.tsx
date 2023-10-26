@@ -13,26 +13,17 @@ import { Ticket } from './components/Ticket';
 import { FooterSection } from './components/Footer';
 import { pca } from './authconfig';
 import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
+import { MsalProvider } from '@azure/msal-react';
 
-const accounts = pca.getAllAccounts();
-if (accounts.length > 0) {
-    pca.setActiveAccount(accounts[0]);
-}
-
-pca.addEventCallback((event: EventMessage) => {
-    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-        const payload = event.payload as AuthenticationResult;
-        const account = payload.account;
-        pca.setActiveAccount(account);
-    }
-});
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
     <CookiesProvider defaultSetOptions={{ path: '/' }}>
-      <RouterProvider router={routes} />
+      <MsalProvider instance={pca}>
+        <RouterProvider router={routes} />
+      </MsalProvider>
     </CookiesProvider>
   </React.StrictMode>
 );

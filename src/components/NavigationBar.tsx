@@ -7,14 +7,6 @@ import { EventType,EventMessage,AuthenticationResult } from "@azure/msal-browser
 
 export const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
-
-  pca.addEventCallback((event: EventMessage) => {
-    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-        const payload = event.payload as AuthenticationResult;
-        const account = payload.account;
-        pca.setActiveAccount(account);
-    }
-});
   const { instance } = useMsal();
   const handleLogout = () => {
   
