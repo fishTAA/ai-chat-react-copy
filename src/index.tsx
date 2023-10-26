@@ -11,7 +11,9 @@ import { NavigationBar } from './components/NavigationBar';
 import { CookiesProvider } from 'react-cookie';
 import { Ticket } from './components/Ticket';
 import { FooterSection } from './components/Footer';
-
+import { pca } from './authconfig';
+import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
+import { MsalProvider } from '@azure/msal-react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -19,7 +21,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <CookiesProvider defaultSetOptions={{ path: '/' }}>
-      <RouterProvider router={routes} />
+      <MsalProvider instance={pca}>
+        <RouterProvider router={routes} />
+      </MsalProvider>
     </CookiesProvider>
   </React.StrictMode>
 );

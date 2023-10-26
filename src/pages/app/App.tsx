@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
 import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block, Section } from 'react-bulma-components';
@@ -9,8 +9,10 @@ import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
 import { BeatLoader } from 'react-spinners';
 import image from '../../media/image.png';
-
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useIsAuthenticated, useMsal, useAccount } from "@azure/msal-react";
+import { InteractionStatus, InteractionType } from '@azure/msal-browser';
 function App() {
+  const isAuthenticated = useIsAuthenticated();
   interface TestInterface {
     _id: string,
     input: string,
@@ -25,6 +27,29 @@ function App() {
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
+  const { instance, inProgress } = useMsal();
+  const account = localStorage.getItem("account") || "";
+
+  const userAccount = useAccount(JSON.parse(account));
+  
+  useEffect(()=> {
+    if (inProgress === InteractionStatus.None && !isAuthenticated) {
+      setLoadingTest(true)
+      if(account) {
+        instance.acquireTokenSilent({
+          account: JSON.parse(account),
+          scopes: ["openid", "profile"],
+        }).then(e => {
+          setLoadingTest(false);
+        }).catch(e=> {
+          console.log("here", e)
+          navigate('/login')
+        });
+      } else {
+        navigate('/login')
+      }
+    }
+  }, [inProgress]);
 
   const handleTestEmbeddings = () => {
       setLoadingTest(true);
@@ -51,6 +76,7 @@ function App() {
 
   return (
     <>
+    
     { showTicketForm && (
       < Ticket setShowTicketForm={setShowTicketForm} />
     )}
@@ -79,7 +105,7 @@ function App() {
                       }}
                       
                     value={document}
-                    placeholder="Search"                      
+                    placeholder={"Search " + userAccount?.username}                      
                       style={{
                       boxShadow: '2px 2px 5px 0px #888888',
                       borderTopRightRadius: 0,
@@ -219,7 +245,13 @@ function App() {
         width={350}
       />
     </div>
+    
+    {/* <UnauthenticatedTemplate>
+    <p>At least one account is signed in!</p>
+  
+    </UnauthenticatedTemplate> */}
     </>
+    
   );
 }
 
