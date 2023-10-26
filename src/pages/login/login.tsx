@@ -4,6 +4,8 @@ import { MsalProvider, useMsal, useAccount } from '@azure/msal-react';
 import { loginRequest,logoutRequest,pca } from '../../authconfig';
 import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
 import { useNavigate } from 'react-router-dom';
+import logo from '../../media/Trajector Main Logo_Color.png';
+import background from '../../media/MountainWavesBlue.png';
 
 function Login() {
   const { instance, accounts } = useMsal();
@@ -35,8 +37,17 @@ function Login() {
     instance.logoutRedirect(logoutRequest)
   };
 
+
+
+
   return (
-      <div style={{ background: 'linear-gradient(220deg, #307FE2 0%, #EF3340 100%)', flexGrow: 1 }}>
+      <div style={{   
+      backgroundImage: `url(${background})`,
+      height: '100%',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      flexGrow: 1 }}>
         <Hero
           size="fullheight"
           style={{
@@ -56,6 +67,7 @@ function Login() {
               boxShadow: '0px 0px 5px #2e2c29',
             }}
           >
+            <img src={logo} className='trajectorLogo' alt='Trajector Logo' style={{marginBottom: 24}}/>
               <Heading style={{ textAlign: 'center' }}>Login</Heading>
               <Button.Group align="center">
                 <Button
@@ -63,13 +75,6 @@ function Login() {
                   onClick={handleLogin}
                 >
                   Microsoft Azure
-                </Button>
-
-                <Button
-                  style={{ backgroundColor: '#0078d4', color: 'white' }}
-                  onClick={handleLogout}
-                >
-                  Logout
                 </Button>
               </Button.Group>
           </Box>
