@@ -9,10 +9,11 @@ import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
 import { BeatLoader } from 'react-spinners';
 import image from '../../media/image.png';
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useIsAuthenticated } from "@azure/msal-react";
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { InteractionType } from '@azure/msal-browser';
 function App() {
   const isAuthenticated = useIsAuthenticated();
+  const { accounts } = useMsal();
   interface TestInterface {
     _id: string,
     input: string,
@@ -29,6 +30,8 @@ function App() {
   const [document, setDocument] = useState("");
   
   useEffect(()=> {
+    console.log("accounts>", accounts);
+    return;
     if (!isAuthenticated) {
       navigate('/login')
     }
