@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Box, Hero, Heading } from 'react-bulma-components';
-import { MsalProvider, useMsal } from '@azure/msal-react';
-import { loginRequest,pca } from '../../authconfig';
+import { MsalProvider, useMsal, useAccount } from '@azure/msal-react';
+import { loginRequest,logoutRequest,pca } from '../../authconfig';
+import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
+import { useNavigate } from 'react-router-dom';
 import logo from '../../media/Trajector Main Logo_Color.png';
 import background from '../../media/MountainWavesBlue.png';
 
@@ -10,11 +12,19 @@ import background from '../../media/MountainWavesBlue.png';
 function Login() {
   const { instance, accounts } = useMsal();
 
+  let navigate = useNavigate();
   const handleLogin = async () => {
     try {
       if (accounts.length === 0) {
         // No authenticated accounts, initiate login
-        await instance.loginPopup(loginRequest);
+        //await instance.loginRedirect(loginRequest).then((a=> {
+        //  console.log(accounts)
+        //}));
+        await instance.loginPopup().then(async (res) => {
+          console.log("login", res)
+          localStorage.setItem("account", JSON.stringify(res.account));
+          navigate("/");
+        });
       } else {
         // User is already authenticated
         console.log('User is already logged in.');
@@ -26,7 +36,7 @@ function Login() {
   };
 
   const handleLogout = () => {
-    instance.logout();
+    instance.logoutRedirect(logoutRequest)
   };
 
 

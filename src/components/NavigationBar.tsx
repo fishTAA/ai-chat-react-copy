@@ -1,14 +1,18 @@
 import * as React from "react";
-import { Navbar, Button } from "react-bulma-components";
+import { Navbar,Button } from "react-bulma-components";
 import logo from '../media/Trajector Main Logo_Color.png';
 import { MsalProvider, useMsal } from '@azure/msal-react';
+import { pca,logoutRequest } from "../authconfig";
+import { EventType,EventMessage,AuthenticationResult } from "@azure/msal-browser";
 
 export const NavigationBar = () => {
-  const { instance, accounts } = useMsal();
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const { instance } = useMsal();
   const handleLogout = () => {
-    instance.logout();
+  
+    instance.logoutRedirect(logoutRequest);
   };
+ 
   return (
    <Navbar
    style={{
@@ -56,12 +60,12 @@ export const NavigationBar = () => {
           style={{
             borderRadius: "6px"
           }}
-          href="/login"
+          href="/"
         >
           Login Test
         </Navbar.Item>
         <Navbar.Item>
-        <Button
+          <Button
           style={{ backgroundColor: '#0078d4', color: 'white' }}
           onClick={handleLogout}
           >
