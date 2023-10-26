@@ -1,23 +1,23 @@
 import React from 'react';
 import { Button, Box, Hero, Heading } from 'react-bulma-components';
 import { MsalProvider, useMsal } from '@azure/msal-react';
-import { loginRequest,pca } from '../../authconfig';
+import { loginRequest,logoutRequest,pca } from '../../authconfig';
 import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
 
 function Login() {
   const { instance, accounts } = useMsal();
 
-if (accounts.length > 0) {
-    pca.setActiveAccount(accounts[0]);
-}
+// if (accounts.length > 0) {
+//     pca.setActiveAccount(accounts[0]);
+// }
 
-pca.addEventCallback((event: EventMessage) => {
-    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-        const payload = event.payload as AuthenticationResult;
-        const account = payload.account;
-        pca.setActiveAccount(account);
-    }
-});
+// pca.addEventCallback((event: EventMessage) => {
+//     if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+//         const payload = event.payload as AuthenticationResult;
+//         const account = payload.account;
+//         pca.setActiveAccount(account);
+//     }
+// });
 
   const handleLogin = async () => {
     try {
@@ -35,9 +35,7 @@ pca.addEventCallback((event: EventMessage) => {
   };
 
   const handleLogout = () => {
-    instance.logoutRedirect({
-      postLogoutRedirectUri: 'http://localhost:3000',
-  })
+    instance.logoutRedirect(logoutRequest)
   };
 
   return (

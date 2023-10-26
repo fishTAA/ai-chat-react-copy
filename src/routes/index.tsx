@@ -13,13 +13,13 @@ import { pca } from "../authconfig";
 
 export const routes = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: (<MsalProvider instance={pca}><Login /></MsalProvider>)
   },
   {
-    path: "/app",
-    element: (<MsalProvider instance={pca}><App /></MsalProvider>)
-    // element: <App/>
+    path: "/",
+    // element: (<MsalProvider instance={pca}><App /></MsalProvider>)
+    element: <App/>
   },
   {
     path: "/manage",

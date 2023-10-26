@@ -2,15 +2,22 @@ import * as React from "react";
 import { Navbar,Button } from "react-bulma-components";
 import logo from '../media/Trajector Main Logo_Color.png';
 import { MsalProvider, useMsal } from '@azure/msal-react';
-import { pca } from "../authconfig";
+import { pca,logoutRequest } from "../authconfig";
+import { EventType,EventMessage,AuthenticationResult } from "@azure/msal-browser";
 
 export const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
+
+  pca.addEventCallback((event: EventMessage) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+        const payload = event.payload as AuthenticationResult;
+        const account = payload.account;
+        pca.setActiveAccount(account);
+    }
+});
   const { instance } = useMsal();
   const handleLogout = () => {
-    const logoutRequest = {
-      postLogoutRedirectUri: "http://localhost:3000",
-    };
+  
     instance.logoutRedirect(logoutRequest);
   };
  

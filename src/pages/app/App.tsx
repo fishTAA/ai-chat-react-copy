@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import { NavigationBar } from '../../components/NavigationBar';
 import { Card, Columns, Container, Content, Footer, Heading, Hero, Media, Form, Table,Button,Block, Section } from 'react-bulma-components';
@@ -9,11 +9,10 @@ import Manage from '../manage';
 import { useLocation, useNavigate, useParams,Link} from "react-router-dom";
 import { BeatLoader } from 'react-spinners';
 import image from '../../media/image.png';
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal } from "@azure/msal-react";
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useIsAuthenticated } from "@azure/msal-react";
 import { InteractionType } from '@azure/msal-browser';
 function App() {
-  
-  const {login, result, error} = useMsalAuthentication(InteractionType.Redirect)
+  const isAuthenticated = useIsAuthenticated();
   interface TestInterface {
     _id: string,
     input: string,
@@ -28,7 +27,12 @@ function App() {
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
-  const msal = useMsal();
+  
+  useEffect(()=> {
+    if (!isAuthenticated) {
+      navigate('/login')
+    }
+  }, []);
 
   const handleTestEmbeddings = () => {
       setLoadingTest(true);
@@ -56,7 +60,7 @@ function App() {
   return (
     <>
     
-  <AuthenticatedTemplate>
+  {/* <AuthenticatedTemplate> */}
     { showTicketForm && (
       < Ticket setShowTicketForm={setShowTicketForm} />
     )}
@@ -226,12 +230,12 @@ function App() {
       />
     </div>
 
-      </AuthenticatedTemplate>
+      {/* </AuthenticatedTemplate> */}
     
-    <UnauthenticatedTemplate>
+    {/* <UnauthenticatedTemplate>
     <p>At least one account is signed in!</p>
   
-    </UnauthenticatedTemplate>
+    </UnauthenticatedTemplate> */}
     </>
     
   );
