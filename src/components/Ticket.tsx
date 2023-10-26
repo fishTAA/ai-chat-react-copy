@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import { useAccount } from '@azure/msal-react';
+import React, {useEffect, useState} from 'react';
 import { Box, Block, Icon, Form, Button, Container, Notification} from "react-bulma-components";
 
 
@@ -17,6 +18,10 @@ export const Ticket = (props: TicketProps) => {
   const [tocAgreed, setTocAgreed] = useState(false);
   const [questionValue, setQuestionValue] = useState('');
   const [submittingNotification, setSubmittingNotification] = useState<any>(<></>);
+  const account = localStorage.getItem("account") || "{}";
+
+  console.log(account);
+  const userAccount = useAccount(JSON.parse(account));  
 
   const resetForm = () => {
     setUsername('');
@@ -26,6 +31,13 @@ export const Ticket = (props: TicketProps) => {
     setQuestionValue('');
   };
 
+  useEffect(() => {
+    if (userAccount) {
+      setUsername(userAccount.name || '');
+      setEmail(userAccount.idTokenClaims?.preferred_username || '');
+    }
+  }, [userAccount]);
+ 
   const submitTicketForm = () => {
     fetch(`${endPoint}/submitForm`, {
       method: "post",
