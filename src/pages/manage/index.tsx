@@ -4,6 +4,9 @@ import Chat from '../../components/chat';
 import { FooterSection } from '../../components/Footer';
 import { NavigationBar } from '../../components/NavigationBar';
 import image from '../../media/image.png';
+import { useNavigate } from 'react-router-dom';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import { InteractionStatus } from '@azure/msal-browser';
 interface TestInterface {
   _id: string,
   input: string,
@@ -32,6 +35,34 @@ function Manage() {
   });
   const [createEmbeddingSuccess, setCreateEmbeddingSuccess] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
+
+
+  let navigate = useNavigate();
+  
+  //collapsing RELATED TOPICS
+  const isAuthenticated = useIsAuthenticated();
+
+  const { instance, inProgress } = useMsal();
+  const account = localStorage.getItem("account") || "{}"
+
+  useEffect(()=> {
+    if (inProgress === InteractionStatus.None && !isAuthenticated) {
+      setLoadingTest(true)
+      if(account) {
+        instance.acquireTokenSilent({
+          account: JSON.parse(account),
+          scopes: ["openid", "profile"],
+        }).then(e => {
+          setLoadingTest(false);
+        }).catch(e=> {
+          console.log("here", e)
+          navigate('/login')
+        });
+      } else {
+        navigate('/login')
+      }
+    }
+  }, [inProgress]);
 
   const handleCreateEmbeddings = () => {
     setCreateEmbeddingSuccess(false);

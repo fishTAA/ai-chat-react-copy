@@ -7,6 +7,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FooterSection } from '../../components/Footer';
 import image from '../../media/image.png';
 import { BeatLoader } from 'react-spinners';
+import { useAccount, useIsAuthenticated, useMsal } from '@azure/msal-react';
+import { InteractionStatus } from '@azure/msal-browser';
  export interface DocumentUpload {
   input: string;
   solution?: string ;
@@ -36,6 +38,31 @@ function App() {
   let navigate = useNavigate();
   
   //collapsing RELATED TOPICS
+  const isAuthenticated = useIsAuthenticated();
+
+  const { instance, inProgress } = useMsal();
+  const account = localStorage.getItem("account") || "{}";
+
+  
+  
+  useEffect(()=> {
+    if (inProgress === InteractionStatus.None && !isAuthenticated) {
+      setLoadingTest(true)
+      if(account) {
+        instance.acquireTokenSilent({
+          account: JSON.parse(account),
+          scopes: ["openid", "profile"],
+        }).then(e => {
+          setLoadingTest(false);
+        }).catch(e=> {
+          console.log("here", e)
+          navigate('/login')
+        });
+      } else {
+        navigate('/login')
+      }
+    }
+  }, [inProgress]);
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapse = () => {
     setCollapsed(!collapsed);

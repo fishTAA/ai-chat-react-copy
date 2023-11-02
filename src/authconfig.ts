@@ -29,6 +29,6 @@ export const loginRequest: PopupRequest = {
    scopes: ["User.Read"],
  };
 export  const logoutRequest = {
-   postLogoutRedirectUri: "https://login.microsoftonline.com/common/oauth2/v2.0/logout? post_logout_redirect_uri=http://localhost:3000/login",
+   postLogoutRedirectUri: "https://login.microsoftonline.com/common/oauth2/v2.0/logout? post_logout_redirect_uri=https://ai-chat-react-copy.vercel.app/login",
  };
- export const pca = new PublicClientApplication(configuration);
+export const pca = new PublicClientApplication(configuration);
