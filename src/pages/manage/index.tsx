@@ -210,7 +210,7 @@ function Manage() {
                   <Form.Textarea
                     onChange={(e)=>setDocument(e.target.value)}
                     value={document}
-                    placeholder="tell me a story :>"
+                    
                   />
                 </Form.Control>
               </Form.Field>

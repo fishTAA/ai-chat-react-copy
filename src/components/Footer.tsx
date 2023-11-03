@@ -7,7 +7,7 @@ export const FooterSection =() => {
 
 return(
     <div>
-    <Hero 
+    <Hero marginless
     style={{
       flexGrow: 1,
       width: '-webkit-fill-available' 

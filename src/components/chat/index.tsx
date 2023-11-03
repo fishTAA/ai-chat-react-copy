@@ -179,7 +179,7 @@ const Chat = (chatParams: ChatParams) => {
 	};
 
   return (
-    <Box 
+    <Box marginless paddingless
       style={{
         display: "flex",
         flexDirection: "column",

@@ -11,6 +11,8 @@ import { BeatLoader } from 'react-spinners';
 import image from '../../media/image.png';
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useIsAuthenticated, useMsal, useAccount } from "@azure/msal-react";
 import { InteractionStatus, InteractionType } from '@azure/msal-browser';
+
+
 function App() {
   const isAuthenticated = useIsAuthenticated();
   interface TestInterface {
@@ -78,17 +80,18 @@ function App() {
     <>
     
     { showTicketForm && (
-      < Ticket setShowTicketForm={setShowTicketForm} />
+      < Ticket  setShowTicketForm={setShowTicketForm} />
     )}
-    <div style={{
+    <div  style={{
       backgroundImage: `url(${image})`,
-      height: '100%',
+      height: 'auto',
       backgroundSize: 'cover',
-      backgroundAttachment: 'fixed'
+      backgroundAttachment: 'fixed',
+      margin: 0
     }}>
       <NavigationBar/>
-      <Hero
-        hasNavbar={true}
+      <Hero 
+        // hasNavbar={true}
         size="fullheight"  
       >
         <Hero.Body style={{
@@ -105,7 +108,7 @@ function App() {
                       }}
                       
                     value={document}
-                    placeholder={"Search " + userAccount?.username}                      
+                    placeholder={"Search "}                      
                       style={{
                       boxShadow: '2px 2px 5px 0px #888888',
                       borderTopRightRadius: 0,
@@ -212,7 +215,7 @@ function App() {
                         alignItems: 'center'
                       }}>
                 <Card 
-                  onClick={()=>setShowTicketForm(true)}
+                  onClick={()=>{setShowTicketForm(true)}}
                   style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#307FE2', cursor: 'pointer'  }}>
                   <Card.Content>
                     <Media>
@@ -239,18 +242,17 @@ function App() {
             </section>
           </Container>
         </Hero.Body>
-        </Hero>
-      <FooterSection />
-      <Chat 
+        <Chat 
         width={350}
       />
-    </div>
+      <Hero.Footer marginless paddingless><FooterSection /></Hero.Footer>
+                        
+      
+        </Hero>
+      </div>
     
-    {/* <UnauthenticatedTemplate>
-    <p>At least one account is signed in!</p>
-  
-    </UnauthenticatedTemplate> */}
-    </>
+   
+     </>
     
   );
 }
