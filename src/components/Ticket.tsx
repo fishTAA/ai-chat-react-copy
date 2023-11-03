@@ -1,6 +1,6 @@
 import { useAccount } from '@azure/msal-react';
 import React, {useEffect, useState} from 'react';
-import { Box, Block, Icon, Form, Button, Container, Notification} from "react-bulma-components";
+import { Box, Block, Icon, Form, Button, Container, Notification, Hero} from "react-bulma-components";
 
 
 interface TicketProps {
@@ -71,8 +71,9 @@ export const Ticket = (props: TicketProps) => {
   }
 
   return (
+    
     <Container
-    style={{ backgroundColor: 'rgba(0,0,0,.2)', backdropFilter: 'blur(3px)', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', zIndex: 99, minWidth: '-webkit-fill-available'}}>
+    style={{ backgroundColor: 'rgba(0,0,0,.2)', backdropFilter: 'blur(3px)', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', zIndex: 100, minWidth: '-webkit-fill-available'}}>
     <form
     style={{
       minHeight: 100,
@@ -197,6 +198,7 @@ export const Ticket = (props: TicketProps) => {
         {submittingNotification}
       </form>
     </Container>
+    
   );
 }
 

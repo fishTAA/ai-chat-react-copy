@@ -12,12 +12,12 @@ import Login from "../pages/login/login";
 export const routes = createBrowserRouter([
   {
     path: "/login",
-    //element: (<MsalProvider instance={pca}><Login /></MsalProvider>)
+
     element: <Login />
   },
   {
     path: "/",
-    //element: (<MsalProvider instance={pca}><App /></MsalProvider>)
+    
     element: <App/>
   },
   {

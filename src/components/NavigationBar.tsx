@@ -56,14 +56,7 @@ export const NavigationBar = () => {
         >
           Manage
         </Navbar.Item>
-        <Navbar.Item 
-          style={{
-            borderRadius: "6px"
-          }}
-          href="/"
-        >
-          Login Test
-        </Navbar.Item>
+        
         <Navbar.Item>
           <Button
           style={{ backgroundColor: '#0078d4', color: 'white' }}
