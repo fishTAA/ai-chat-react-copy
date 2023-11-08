@@ -87,7 +87,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Field >
         <Form.Label>Name</Form.Label>
         <Form.Control>
-          <Form.Input
+          <Form.Input className='userName'
             value={username}
             onChange={(e) => {
               return setUsername(e.target.value);
@@ -97,9 +97,9 @@ export const Ticket = (props: TicketProps) => {
       </Form.Field>
 
       <Form.Field>
-        <Form.Label>Email</Form.Label>
+        <Form.Label >Email</Form.Label>
         <Form.Control>
-          <Form.Input
+          <Form.Input className='userEmail'
             value={email}
             onChange={(e) => {
               return setEmail(e.target.value);
@@ -112,14 +112,14 @@ export const Ticket = (props: TicketProps) => {
       <Form.Field>
         <Form.Label>Ticket Classification</Form.Label>
         <Form.Field style={{ display: "flex" }}>
-          <Form.Control>
+          <Form.Control >
             <Form.Select
               value={ticketClassification}
               onChange={(e) => {
                 return setTicketClassification(e.target.value);
               }}
             >x
-              <option value="crm"> CRM Issues </option>
+              <option  value="crm"> CRM Issues </option>
               <option value="hardware"> Hardware Issues </option>
               <option value="software"> Software Issues </option>
               <option value="8x8"> 8x8 Issues </option>
@@ -127,7 +127,7 @@ export const Ticket = (props: TicketProps) => {
             </Form.Select>
           </Form.Control>
           <Form.Control fullwidth>
-            <Form.Input placeholder="Specify Topic" 
+            <Form.Input className='Topic' placeholder="Specify Topic" 
              value={specificTopic}
              onChange={(e) => {
                return setSpecificTopic(e.target.value);
@@ -139,7 +139,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Field>
         <Form.Label>Message</Form.Label>
         <Form.Control>
-          <Form.Textarea placeholder="Describe the issue."
+          <Form.Textarea className='textareaMessage' placeholder="Describe the issue."
           value={message}
           onChange={(e) => {
             return setMessage(e.target.value);
@@ -152,6 +152,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Label> Are other people experiencing this problem?</Form.Label>
         <Form.Control>
           <Form.Radio
+            className='radioBTYes'
             value="yes"
             name="question"
             checked={questionValue === 'yes'}
@@ -163,6 +164,7 @@ export const Ticket = (props: TicketProps) => {
           </Form.Radio>
           <br />
           <Form.Radio
+            className='radioBTNo'
             value="no"
             name="question"
             checked={questionValue === 'no'}
@@ -177,13 +179,14 @@ export const Ticket = (props: TicketProps) => {
 
       <Form.Field kind="group">
           <Form.Control>
-            <Button color="link"
+            <Button className='submitBT' color="link"
              onClick={submitTicketForm}>
               Submit
             </Button>
           </Form.Control>
           <Form.Control>
             <Button
+              className='cancelBT'
               color="link"
               colorVariant="light"
               onClick={() => {
