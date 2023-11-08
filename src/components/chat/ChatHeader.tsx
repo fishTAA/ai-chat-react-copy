@@ -5,24 +5,25 @@ import { Box, Button, Heading, Icon } from "react-bulma-components";
 import { Tooltip } from "react-tooltip";
 
 interface ChatHeaderParams {
+
+  // Whether the chat is minimized or not
   minimized: boolean;
   setMinimized: Dispatch<SetStateAction<boolean>>
 }
 
 export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
+  
   return (
-  <Box 
-      // backgroundColor="blue"
+
+    <Box 
       style={{
         backgroundColor: "#307FE2",
         display: "flex",
         paddingTop: 10, 
         paddingBottom: 10,
         width: "100%",
-       
-        
-      }}
-    >
+       }}>
+
       <Heading 
         style={{
           flexGrow: 1,
@@ -33,10 +34,16 @@ export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
       >
         Chat
       </Heading>
+      
       <Tooltip anchorSelect=".resize-tooltip" place="top">
+
+        {/* Tooltip to show "Maximize" or "Minimize" when hovering over buttons */}
         {chatHeaderParams.minimized ? "Maximize" : "Minimize"}
+        
       </Tooltip>
+
       {!chatHeaderParams.minimized &&
+
         <Button 
           size="small" 
           className="resize-tooltip"
@@ -48,12 +55,16 @@ export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
           onClick={()=>chatHeaderParams.setMinimized(true)}
           title="Minimize Chat"
         >
+
           <Icon size="small">
             <FontAwesomeIcon icon={faWindowMinimize}  size="sm"/>
           </Icon>
+
         </Button>
+
       }
       {chatHeaderParams.minimized &&
+
         <Button 
           size="small" 
           className="resize-tooltip"
@@ -62,12 +73,15 @@ export const ChatHeader = (chatHeaderParams: ChatHeaderParams) => {
             height: 25,
             borderRadius: 45,
           }}
+
           onClick={()=>chatHeaderParams.setMinimized(false)}
           title="Maximize Chat"
         >
+
           <Icon size="small">
             <FontAwesomeIcon icon={faWindowMaximize}  size="sm"/>
           </Icon>
+
         </Button>
       }
     </Box>

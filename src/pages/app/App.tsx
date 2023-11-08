@@ -14,7 +14,10 @@ import { InteractionStatus, InteractionType } from '@azure/msal-browser';
 
 
 function App() {
+  // Check if the user is authenticated
   const isAuthenticated = useIsAuthenticated();
+
+  // Define the TestInterface for clarity
   interface TestInterface {
     _id: string,
     input: string,
@@ -24,20 +27,30 @@ function App() {
   }
 
   let navigate = useNavigate();
+
+  // Define the API endpoint, defaulting to 'http://localhost:8000' if not provided
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+  // State variables for managing loading, form visibility, test results, and document
   const [loadingTest, setLoadingTest] = useState(false);
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
+
+  // Get authentication details and initialize the Microsoft Authentication Library
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}";
 
+  // Get user account based on the stored account data
   const userAccount = useAccount(JSON.parse(account));
   
   useEffect(()=> {
+    // Check if the authentication process is not in progress and the user is not authenticated
     if (inProgress === InteractionStatus.None && !isAuthenticated) {
       setLoadingTest(true)
+
       if(account) {
+        // Attempt to acquire a silent token for the user
         instance.acquireTokenSilent({
           account: JSON.parse(account),
           scopes: ["openid", "profile"],
@@ -45,16 +58,22 @@ function App() {
           setLoadingTest(false);
         }).catch(e=> {
           console.log("here", e)
+
+          // Redirect to the login page on token acquisition failure
           navigate('/login')
         });
       } else {
+        // Redirect to the login page if no account data is available
         navigate('/login')
       }
     }
   }, [inProgress]);
 
   const handleTestEmbeddings = () => {
+      // Set loading state to indicate an operation is in progress
       setLoadingTest(true);
+
+      // Perform a POST request to the 'testEmbedding' endpoint using the fetch API
       fetch(`${endPoint}/testEmbedding`, {
         method: "post",
         headers: {
@@ -64,8 +83,11 @@ function App() {
           keyword: document,
         })
       }).then((res)=> {
+        // Handle the response from the server
         return res.json()
       }).then((res)=> {
+
+        // Set the test results and log the related data
         setTestResults(res.related);
         console.log(res.related);
       }).finally(()=> {
@@ -73,30 +95,28 @@ function App() {
       })
     }
 
-  
-  
-
   return (
     <>
-    
-    { showTicketForm && (
-      < Ticket  setShowTicketForm={setShowTicketForm} />
-    )}
-    <div  style={{
-      backgroundImage: `url(${image})`,
-      height: 'auto',
-      backgroundSize: 'cover',
-      backgroundAttachment: 'fixed',
-      margin: 0
-    }}>
+      { showTicketForm && (
+        // Render the Ticket component when showTicketForm is true
+        < Ticket  setShowTicketForm={setShowTicketForm} />
+      )}
+      <div
+        style={{
+        backgroundImage: `url(${image})`,
+        height: 'auto',
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
+        margin: 0
+      }}>
       <NavigationBar/>
       <Hero 
-        // hasNavbar={true}
         size="fullheight"  
       >
-        <Hero.Body style={{
+        <Hero.Body
+          style={{
           paddingTop: 100,
-          }}>
+        }}>
           <Container> 
           <Form.Field kind="addons">
             <Form.Control fullwidth>
@@ -104,6 +124,8 @@ function App() {
                     onChange={(e)=>setDocument(e.target.value)}
                     onKeyDown={(e)=>{
                       if (e.key === `Enter`)
+                        
+                      // Execute handleTestEmbeddings on Enter key press
                         handleTestEmbeddings()
                       }}
                       
@@ -127,11 +149,10 @@ function App() {
             <Form.Control>
               <Button
               onClick={()=>{
+                // Clear the document and test results
                 setDocument('');
                 setTestResults([]);
-
               }}
-
               style={{
                 boxShadow: '2px 2px 5px 0px #888888',
                 borderTopRightRadius: 20,
@@ -145,7 +166,9 @@ function App() {
                 resize:"none",
                 marginTop: -50,
               }}
-              >Clear</Button>
+              >
+                Clear
+                </Button>
             </Form.Control>
           </Form.Field>
 
@@ -155,14 +178,17 @@ function App() {
           }}
             >
             {loadingTest? (
+            // Display a loading spinner when loadingTest is true
             <>
-              <Block style={{
-              display: 'flex' ,
-              flexDirection: 'column',
-              alignItems: 'center', 
+              <Block
+              style={{
+                display: 'flex' ,
+                flexDirection: 'column',
+                alignItems: 'center', 
               }}>
-                <BeatLoader color="#36d7b7"
-                    size={35} />
+                <BeatLoader
+                  color="#36d7b7"
+                  size={35} />
               </Block>
           </>
           ):null}
@@ -173,6 +199,7 @@ function App() {
             style={{
               paddingTop: 20
             }}>
+              {/* Map through the test results and render each one */}
               {testResults.map((res)=>{        
                     return (
                       <Columns.Column className='is-one-third'
@@ -181,8 +208,15 @@ function App() {
                         flexDirection: 'column',
                         alignItems: 'center'
                       }}>
-                      <Card style={{maxWidth: '70%', minWidth: '100%', margin: 10, minHeight: '100%'}}
+                      <Card
+                      style={{
+                        maxWidth: '70%',
+                        minWidth: '100%',
+                        margin: 10,
+                        minHeight: '100%'
+                      }}
                         onClick={()=> {
+                          // Navigate to view solution page with relevant information
                           navigate('view-solution/'+res._id+'/'+document)
                         }}>
                             <Card.Content>
@@ -215,8 +249,16 @@ function App() {
                         alignItems: 'center'
                       }}>
                 <Card 
-                  onClick={()=>{setShowTicketForm(true)}}
-                  style={{ width: '100%', margin: 10, minHeight: '100%', backgroundColor: '#307FE2', cursor: 'pointer'  }}>
+                  onClick={()=>{
+                    // Render a card for submitting a ticket
+                    setShowTicketForm(true)}}
+                  style={{
+                    width: '100%',
+                    margin: 10,
+                    minHeight: '100%',
+                    backgroundColor: '#307FE2',
+                    cursor: 'pointer'
+                    }}>
                   <Card.Content>
                     <Media>
                       <Media.Item>
@@ -227,7 +269,6 @@ function App() {
                           >
                             Submit Ticket
                           </Heading>
-                      
                       </Media.Item>
                     </Media>
                     <Content style={{
@@ -242,18 +283,17 @@ function App() {
             </section>
           </Container>
         </Hero.Body>
-        <Chat 
+      <Chat 
         width={350}
       />
-      <Hero.Footer marginless paddingless><FooterSection /></Hero.Footer>
-                        
-      
-        </Hero>
-      </div>
-    
-   
+      <Hero.Footer
+      marginless paddingless
+      >
+    <FooterSection />
+  </Hero.Footer>
+  </Hero>
+</div>
      </>
-    
   );
 }
 

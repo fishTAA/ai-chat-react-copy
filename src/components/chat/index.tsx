@@ -15,8 +15,6 @@ interface ChatParams {
   fullHeight?: boolean;
 };
 
-
-
 export 
 const Chat = (chatParams: ChatParams) => {
   const [tokenCookie, setTokenCookie] = useCookies(['token']);
@@ -30,13 +28,17 @@ const Chat = (chatParams: ChatParams) => {
   const [sessionToken, setSessionToken] = useState<string>("");
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [query, setQuery] = useState<string>("")
+
+  // Create a reference to a hidden file input element
   const hiddenFileInput = useRef< null | HTMLInputElement>(null);
  
+   // Define WebSocket URLs and default dimensions
   const socketUrl = process.env.REACT_APP_WS_URL ||'ws://localhost:8000';
   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   const width = chatParams.width || 400;
   const height = chatParams.height || 400;
 
+  // WebSocket setup using useWebSocket hook
   const {
     sendMessage,
     sendJsonMessage,
@@ -46,6 +48,7 @@ const Chat = (chatParams: ChatParams) => {
     getWebSocket,
   } = useWebSocket<ChatCommunication>(`${socketUrl}/ws?token=${tokenCookie.token}`, {
     onOpen: (e) => console.log('opened', e, lastJsonMessage,lastMessage),
+
     //Will attempt to reconnect on all close events, such as server shutting down
     shouldReconnect: (closeEvent) => {
       if(decodeMessage(lastMessage?.data).authIssue) {
@@ -53,6 +56,7 @@ const Chat = (chatParams: ChatParams) => {
       }
       return true;
     },
+
     skipAssert: !tokenCookie.token,
     onMessage: (e) => {
       const data = decodeMessage(e.data)
@@ -73,6 +77,8 @@ const Chat = (chatParams: ChatParams) => {
       }
     }
   });
+
+  // Function to send a message to the server (including file uploads)
   const sendMessageToServer = () => {
     if (selectedFile) {
       setLoadingSend(true);
@@ -105,6 +111,7 @@ const Chat = (chatParams: ChatParams) => {
     }
   }
 
+  // Function to retrieve chat messages from the server
   const retrieveMessages = () => {
     setPageLoading(true);
     fetch(`${endPoint}/getMessages`,{
@@ -122,6 +129,7 @@ const Chat = (chatParams: ChatParams) => {
     })
   }
 
+  // Function to validate a session token
   const validateToken = (token: String) => {
     return fetch(`${endPoint}/validateSession`,{
       headers: {
@@ -133,6 +141,8 @@ const Chat = (chatParams: ChatParams) => {
       return res;
     })
   }
+
+  // Function to generate a session token
   const generateToken = () => {
     fetch(`${endPoint}/generateSession`).then((res)=> {
       return res.json();
@@ -144,11 +154,13 @@ const Chat = (chatParams: ChatParams) => {
     })
   }
 
+  // Effect to retrieve messages when the session token is available
   useEffect(()=> {
     if (sessionToken)
       retrieveMessages()
   }, [sessionToken]);
 
+  // Effect to validate and set the session token
   useEffect(()=> {
     if (tokenCookie.token ) {
       validateToken(tokenCookie.token).then(()=> {
@@ -167,10 +179,12 @@ const Chat = (chatParams: ChatParams) => {
     }
   }
 
+   // Event handler to open the file selection dialog
   const selectFile = (e: any) => {
     hiddenFileInput?.current?.click();
   };
 
+  // Event handler for file selection
 	const fileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     if (e && e.target && e.target.files && e.target.files[0]) {
       const selected = e.target.files[0];
@@ -179,6 +193,7 @@ const Chat = (chatParams: ChatParams) => {
 	};
 
   return (
+
     <Box marginless paddingless
       style={{
         display: "flex",
@@ -192,9 +207,13 @@ const Chat = (chatParams: ChatParams) => {
         right: 10,
         top: chatParams.fullHeight? (chatParams.fullWidth? 50 : 0 ) : 'unset', 
         width: chatParams.fullWidth? "100%": width,
-      }} color="black">
+      }}
+      color="black">
+
+      {/* Controls the visibility of the header and chat content */}
       {!!!chatParams.fullHeight && <ChatHeader setMinimized={setMinimized} minimized={minimized} />}
       {!minimized &&
+
         <Container style={{display: "flex", flexDirection: "column", margin: 5}}>
           {!pageLoading ?
             <ChatMessages
@@ -203,6 +222,7 @@ const Chat = (chatParams: ChatParams) => {
               notification={notification}
               userinput={query}
             /> :
+
             <Box
                 shadowless
                 style={{
@@ -210,8 +230,7 @@ const Chat = (chatParams: ChatParams) => {
                   marginBottom: 0,
                   flexGrow: 1,
                   textAlign: "center"
-                }}
-            >
+                }}>
               Loading...
             </Box>
           }
@@ -222,14 +241,14 @@ const Chat = (chatParams: ChatParams) => {
               marginLeft: 10,
               marginRight: 10,
               marginBottom: 10
-            }}
-          >
+            }}>
+
             <Form.Field>
               <Form.Control
                 style={{
                   display: "flex",
-                }}
-              >
+                }}>
+
                 {selectedFile ?
                   <>
                     <Notification
@@ -238,19 +257,21 @@ const Chat = (chatParams: ChatParams) => {
                         paddingTop: 6,
                         paddingBottom: 6,
                         fontSize: 12,
-                      }}
-                    >
+                      }}>
+
                       {selectedFile.name}
                     </Notification>
                     <Button 
                       size="small"
-                      onClick={()=>setSelectedFile(null)}
-                    >
+                      onClick={()=>setSelectedFile(null)}>
+
                       <Icon size="small">
                         <FontAwesomeIcon icon={faTrash}  size="sm"/>
                       </Icon>
+
                     </Button>
                   </>:<>
+
                     <Form.Input
                       onChange={(e)=>{
                         setMessage(e.target.value);
@@ -263,6 +284,7 @@ const Chat = (chatParams: ChatParams) => {
                       value={message}
                       size="small" placeholder="Type your message here..."
                     />
+
                     {/* <input 
                       type="file" 
                       name="file" 
@@ -280,6 +302,7 @@ const Chat = (chatParams: ChatParams) => {
                         <FontAwesomeIcon icon={faPaperclip}  size="sm"/>
                       </Icon>
                     </Button> */}
+
                   </>
                 }
                 <Button 

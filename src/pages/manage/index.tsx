@@ -7,6 +7,7 @@ import image from '../../media/image.png';
 import { useNavigate } from 'react-router-dom';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
+
 interface TestInterface {
   _id: string,
   input: string,
@@ -14,6 +15,7 @@ interface TestInterface {
   score: number,
   solution?: string
 }
+
 interface SettingsInterface {
   enableEmbedding: boolean,
   minimumScore: number
@@ -33,6 +35,7 @@ function Manage() {
     enableEmbedding: false,
     minimumScore: 90,
   });
+
   const [createEmbeddingSuccess, setCreateEmbeddingSuccess] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
 
@@ -45,6 +48,7 @@ function Manage() {
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}"
 
+  // Ensure authentication before performing certain actions
   useEffect(()=> {
     if (inProgress === InteractionStatus.None && !isAuthenticated) {
       setLoadingTest(true)
@@ -64,6 +68,7 @@ function Manage() {
     }
   }, [inProgress]);
 
+  // Function to create embeddings
   const handleCreateEmbeddings = () => {
     setCreateEmbeddingSuccess(false);
     setLoadingEmbedding(true);
@@ -89,6 +94,8 @@ function Manage() {
       setLoadingEmbedding(false);
     })
   }
+
+  // Function to save settings
   const handleSaveSettings = () => {
     setLoadingSave(true);
     fetch(`${endPoint}/saveSettings`, {
@@ -108,6 +115,7 @@ function Manage() {
     })
   }
 
+  // Function to fetch and update settings
   const getSettings = () => {
     setLoadingSave(true);
     fetch(`${endPoint}/getSettings`, {
@@ -121,9 +129,9 @@ function Manage() {
     }).finally(()=> {
       setLoadingSave(false);
     })
-
   }
 
+  // Function to update settings fields
   const updateSettingsFields = (field: string, value: any) => {
     setSettingsData({
       ...settingsData,
@@ -131,6 +139,7 @@ function Manage() {
     })
   }
 
+  // Function to test embeddings
   const handleTestEmbeddings = () => {
     setLoadingTest(true);
     fetch(`${endPoint}/testEmbedding`, {
@@ -150,11 +159,13 @@ function Manage() {
     })
   }
 
+  // Fetch and update settings on component mount
   useEffect(()=> {
     getSettings();
   }, [])
 
   return (
+
     <Hero 
     hasNavbar={true}
     size="fullheight"
@@ -166,19 +177,40 @@ function Manage() {
       }}
     >
       <NavigationBar/>
-      <Box style={{margin: 20, marginTop: '100px', padding: 0, paddingTop: '20px'}}>
-        <Section style={{paddingTop: 0, paddingBottom: 0, marginBottom: 15}}>
+      <Box 
+        style={{
+          margin: 20,
+          marginTop: '100px',
+          padding: 0,
+          paddingTop: '20px'
+        }}>
+        <Section
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginBottom: 15
+          }}>
           <Heading size={3}>
             Embeddings
           </Heading>
-          <Box shadowless style={{paddingTop: 0}}>
-            <Section size="small" style={{paddingTop:0, paddingBottom: 0}}>
+          <Box
+            shadowless
+            style={{
+              paddingTop: 0
+            }}>
+            <Section
+              size="small"
+              style={{
+                paddingTop:0,
+                paddingBottom: 0
+              }}>
               <Heading size={4}>
                 Create Embedding
               </Heading>
               {embeddingNotification}
               <Form.Field>
                 <Form.Control>
+
                   {/* Topic Area */}
                   <Form.Label>
                     Title
@@ -191,7 +223,7 @@ function Manage() {
                     />
                   </Form.Control>
 
-                  {/* keywords Area */}
+                  {/* Keywords Area */}
                   <Form.Label>
                     Keywords
                   </Form.Label>
@@ -203,24 +235,33 @@ function Manage() {
                     />
                   </Form.Control>
 
-                  {/* description area */}
+                  {/* Description Area */}
                   <Form.Label>
                     Description / Solution
                   </Form.Label>
                   <Form.Textarea
                     onChange={(e)=>setDocument(e.target.value)}
                     value={document}
-                    
                   />
                 </Form.Control>
               </Form.Field>
               <Form.Field kind="group">
                 <Form.Control>
-                  <Button style={{boxShadow: '0px 0px 5px #888888'}} color="link" onClick={handleCreateEmbeddings} loading={loadingEmbedding}>Create Embedding</Button>
+                  <Button
+                    style={{
+                      boxShadow: '0px 0px 5px #888888'
+                    }} 
+                    color="link" 
+                    onClick={handleCreateEmbeddings} loading={loadingEmbedding}>
+                      Create Embedding
+                      </Button>
                 </Form.Control>
               </Form.Field>
             </Section>
-            <Section size="small" style={{paddingBottom: 0}}>
+            <Section size="small"
+              style={{
+                paddingBottom: 0
+                }}>
               <Heading size={4}>
                 Test Embedding
               </Heading>
@@ -235,7 +276,10 @@ function Manage() {
               </Form.Field>
               <Form.Field kind="group">
                 <Form.Control>
-                  <Button style={{boxShadow: '0px 0px 5px #888888'}}
+                  <Button
+                    style={{
+                      boxShadow: '0px 0px 5px #888888'
+                    }}
                     color="link"
                     onClick={handleTestEmbeddings}
                     loading={loadingTest}
@@ -283,7 +327,11 @@ function Manage() {
             </Section>
           </Box>
         </Section>
-        <Section style={{paddingTop: 0, paddingBottom: 0}}>
+        <Section
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0
+          }}>
           <Heading size={3}>
             Settings
           </Heading>

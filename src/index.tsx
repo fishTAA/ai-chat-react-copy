@@ -15,13 +15,22 @@ import { pca } from './authconfig';
 import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
 import { MsalProvider } from '@azure/msal-react';
 
+// Create a React root and render your application inside it.
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
+
+  // Wrapping with React.StrictMode for development-time checks
   <React.StrictMode>
+
+    {/* Wrap with CookiesProvider to manage cookies */}
     <CookiesProvider defaultSetOptions={{ path: '/' }}>
+
+      {/* Wrap with MsalProvider for Microsoft Authentication Library integration */}
       <MsalProvider instance={pca}>
+
+        {/* Wrap with RouterProvider */}
         <RouterProvider router={routes} />
       </MsalProvider>
     </CookiesProvider>
