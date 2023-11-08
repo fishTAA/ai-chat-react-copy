@@ -263,7 +263,7 @@ const Chat = (chatParams: ChatParams) => {
                       value={message}
                       size="small" placeholder="Type your message here..."
                     />
-                    <input 
+                    {/* <input 
                       type="file" 
                       name="file" 
                       hidden
@@ -279,7 +279,7 @@ const Chat = (chatParams: ChatParams) => {
                       <Icon size="small">
                         <FontAwesomeIcon icon={faPaperclip}  size="sm"/>
                       </Icon>
-                    </Button>
+                    </Button> */}
                   </>
                 }
                 <Button 
