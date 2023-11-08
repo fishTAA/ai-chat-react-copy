@@ -87,7 +87,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Field >
         <Form.Label>Name</Form.Label>
         <Form.Control>
-          <Form.Input className='userName'
+          <Form.Input id='userName'
             value={username}
             onChange={(e) => {
               return setUsername(e.target.value);
@@ -99,7 +99,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Field>
         <Form.Label >Email</Form.Label>
         <Form.Control>
-          <Form.Input className='userEmail'
+          <Form.Input id='userEmail'
             value={email}
             onChange={(e) => {
               return setEmail(e.target.value);
@@ -127,7 +127,7 @@ export const Ticket = (props: TicketProps) => {
             </Form.Select>
           </Form.Control>
           <Form.Control fullwidth>
-            <Form.Input className='Topic' placeholder="Specify Topic" 
+            <Form.Input id='Topic' placeholder="Specify Topic" 
              value={specificTopic}
              onChange={(e) => {
                return setSpecificTopic(e.target.value);
@@ -139,7 +139,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Field>
         <Form.Label>Message</Form.Label>
         <Form.Control>
-          <Form.Textarea className='textareaMessage' placeholder="Describe the issue."
+          <Form.Textarea id='textareaMessage' placeholder="Describe the issue."
           value={message}
           onChange={(e) => {
             return setMessage(e.target.value);
@@ -152,7 +152,7 @@ export const Ticket = (props: TicketProps) => {
       <Form.Label> Are other people experiencing this problem?</Form.Label>
         <Form.Control>
           <Form.Radio
-            className='radioBTYes'
+           id='radioBTYes'
             value="yes"
             name="question"
             checked={questionValue === 'yes'}
@@ -164,7 +164,7 @@ export const Ticket = (props: TicketProps) => {
           </Form.Radio>
           <br />
           <Form.Radio
-            className='radioBTNo'
+            id='radioBTNo'
             value="no"
             name="question"
             checked={questionValue === 'no'}
@@ -179,14 +179,14 @@ export const Ticket = (props: TicketProps) => {
 
       <Form.Field kind="group">
           <Form.Control>
-            <Button className='submitBT' color="link"
+            <Button id='submitBT' color="link"
              onClick={submitTicketForm}>
               Submit
             </Button>
           </Form.Control>
           <Form.Control>
             <Button
-              className='cancelBT'
+              id='cancelBT'
               color="link"
               colorVariant="light"
               onClick={() => {
