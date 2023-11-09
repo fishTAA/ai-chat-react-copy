@@ -184,7 +184,7 @@ function Manage() {
                     Title
                   </Form.Label>
                   <Form.Control>
-                    <Form.Input
+                    <Form.Input id='titleId'
                       onChange={(e)=>setDocumentTitle(e.target.value)}
                       placeholder="Enter Title"
                       type="text"
@@ -196,7 +196,7 @@ function Manage() {
                     Keywords
                   </Form.Label>
                   <Form.Control>
-                    <Form.Input
+                    <Form.Input id='keyWordsId'
                       onChange={(e)=>setDocumentKeyword(e.target.value)}
                       placeholder="e.g. mouse problem"
                       type="text"
@@ -207,7 +207,7 @@ function Manage() {
                   <Form.Label>
                     Description / Solution
                   </Form.Label>
-                  <Form.Textarea
+                  <Form.Textarea id='descriptionId'
                     onChange={(e)=>setDocument(e.target.value)}
                     value={document}
                     
@@ -226,7 +226,7 @@ function Manage() {
               </Heading>
               <Form.Field>
                 <Form.Control>
-                  <Form.Textarea
+                  <Form.Textarea id='searchId'
                     onChange={(e)=>setTestDocument(e.target.value)}
                     // value={testDocument}
                     placeholder="Search"
