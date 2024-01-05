@@ -22,7 +22,7 @@ export const Ticket = (props: TicketProps) => {
 
   console.log(account);
   const userAccount = useAccount(JSON.parse(account));  
-
+  console.log(userAccount)
   const resetForm = () => {
     setUsername('');
     setEmail('');
