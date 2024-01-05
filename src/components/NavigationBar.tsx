@@ -5,6 +5,27 @@ import { MsalProvider, useMsal } from '@azure/msal-react';
 import { pca,logoutRequest } from "../authconfig";
 import { EventType,EventMessage,AuthenticationResult } from "@azure/msal-browser";
 
+
+const checkAdmin = () => {
+  //if(findAdmin)
+  if(findAdmin){
+  return (
+      <Navbar.Item 
+        style={{
+          borderRadius: "6px"
+        }}
+      href="/manage"
+      >
+        Manage
+    </Navbar.Item>
+  );}else{
+    return(
+
+    );
+  }
+  //
+}
+
 export const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const { instance } = useMsal();
@@ -48,15 +69,16 @@ export const NavigationBar = () => {
         {/* <Navbar.Item href="/full-chat">Full Screen Chat</Navbar.Item> */}
       </Navbar.Container>
       <Navbar.Container align="left">
-        <Navbar.Item 
-          style={{
-            borderRadius: "6px"
-          }}
-          href="/manage"
-        >
-          Manage
-        </Navbar.Item>
+        <checkAdmin />
         
+            <Navbar.Item 
+              style={{
+              borderRadius: "6px"
+            }}
+      href="/manage"
+      >
+        Manage
+    </Navbar.Item>
         <Navbar.Item>
           <Button
           style={{ backgroundColor: '#0078d4', color: 'white' }}
