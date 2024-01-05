@@ -11,9 +11,17 @@ import { useAccount } from '@azure/msal-react';
   const account = localStorage.getItem("account") || "{}";
   const userAccount = useAccount(JSON.parse(account)); 
     const [getAdmin, setGetAdmin] = useState<boolean>();
-    useEffect(()=>{
-      getEmail(userAccount?.idTokenClaims?.preferred_username as string).then(email=>setGetAdmin(email))
+    useEffect( ()=>{
+      const fetchData = async () => {
+        if (userAccount) {
+          const email = await getEmail(userAccount?.idTokenClaims?.preferred_username as string);
+          setGetAdmin(email);
+        }
+      };
+  
+      fetchData();
       },[userAccount])
+      console.log("email is",userAccount?.idTokenClaims?.preferred_username)
     console.log("funtion", getAdmin)
 
     if(getAdmin){
