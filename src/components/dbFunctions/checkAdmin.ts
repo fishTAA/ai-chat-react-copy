@@ -2,7 +2,7 @@ const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
   
   export async function getEmail(email: string) {
     try {
-      const response = await fetch(`${endPoint}/findAdmin?email=${email}`);
+      const response = await fetch(`${endPoint}/findAdmin?email=${email.toLowerCase()}`);
       const result = await response.json();
       return result;
     } catch (error) {
