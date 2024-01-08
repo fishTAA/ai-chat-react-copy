@@ -8,9 +8,14 @@ import logo from '../../media/Trajector Main Logo_Color.png';
 import background from '../../media/MountainWavesBlue.png';
 
 function Login() {
+
+  // Get MSAL instance and accounts
   const { instance, accounts } = useMsal();
 
+  // Get navigation function for routing
   let navigate = useNavigate();
+
+  // Function to handle the login process
   const handleLogin = async () => {
     try {
       if (accounts.length === 0) {
@@ -20,7 +25,10 @@ function Login() {
         //}));
         await instance.loginPopup().then(async (res) => {
           console.log("login", res)
+
+          // Store the authenticated account in local storage
           localStorage.setItem("account", JSON.stringify(res.account));
+          // Navigate to the main application page
           navigate("/");
         });
       } else {
@@ -33,21 +41,20 @@ function Login() {
     return false;
   };
 
+  // Function to handle the logout process
   const handleLogout = () => {
     instance.logoutRedirect(logoutRequest)
   };
 
-
-
-
   return (
-      <div style={{   
-      backgroundImage: `url(${background})`,
-      height: '100%',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
-      flexGrow: 1 }}>
+      <div
+      style={{   
+        backgroundImage: `url(${background})`,
+        height: '100%',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        flexGrow: 1 }}>
         <Hero
           size="fullheight"
           style={{
@@ -67,11 +74,23 @@ function Login() {
               boxShadow: '0px 0px 5px #2e2c29',
             }}
           >
-            <img src={logo} className='trajectorLogo' alt='Trajector Logo' style={{marginBottom: 24}}/>
-              <Heading style={{ textAlign: 'center' }}>Login</Heading>
+            <img
+              src={logo}
+              className='trajectorLogo'
+              alt='Trajector Logo'
+              style={{
+                marginBottom: 24
+            }}/>
+              <Heading
+              style={{
+                textAlign: 'center'
+                }}>Login</Heading>
               <Button.Group align="center">
                 <Button
-                  style={{ backgroundColor: '#0078d4', color: 'white' }}
+                  style={{
+                    backgroundColor: '#0078d4',
+                    color: 'white'
+                  }}
                   onClick={handleLogin}
                 >
                   Microsoft Azure
