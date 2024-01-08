@@ -2,6 +2,9 @@ import { useAccount } from "@azure/msal-react";
 import { useEffect, useMemo, useState } from "react";
 import { getEmail } from "./dbFunctions/checkAdmin";
 import { BeatLoader } from "react-spinners";
+import { redirect } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+
 
 
 const AdminPage = ({children}:{children: any}) => {
@@ -10,7 +13,7 @@ const AdminPage = ({children}:{children: any}) => {
     const userAccount = useAccount(JSON.parse(account)); 
     const [isAdmin , setisAdmin] = useState(false);
     const [isLoad , setIsLoading] = useState(true);
-    console.log("email check")
+    const navigate = useNavigate()
 
     useEffect(() => {
         // getEmail(userAccount?.idTokenClaims?.preferred_username as string).then((res)=>{
@@ -36,8 +39,9 @@ const AdminPage = ({children}:{children: any}) => {
         {!isLoad && (
             <>
             {isAdmin? children:
-                <>Access Denied</> // Make UserManageCheck.tsx and outlet here. 
-                // Access denied page must have 
+                <>
+                 {navigate('/')} //Put error page here 
+               </> 
             } 
             </>
         )}
