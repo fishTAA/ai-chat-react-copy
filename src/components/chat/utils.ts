@@ -16,18 +16,23 @@ export interface Message {
   senderToken?: string,
 }
 
+// Decode a string into a ChatCommunication object.
 export const decodeMessage = (comm?: string): ChatCommunication => {
   if (!comm) {
+	// If the input is empty, return a default message of type 'message'
     return {
       type: 'message',
       authIssue: false,
       message: {}
     }
   }
+
+  // Parse the input string into a ChatCommunication object and return it.
   const decoded: ChatCommunication =  JSON.parse(comm);
   return decoded;
 }
 
+// Create a chat message in JSON format with the provided details.
 export const chatMessage = (messageID: string, messageTitle: string, message: string, token: string) => {
 	const chat: ChatCommunication = {
 		type: 'message',

@@ -12,8 +12,12 @@ import CheckAdmin from "./dbFunctions/adminInterface";
 import AdminComponent from "./AdminComponent";
 
 export const NavigationBar = () => {
+
+  // State for controlling the mobile menu
   const [menuOpen, setMenuOpen] = React.useState(false);
   const { instance } = useMsal();
+
+  // Handler for logging out
   const handleLogout = () => {
     instance.logoutRedirect(logoutRequest);
   };

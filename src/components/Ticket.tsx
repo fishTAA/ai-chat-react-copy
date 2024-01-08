@@ -2,7 +2,6 @@ import { useAccount } from '@azure/msal-react';
 import React, {useEffect, useState} from 'react';
 import { Box, Block, Icon, Form, Button, Container, Notification, Hero} from "react-bulma-components";
 
-
 interface TicketProps {
   setShowTicketForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -18,11 +17,13 @@ export const Ticket = (props: TicketProps) => {
   const [tocAgreed, setTocAgreed] = useState(false);
   const [questionValue, setQuestionValue] = useState('');
   const [submittingNotification, setSubmittingNotification] = useState<any>(<></>);
-  const account = localStorage.getItem("account") || "{}";
 
+  // Get user account information from local storage
+  const account = localStorage.getItem("account") || "{}";
   console.log(account);
   const userAccount = useAccount(JSON.parse(account));  
-  console.log(userAccount)
+
+  // Get user account information from local storage
   const resetForm = () => {
     setUsername('');
     setEmail('');
@@ -31,6 +32,7 @@ export const Ticket = (props: TicketProps) => {
     setQuestionValue('');
   };
 
+  // Load user account information if available
   useEffect(() => {
     if (userAccount) {
       setUsername(userAccount.name || '');
@@ -38,6 +40,7 @@ export const Ticket = (props: TicketProps) => {
     }
   }, [userAccount]);
  
+  // Function to submit the ticket form
   const submitTicketForm = () => {
     fetch(`${endPoint}/submitForm`, {
       method: "post",
@@ -73,7 +76,16 @@ export const Ticket = (props: TicketProps) => {
   return (
     
     <Container
-    style={{ backgroundColor: 'rgba(0,0,0,.2)', backdropFilter: 'blur(3px)', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', zIndex: 100, minWidth: '-webkit-fill-available'}}>
+      style={{
+        backgroundColor: 'rgba(0,0,0,.2)',
+        backdropFilter: 'blur(3px)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'absolute',
+        zIndex: 100,
+        minWidth: '-webkit-fill-available'
+        }}>
     <form
     style={{
       minHeight: 100,
@@ -184,6 +196,7 @@ export const Ticket = (props: TicketProps) => {
               Submit
             </Button>
           </Form.Control>
+          
           <Form.Control>
             <Button
               id='cancelBT'

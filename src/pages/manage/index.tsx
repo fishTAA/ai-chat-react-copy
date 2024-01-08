@@ -15,6 +15,7 @@ interface TestInterface {
   score: number,
   solution?: string
 }
+
 interface SettingsInterface {
   enableEmbedding: boolean,
   minimumScore: number
@@ -34,6 +35,7 @@ function Manage() {
     enableEmbedding: false,
     minimumScore: 90,
   });
+
   const [createEmbeddingSuccess, setCreateEmbeddingSuccess] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
 
@@ -46,6 +48,7 @@ function Manage() {
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}"
 
+  // Ensure authentication before performing certain actions
   useEffect(()=> {
     if (inProgress === InteractionStatus.None && !isAuthenticated) {
       setLoadingTest(true)
@@ -65,6 +68,7 @@ function Manage() {
     }
   }, [inProgress]);
 
+  // Function to create embeddings
   const handleCreateEmbeddings = () => {
     setCreateEmbeddingSuccess(false);
     setLoadingEmbedding(true);
@@ -90,6 +94,8 @@ function Manage() {
       setLoadingEmbedding(false);
     })
   }
+
+  // Function to save settings
   const handleSaveSettings = () => {
     setLoadingSave(true);
     fetch(`${endPoint}/saveSettings`, {
@@ -109,6 +115,7 @@ function Manage() {
     })
   }
 
+  // Function to fetch and update settings
   const getSettings = () => {
     setLoadingSave(true);
     fetch(`${endPoint}/getSettings`, {
@@ -122,9 +129,9 @@ function Manage() {
     }).finally(()=> {
       setLoadingSave(false);
     })
-
   }
 
+  // Function to update settings fields
   const updateSettingsFields = (field: string, value: any) => {
     setSettingsData({
       ...settingsData,
@@ -132,6 +139,7 @@ function Manage() {
     })
   }
 
+  // Function to test embeddings
   const handleTestEmbeddings = () => {
     setLoadingTest(true);
     fetch(`${endPoint}/testEmbedding`, {
@@ -151,11 +159,13 @@ function Manage() {
     })
   }
 
+  // Fetch and update settings on component mount
   useEffect(()=> {
     getSettings();
   }, [])
 
   return (
+
     <Hero 
     hasNavbar={true}
     size="fullheight"
