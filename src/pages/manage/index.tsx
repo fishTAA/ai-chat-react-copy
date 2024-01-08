@@ -7,7 +7,7 @@ import image from '../../media/image.png';
 import { useNavigate } from 'react-router-dom';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
-
+import AdminPage from '../../components/AdminPage';
 interface TestInterface {
   _id: string,
   input: string,
@@ -177,201 +177,166 @@ function Manage() {
       }}
     >
       <NavigationBar/>
-      <Box 
-        style={{
-          margin: 20,
-          marginTop: '100px',
-          padding: 0,
-          paddingTop: '20px'
-        }}>
-        <Section
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            marginBottom: 15
-          }}>
-          <Heading size={3}>
-            Embeddings
-          </Heading>
-          <Box
-            shadowless
-            style={{
-              paddingTop: 0
-            }}>
-            <Section
-              size="small"
-              style={{
-                paddingTop:0,
-                paddingBottom: 0
-              }}>
-              <Heading size={4}>
-                Create Embedding
-              </Heading>
-              {embeddingNotification}
-              <Form.Field>
-                <Form.Control>
-
-                  {/* Topic Area */}
-                  <Form.Label>
-                    Title
-                  </Form.Label>
+      <AdminPage>
+        <Box style={{margin: 20, marginTop: '100px', padding: 0, paddingTop: '20px'}}>
+          <Section style={{paddingTop: 0, paddingBottom: 0, marginBottom: 15}}>
+            <Heading size={3}>
+              Embeddings
+            </Heading>
+            <Box shadowless style={{paddingTop: 0}}>
+              <Section size="small" style={{paddingTop:0, paddingBottom: 0}}>
+                <Heading size={4}>
+                  Create Embedding
+                </Heading>
+                {embeddingNotification}
+                <Form.Field>
                   <Form.Control>
-                    <Form.Input
-                      onChange={(e)=>setDocumentTitle(e.target.value)}
-                      placeholder="Enter Title"
-                      type="text"
+                    {/* Topic Area */}
+                    <Form.Label>
+                      Title
+                    </Form.Label>
+                    <Form.Control>
+                      <Form.Input
+                        onChange={(e)=>setDocumentTitle(e.target.value)}
+                        placeholder="Enter Title"
+                        type="text"
+                      />
+                    </Form.Control>
+
+                    {/* keywords Area */}
+                    <Form.Label>
+                      Keywords
+                    </Form.Label>
+                    <Form.Control>
+                      <Form.Input
+                        onChange={(e)=>setDocumentKeyword(e.target.value)}
+                        placeholder="e.g. mouse problem"
+                        type="text"
+                      />
+                    </Form.Control>
+
+                    {/* description area */}
+                    <Form.Label>
+                      Description / Solution
+                    </Form.Label>
+                    <Form.Textarea
+                      id='textareaDescription'
+                      onChange={(e)=>setDocument(e.target.value)}
+                      value={document}
+                      
                     />
                   </Form.Control>
-
-                  {/* Keywords Area */}
-                  <Form.Label>
-                    Keywords
-                  </Form.Label>
+                </Form.Field>
+                <Form.Field kind="group">
                   <Form.Control>
-                    <Form.Input
-                      onChange={(e)=>setDocumentKeyword(e.target.value)}
-                      placeholder="e.g. mouse problem"
-                      type="text"
+                    <Button style={{boxShadow: '0px 0px 5px #888888'}} color="link" onClick={handleCreateEmbeddings} loading={loadingEmbedding}>Create Embedding</Button>
+                  </Form.Control>
+                </Form.Field>
+              </Section>
+              <Section size="small" style={{paddingBottom: 0}}>
+                <Heading size={4}>
+                  Test Embedding
+                </Heading>
+                <Form.Field>
+                  <Form.Control>
+                    <Form.Textarea
+                      onChange={(e)=>setTestDocument(e.target.value)}
+                      // value={testDocument}
+                      placeholder="Search"
                     />
                   </Form.Control>
-
-                  {/* Description Area */}
-                  <Form.Label>
-                    Description / Solution
-                  </Form.Label>
-                  <Form.Textarea
-                    id='textareaDescription'
-                    onChange={(e)=>setDocument(e.target.value)}
-                    value={document}
-                  />
-                </Form.Control>
-              </Form.Field>
-              <Form.Field kind="group">
-                <Form.Control>
-                  <Button
-                    style={{
-                      boxShadow: '0px 0px 5px #888888'
-                    }} 
-                    color="link" 
-                    onClick={handleCreateEmbeddings} loading={loadingEmbedding}>
-                      Create Embedding
-                      </Button>
-                </Form.Control>
-              </Form.Field>
-            </Section>
-            <Section size="small"
-              style={{
-                paddingBottom: 0
-                }}>
-              <Heading size={4}>
-                Test Embedding
-              </Heading>
+                </Form.Field>
+                <Form.Field kind="group">
+                  <Form.Control>
+                    <Button style={{boxShadow: '0px 0px 5px #888888'}}
+                      color="link"
+                      onClick={handleTestEmbeddings}
+                      loading={loadingTest}
+                    >
+                      Test Embedding Score
+                    </Button>
+                  </Form.Control>
+                </Form.Field>
+                {(testResults && testResults.length > 0) && (
+                  <Table.Container>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>
+                          Document
+                        </th>
+                        <th>
+                          Solution
+                        </th>
+                        <th>
+                          Score
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {testResults.map((test)=> {
+                        return (
+                          <tr>
+                            <td>
+                              {test.input.substring(0, 100)}...
+                            </td>
+                            <td>
+                              {test.solution}
+                            </td>
+                            <td>
+                              {test.score}
+                            </td>
+                          </tr>
+                          );
+                      })}
+                    </tbody>
+                  </Table>
+                  </Table.Container>
+                )}
+              </Section>
+            </Box>
+          </Section>
+          <Section style={{paddingTop: 0, paddingBottom: 0}}>
+            <Heading size={3}>
+              Settings
+            </Heading>
+            <Box shadowless> 
               <Form.Field>
                 <Form.Control>
-                  <Form.Textarea
-                    onChange={(e)=>setTestDocument(e.target.value)}
-                    // value={testDocument}
-                    placeholder="Search"
-                  />
-                </Form.Control>
-              </Form.Field>
-              <Form.Field kind="group">
-                <Form.Control>
-                  <Button
-                    style={{
-                      boxShadow: '0px 0px 5px #888888'
-                    }}
-                    color="link"
-                    onClick={handleTestEmbeddings}
-                    loading={loadingTest}
+                  <Form.Checkbox 
+                    checked={settingsData.enableEmbedding}
+                    onChange={(e)=>updateSettingsFields('enableEmbedding',e.target.checked)} 
                   >
-                    Test Embedding Score
+                    Enable Embeddings
+                  </Form.Checkbox>
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label>Minimum Score</Form.Label>
+                <Form.Control>
+                  <Form.Input 
+                    type="number" 
+                    onChange={(e)=>updateSettingsFields('minimumScore',e.target.value)} 
+                    placeholder="90" 
+                    value={settingsData.minimumScore}
+                  />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field kind="group">
+                <Form.Control>
+                  <Button 
+                    color="link"
+                    onClick={handleSaveSettings}
+                    loading={loadingSave}
+                  >
+                    Save
                   </Button>
                 </Form.Control>
               </Form.Field>
-              {(testResults && testResults.length > 0) && (
-                <Table.Container>
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>
-                        Document
-                      </th>
-                      <th>
-                        Solution
-                      </th>
-                      <th>
-                        Score
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {testResults.map((test)=> {
-                      return (
-                        <tr>
-                          <td>
-                            {test.input.substring(0, 100)}...
-                          </td>
-                          <td>
-                            {test.solution}
-                          </td>
-                          <td>
-                            {test.score}
-                          </td>
-                        </tr>
-                        );
-                    })}
-                  </tbody>
-                </Table>
-                </Table.Container>
-              )}
-            </Section>
-          </Box>
-        </Section>
-        <Section
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0
-          }}>
-          <Heading size={3}>
-            Settings
-          </Heading>
-          <Box shadowless> 
-            <Form.Field>
-              <Form.Control>
-                <Form.Checkbox 
-                  checked={settingsData.enableEmbedding}
-                  onChange={(e)=>updateSettingsFields('enableEmbedding',e.target.checked)} 
-                >
-                  Enable Embeddings
-                </Form.Checkbox>
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Minimum Score</Form.Label>
-              <Form.Control>
-                <Form.Input 
-                  type="number" 
-                  onChange={(e)=>updateSettingsFields('minimumScore',e.target.value)} 
-                  placeholder="90" 
-                  value={settingsData.minimumScore}
-                />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field kind="group">
-              <Form.Control>
-                <Button 
-                  color="link"
-                  onClick={handleSaveSettings}
-                  loading={loadingSave}
-                >
-                  Save
-                </Button>
-              </Form.Control>
-            </Form.Field>
-          </Box>
-        </Section>
-      </Box>
+            </Box>
+          </Section>
+        </Box>
+      </AdminPage>
       <FooterSection/>
     </Hero>
   );
