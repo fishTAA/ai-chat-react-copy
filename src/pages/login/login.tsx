@@ -31,10 +31,11 @@ function Login() {
         await instance.loginPopup().then(async (res) => {
           console.log("login", res);
           const Token = res.accessToken;
-    
+          
           
           // Store the authenticated account in local storage
           localStorage.setItem("account", JSON.stringify(res.account));
+          localStorage.setItem("AccessToken", Token)
           // Navigate to the main application page
           handleSendTokenToBackend(Token);
           navigate("/");

@@ -10,6 +10,8 @@ import {
 } from "@azure/msal-browser";
 import CheckAdmin from "./dbFunctions/adminInterface";
 import AdminComponent from "./AdminComponent";
+import { handleSendTokenToBackend } from "./dbFunctions/sendTokentoBE";
+
 
 export const NavigationBar = () => {
 
@@ -21,6 +23,13 @@ export const NavigationBar = () => {
   const handleLogout = () => {
     instance.logoutRedirect(logoutRequest);
   };
+  const accessToken = localStorage.getItem("AccessToken");
+
+  React.useEffect(() => {
+    if(accessToken){
+      handleSendTokenToBackend(accessToken)
+    }
+  }, [accessToken]);
 
   return (
     <Navbar
