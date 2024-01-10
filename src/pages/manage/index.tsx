@@ -336,8 +336,9 @@ function Manage() {
             </Box>
           </Section>
         </Box>
-      </AdminPage>
+      
       <FooterSection/>
+      </AdminPage>
     </Hero>
   );
 }
