@@ -4,8 +4,7 @@ import { getEmail } from "./dbFunctions/checkAdmin";
 import { BeatLoader } from "react-spinners";
 import { redirect } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
-
-
+import accessdenied from '../media/6605568.jpg'
 
 const AdminPage = ({children}:{children: any}) => {
 
@@ -39,9 +38,8 @@ const AdminPage = ({children}:{children: any}) => {
         {!isLoad && (
             <>
             {isAdmin? children:
-                <>
-                 {navigate('/')} //Put error page here 
-               </> 
+                 <img src={accessdenied} alt="access denied" style={{zIndex: 200}}/>
+                 
             } 
             </>
         )}
