@@ -92,7 +92,7 @@ function Manage() {
       setCreateEmbeddingSuccess(true);
     }).finally(()=> {
       setLoadingEmbedding(false);
-    })
+    }).catch((e)=>{console.log(e)})
   }
 
   // Function to save settings
@@ -128,7 +128,7 @@ function Manage() {
       setSettingsData(res);
     }).finally(()=> {
       setLoadingSave(false);
-    })
+    }).catch((e)=>console.log(e))
   }
 
   // Function to update settings fields
@@ -336,8 +336,9 @@ function Manage() {
             </Box>
           </Section>
         </Box>
-      </AdminPage>
+      
       <FooterSection/>
+      </AdminPage>
     </Hero>
   );
 }
