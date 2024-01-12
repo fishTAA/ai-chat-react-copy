@@ -93,6 +93,15 @@ function App() {
       });
   };
 
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const contentStyle = {
+    display: collapsed ? 'none' : 'block',
+  };
+
   return (
     <>
       {showTicketForm && (
@@ -280,6 +289,37 @@ function App() {
                   </Columns.Column>
                 </Columns>
               </section>
+
+              <section className="category tiles">
+              <Columns style={{ paddingTop: 20 }}>
+                {[...Array(6)].map((_, index) => (
+                  <Columns.Column key={index} className='is-one-third' 
+                    style={{ 
+                      display: 'flex',
+                      flexDirection: 'column', 
+                      alignItems: 'center' }}>
+                    <Card style={{ 
+                            width: '100%', 
+                            margin: 10, 
+                            minHeight: '100%', 
+                            backgroundColor: '#ffffff', 
+                            boxShadow: '2px 2px 8px 0px #888888',
+                            cursor: 'pointer' }} 
+                            onClick={toggleCollapse}>
+                      <Card.Content>
+                            <Heading size={4} style={{ color: "#307FE2" }}>
+                              Empty Card {index + 1}
+                            </Heading>
+                        <Content style={contentStyle}>
+                         Hello World
+                        </Content>
+                      </Card.Content>
+                    </Card>
+                  </Columns.Column>
+                ))}
+              </Columns>
+            </section>
+            
             </Container>
           </Hero.Body>
           <Chat width={350} />
