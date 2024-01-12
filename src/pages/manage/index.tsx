@@ -20,12 +20,10 @@ import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { InteractionStatus } from "@azure/msal-browser";
 import AdminPage from "../../components/AdminPage";
 import Select from "react-select";
-import { categories } from "./categories";
-
-interface Category {
-  value: string;
-  label: string;
-}
+import {
+  Category,
+  FetchCategories,
+} from "../../components/dbFunctions/fetchCategories";
 
 interface TestInterface {
   _id: string;
@@ -56,15 +54,15 @@ function Manage() {
   const [embeddingNotification, setEmbeddingNotification] = useState<any>(
     <></>
   );
-  const [settingsData, setSettingsData] = useState<SettingsInterface>({
-    enableEmbedding: false,
-    minimumScore: 90,
-  });
-
   const [documentCategory, setDocumentCategory] = useState<Array<options>>([]);
 
   const [createEmbeddingSuccess, setCreateEmbeddingSuccess] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
+  const [categories, setCategories] = useState<Array<Category>>();
+  const [settingsData, setSettingsData] = useState<SettingsInterface>({
+    enableEmbedding: false,
+    minimumScore: 90,
+  });
 
   let navigate = useNavigate();
 
@@ -203,7 +201,12 @@ function Manage() {
   useEffect(() => {
     getSettings();
   }, []);
-
+  useEffect(() => {
+    FetchCategories().then((categories) => {
+      setCategories(categories);
+    });
+  }, []);
+  console.log(categories);
   return (
     <Hero
       hasNavbar={true}

@@ -33,6 +33,10 @@ import {
 } from "@azure/msal-react";
 import { InteractionStatus, InteractionType } from "@azure/msal-browser";
 import { handleSendTokenToBackend } from "../../components/dbFunctions/sendTokentoBE";
+import {
+  Category,
+  FetchCategories,
+} from "../../components/dbFunctions/fetchCategories";
 
 function App() {
   // Check if the user is authenticated
@@ -57,7 +61,7 @@ function App() {
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
-
+  const [categories, setCategories] = useState<Array<Category>>([]);
   // Get authentication details and initialize the Microsoft Authentication Library
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}";
@@ -97,9 +101,15 @@ function App() {
   const toggleCollapse = () => {
     setCollapsed(!collapsed);
   };
-
+  useEffect(() => {
+    FetchCategories().then((categories) => {
+      if (categories) {
+        setCategories(categories);
+      }
+    });
+  }, []);
   const contentStyle = {
-    display: collapsed ? 'none' : 'block',
+    display: collapsed ? "none" : "block",
   };
 
   return (
@@ -205,43 +215,44 @@ function App() {
                   }}
                 >
                   {/* Map through the test results and render each one */}
-                  {testResults && testResults.map((res) => {
-                    return (
-                      <Columns.Column
-                        key={res._id}
-                        className="is-one-third"
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Card
+                  {testResults &&
+                    testResults.map((res) => {
+                      return (
+                        <Columns.Column
+                          key={res._id}
+                          className="is-one-third"
                           style={{
-                            maxWidth: "70%",
-                            minWidth: "100%",
-                            margin: 10,
-                            minHeight: "100%",
-                          }}
-                          onClick={() => {
-                            // Navigate to view solution page with relevant information
-                            navigate(
-                              "view-solution/" + res._id + "/" + document
-                            );
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
                           }}
                         >
-                          <Card.Content>
-                            <Media>
-                              <Media.Item>
-                                <Heading size={4}>{res.title}</Heading>
-                              </Media.Item>
-                            </Media>
-                            <Content>{res.input}</Content>
-                          </Card.Content>
-                        </Card>
-                      </Columns.Column>
-                    );
-                  })}
+                          <Card
+                            style={{
+                              maxWidth: "70%",
+                              minWidth: "100%",
+                              margin: 10,
+                              minHeight: "100%",
+                            }}
+                            onClick={() => {
+                              // Navigate to view solution page with relevant information
+                              navigate(
+                                "view-solution/" + res._id + "/" + document
+                              );
+                            }}
+                          >
+                            <Card.Content>
+                              <Media>
+                                <Media.Item>
+                                  <Heading size={4}>{res.title}</Heading>
+                                </Media.Item>
+                              </Media>
+                              <Content>{res.input}</Content>
+                            </Card.Content>
+                          </Card>
+                        </Columns.Column>
+                      );
+                    })}
 
                   <Columns.Column
                     className="is-one-third"
@@ -291,35 +302,39 @@ function App() {
               </section>
 
               <section className="category tiles">
-              <Columns style={{ paddingTop: 20 }}>
-                {[...Array(6)].map((_, index) => (
-                  <Columns.Column key={index} className='is-one-third' 
-                    style={{ 
-                      display: 'flex',
-                      flexDirection: 'column', 
-                      alignItems: 'center' }}>
-                    <Card style={{ 
-                            width: '100%', 
-                            margin: 10, 
-                            minHeight: '100%', 
-                            backgroundColor: '#ffffff', 
-                            boxShadow: '2px 2px 8px 0px #888888',
-                            cursor: 'pointer' }} 
-                            onClick={toggleCollapse}>
-                      <Card.Content>
-                            <Heading size={4} style={{ color: "#307FE2" }}>
-                              Empty Card {index + 1}
-                            </Heading>
-                        <Content style={contentStyle}>
-                         Hello World
-                        </Content>
-                      </Card.Content>
-                    </Card>
-                  </Columns.Column>
-                ))}
-              </Columns>
-            </section>
-            
+                <Columns style={{ paddingTop: 20 }}>
+                  {categories.map((category) => (
+                    <Columns.Column
+                      key={category.value - 1}
+                      className="is-one-third"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Card
+                        style={{
+                          width: "100%",
+                          margin: 10,
+                          minHeight: "100%",
+                          backgroundColor: "#ffffff",
+                          boxShadow: "2px 2px 8px 0px #888888",
+                          cursor: "pointer",
+                        }}
+                        onClick={toggleCollapse}
+                      >
+                        <Card.Content>
+                          <Heading size={4} style={{ color: "#307FE2" }}>
+                            {category.label} {category.value}
+                          </Heading>
+                          <Content style={contentStyle}>Hello World</Content>
+                        </Card.Content>
+                      </Card>
+                    </Columns.Column>
+                  ))}
+                </Columns>
+              </section>
             </Container>
           </Hero.Body>
           <Chat width={350} />
