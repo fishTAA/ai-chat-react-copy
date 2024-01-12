@@ -207,6 +207,7 @@ const Chat = (chatParams: ChatParams) => {
         right: 10,
         top: chatParams.fullHeight? (chatParams.fullWidth? 50 : 0 ) : 'unset', 
         width: chatParams.fullWidth? "100%": width,
+        zIndex: 1
       }}
       color="black">
 
