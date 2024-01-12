@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import accessdenied from '../media/6605568.jpg'
 
 const AdminPage = ({children}:{children: any}) => {
-
     const account = localStorage.getItem("account") || "{}";
     const userAccount = useAccount(JSON.parse(account)); 
     const [isAdmin , setisAdmin] = useState(false);
