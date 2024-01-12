@@ -35,7 +35,6 @@ function Login() {
           localStorage.setItem("token", Token);
           // Store the authenticated account in local storage
           localStorage.setItem("account", JSON.stringify(res.account));
-          localStorage.setItem("AccessToken", Token)
           // Navigate to the main application page
           handleSendTokenToBackend(Token);
           navigate("/");
