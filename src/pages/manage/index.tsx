@@ -49,24 +49,24 @@ function Manage() {
   const account = localStorage.getItem("account") || "{}"
 
   // Ensure authentication before performing certain actions
-  useEffect(()=> {
-    if (inProgress === InteractionStatus.None && !isAuthenticated) {
-      setLoadingTest(true)
-      if(account) {
-        instance.acquireTokenSilent({
-          account: JSON.parse(account),
-          scopes: ["openid", "profile"],
-        }).then(e => {
-          setLoadingTest(false);
-        }).catch(e=> {
-          console.log("here", e)
-          navigate('/login')
-        });
-      } else {
-        navigate('/login')
-      }
-    }
-  }, [inProgress]);
+  // useEffect(()=> {
+  //   if (inProgress === InteractionStatus.None && !isAuthenticated) {
+  //     setLoadingTest(true)
+  //     if(account) {
+  //       instance.acquireTokenSilent({
+  //         account: JSON.parse(account),
+  //         scopes: ["openid", "profile"],
+  //       }).then(e => {
+  //         setLoadingTest(false);
+  //       }).catch(e=> {
+  //         console.log("here", e)
+  //         navigate('/login')
+  //       });
+  //     } else {
+  //       navigate('/login')
+  //     }
+  //   }
+  // }, [inProgress]);
 
   // Function to create embeddings
   const handleCreateEmbeddings = () => {

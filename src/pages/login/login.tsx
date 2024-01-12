@@ -32,7 +32,7 @@ function Login() {
           console.log("login", res);
           const Token = res.accessToken;
     
-          
+          localStorage.setItem("token", Token);
           // Store the authenticated account in local storage
           localStorage.setItem("account", JSON.stringify(res.account));
           // Navigate to the main application page

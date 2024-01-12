@@ -65,35 +65,6 @@ function App() {
   // Get user account based on the stored account data
   const userAccount = useAccount(JSON.parse(account));
 
-  useEffect(() => {
-    // Check if the authentication process is not in progress and the user is not authenticated
-    if (inProgress === InteractionStatus.None && !isAuthenticated) {
-      setLoadingTest(true);
-
-      if (account) {
-        // Attempt to acquire a silent token for the user
-
-        const token = instance
-          .acquireTokenSilent({
-            account: JSON.parse(account),
-            scopes: ["openid", "profile"],
-          })
-          .then((e) => {
-            setLoadingTest(false);
-          })
-          .catch((e) => {
-            console.log("here", e);
-
-            // Redirect to the login page on token acquisition failure
-            navigate("/login");
-          });
-      } else {
-        // Redirect to the login page if no account data is available
-        navigate("/login");
-      }
-    }
-  }, [inProgress]);
-
   const handleTestEmbeddings = () => {
     // Set loading state to indicate an operation is in progress
     setLoadingTest(true);
@@ -225,9 +196,10 @@ function App() {
                   }}
                 >
                   {/* Map through the test results and render each one */}
-                  {testResults.map((res) => {
+                  {testResults && testResults.map((res) => {
                     return (
                       <Columns.Column
+                        key={res._id}
                         className="is-one-third"
                         style={{
                           display: "flex",
