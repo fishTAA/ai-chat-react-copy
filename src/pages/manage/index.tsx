@@ -8,6 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
 import AdminPage from '../../components/AdminPage';
+import Select from 'react-select';
+import { categories } from './categories';
+
+interface Category {
+  value: string;
+  label: string;
+}
+
 interface TestInterface {
   _id: string,
   input: string,
@@ -35,6 +43,8 @@ function Manage() {
     enableEmbedding: false,
     minimumScore: 90,
   });
+
+  const [documentCategory, setDocumentCategory] = useState([]);
 
   const [createEmbeddingSuccess, setCreateEmbeddingSuccess] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
@@ -80,7 +90,8 @@ function Manage() {
       body: JSON.stringify({
         title: documentTitle, 
         keyword: document, 
-        input: documentKeyword
+        input: documentKeyword,
+        categories: (documentCategory as Category[]).map(category => category.value),
       })
     }).then(()=> {
       setDocument("");
@@ -214,6 +225,19 @@ function Manage() {
                         type="text"
                       />
                     </Form.Control>
+
+                    {/* Categories Area */}
+                  <Form.Label>
+                    Categories
+                  </Form.Label>
+                      <Select
+                        isMulti
+                        name="colors"
+                        options={categories}
+                        // value={documentCategory}
+                        onChange={(selectedOptions: any) => setDocumentCategory(selectedOptions)}
+                        placeholder="Select a category"
+                      />
 
                     {/* description area */}
                     <Form.Label>
