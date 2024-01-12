@@ -2,7 +2,7 @@ import { useAccount } from "@azure/msal-react";
 import { useEffect, useMemo, useState } from "react";
 import { getEmail } from "./dbFunctions/checkAdmin";
 import { BeatLoader } from "react-spinners";
-
+import accessdenied from '../media/6605568.jpg'
 
 const AdminPage = ({children}:{children: any}) => {
 
@@ -36,8 +36,8 @@ const AdminPage = ({children}:{children: any}) => {
         {!isLoad && (
             <>
             {isAdmin? children:
-                <>Access Denied</> // Make UserManageCheck.tsx and outlet here. 
-                // Access denied page must have 
+                 <img src={accessdenied} alt="access denied" style={{zIndex: 200}}/>
+                 
             } 
             </>
         )}

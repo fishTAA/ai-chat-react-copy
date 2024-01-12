@@ -110,6 +110,9 @@ function Manage() {
         categories: documentCategory.map((option) => option.label),
       }),
     })
+      .catch((e) => {
+        console.log(e);
+      })
       .then(() => {
         setDocument("");
         setEmbeddingNotification(
@@ -161,7 +164,8 @@ function Manage() {
       })
       .finally(() => {
         setLoadingSave(false);
-      });
+      })
+      .catch((e) => console.log(e));
   };
 
   // Function to update settings fields
@@ -378,8 +382,9 @@ function Manage() {
             </Box>
           </Section>
         </Box>
+
+        <FooterSection />
       </AdminPage>
-      <FooterSection />
     </Hero>
   );
 }
