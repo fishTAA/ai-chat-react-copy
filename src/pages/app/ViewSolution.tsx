@@ -44,24 +44,24 @@ function App() {
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}";
 
-  useEffect(()=> {
-    if (inProgress === InteractionStatus.None && !isAuthenticated) {
-      setLoadingTest(true)
-      if(account) {
-        instance.acquireTokenSilent({
-          account: JSON.parse(account),
-          scopes: ["openid", "profile"],
-        }).then(e => {
-          setLoadingTest(false);
-        }).catch(e=> {
-          console.log("here", e)
-          navigate('/login')
-        });
-      } else {
-        navigate('/login')
-      }
-    }
-  }, [inProgress]);
+  // useEffect(()=> {
+  //   if (inProgress === InteractionStatus.None && !isAuthenticated) {
+  //     setLoadingTest(true)
+  //     if(account) {
+  //       instance.acquireTokenSilent({
+  //         account: JSON.parse(account),
+  //         scopes: ["openid", "profile"],
+  //       }).then(e => {
+  //         setLoadingTest(false);
+  //       }).catch(e=> {
+  //         console.log("here", e)
+  //         navigate('/login')
+  //       });
+  //     } else {
+  //       navigate('/login')
+  //     }
+  //   }
+  // }, [inProgress]);
 
   // Handle collapsing of related topics
   const [collapsed, setCollapsed] = useState(false);

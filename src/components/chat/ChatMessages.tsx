@@ -56,7 +56,7 @@ export const ChatMessages = (props: ChatMessagesProps) => {
           flexDirection: "column",
         }}>
 
-        {props.messages &&
+        {Array.isArray(props.messages) &&
           props.messages.map((chat, i)=> {
             return (
 

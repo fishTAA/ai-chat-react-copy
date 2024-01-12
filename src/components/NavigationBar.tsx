@@ -1,35 +1,72 @@
 import * as React from "react";
 import { Navbar, Button } from "react-bulma-components";
 import logo from "../media/Trajector Main Logo_Color.png";
-import { MsalProvider, useMsal } from "@azure/msal-react";
+import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { pca, logoutRequest } from "../authconfig";
 import {
   EventType,
   EventMessage,
   AuthenticationResult,
+  InteractionStatus,
 } from "@azure/msal-browser";
 import CheckAdmin from "./dbFunctions/adminInterface";
 import AdminComponent from "./AdminComponent";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { handleSendTokenToBackend } from "./dbFunctions/sendTokentoBE";
-
 
 export const NavigationBar = () => {
 
   // State for controlling the mobile menu
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { instance } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
+  const [loadingTest, setLoadingTest] = useState(false);
+  const navigate = useNavigate();
 
   // Handler for logging out
   const handleLogout = () => {
     instance.logoutRedirect(logoutRequest);
   };
-  const accessToken = localStorage.getItem("AccessToken");
 
-  React.useEffect(() => {
-    if(accessToken){
-      handleSendTokenToBackend(accessToken)
+    // Get authentication details and initialize the Microsoft Authentication Library
+    const { inProgress } = useMsal();
+    const account = localStorage.getItem("account") || "{}";
+    const token = localStorage.getItem("token") || "{}";
+
+  
+
+  useEffect(() => {
+    // Check if the authentication process is not in progress and the user is not authenticated
+    if (inProgress === InteractionStatus.None && !isAuthenticated) {
+      setLoadingTest(true);
+      if(token){
+      handleSendTokenToBackend(token)
+      console.log("token :" +token);
+      }
+      if (account) {
+        // Attempt to acquire a silent token for the user
+
+        const token = instance
+          .acquireTokenSilent({
+            account: JSON.parse(account),
+            scopes: ["openid", "profile"],
+          })
+          .then((e) => {
+            setLoadingTest(false);
+          })
+          .catch((e) => {
+            console.log("here", e);
+
+            // Redirect to the login page on token acquisition failure
+            navigate("/login");
+          });
+      } else {
+        // Redirect to the login page if no account data is available
+        navigate("/login");
+      }
     }
-  }, [accessToken]);
+  }, [inProgress, token]);
 
   return (
     <Navbar
