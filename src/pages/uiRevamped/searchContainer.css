@@ -6,13 +6,11 @@
     height:92svh;
     border-right: 1px solid #ccc;
     padding:20px;
-
 }
 
 .search-bar {
     display: flex;
     flex-direction: row;
-    /* padding: 13px; */
     border: 1px solid #b6b6b6;
     border-radius: 100px;
     justify-content: space-between;
@@ -21,7 +19,6 @@
 
 .search-icon {
     padding: 9px 12px 9px 20px;
-
 }
 
 .search-text {
@@ -96,3 +93,13 @@
     cursor: pointer;
     font-weight: 600;
 }
+
+
+
+
+.main {
+    display: flex;
+    flex-direction: row;
+}
+
+

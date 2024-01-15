@@ -1,10 +1,11 @@
 import './searchContainer.css';
 import { BsSearch } from "react-icons/bs";
 import { articles } from './sampleArticles'
+import { CategoriesContainer } from "./categoriesContainer";
 
 export const SearchContainer = () => {
     return (
-        <div>
+        <div className='main'>
             <div className="search">
                 <div className="search-bar">
                     <div className="search-icon">
@@ -14,7 +15,7 @@ export const SearchContainer = () => {
                     <div className='btn-search'>Search
                     </div>
                 </div>
-                <div className="most-search">Most search results:</div>
+                <div className="most-search">Most searched results:</div>
                 <div className='container'>
                     {articles.map(item => (
                     <div className="result-container" key={item.id}>
@@ -24,6 +25,9 @@ export const SearchContainer = () => {
                     </div>
                     ))}
                 </div>
+            </div>
+            <div className='category'>
+                <CategoriesContainer/>
             </div>
         </div>
     )
