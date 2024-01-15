@@ -38,7 +38,7 @@ interface SettingsInterface {
   minimumScore: number;
 }
 interface options {
-  value: number;
+  value: string;
   label: string;
 }
 
@@ -54,11 +54,14 @@ function Manage() {
   const [embeddingNotification, setEmbeddingNotification] = useState<any>(
     <></>
   );
+  //array to be sent in create emebeddings
   const [documentCategory, setDocumentCategory] = useState<Array<options>>([]);
 
   const [createEmbeddingSuccess, setCreateEmbeddingSuccess] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
+  //variable where
   const [categories, setCategories] = useState<Array<Category>>();
+  const [selectOption, setSelectOption] = useState<Array<options>>([]);
   const [settingsData, setSettingsData] = useState<SettingsInterface>({
     enableEmbedding: false,
     minimumScore: 90,
@@ -105,7 +108,7 @@ function Manage() {
         title: documentTitle,
         keyword: document,
         input: documentKeyword,
-        categories: documentCategory.map((option) => option.label),
+        categories: documentCategory.map((option) => option.value),
       }),
     })
       .catch((e) => {
@@ -196,17 +199,28 @@ function Manage() {
         setLoadingTest(false);
       });
   };
-
+  //Function to set option of React-Select set the value to objcid of category
+  const SetOptions = (categories: Category[] | undefined) => {
+    if (categories) {
+      const newoptions = categories.map((category: Category) => ({
+        value: category._id,
+        label: category.label,
+      }));
+      setSelectOption(newoptions);
+    }
+  };
   // Fetch and update settings on component mount
   useEffect(() => {
     getSettings();
   }, []);
+  //sets categories and option during onload of page
   useEffect(() => {
     FetchCategories().then((categories) => {
       setCategories(categories);
+      SetOptions(categories);
     });
   }, []);
-  console.log(categories);
+
   return (
     <Hero
       hasNavbar={true}
@@ -263,7 +277,7 @@ function Manage() {
                     <Select
                       isMulti
                       name="colors"
-                      options={categories}
+                      options={selectOption}
                       // value={documentCategory}
                       onChange={(selectedOptions: any) =>
                         setDocumentCategory(selectedOptions)
