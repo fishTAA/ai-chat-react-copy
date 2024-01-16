@@ -51,6 +51,7 @@ export const Homepage = () => {
                             <Form.Input 
                                 placeholder="Search"
                                 style={{
+                                    boxShadow: "0 0 5px #888888",
                                     borderRadius: '50px 0 0 50px',
                                     height: '60px',
                                     width: '100%',
@@ -59,6 +60,7 @@ export const Homepage = () => {
                         </Form.Control>
                         <Form.Control>
                             <Button style={{
+                                boxShadow: "0 0 5px #888888",
                                 borderRadius: '0 50px 50px 0',
                                 height: '60px',
                                 }}>Clear
