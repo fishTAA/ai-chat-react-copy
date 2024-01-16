@@ -32,7 +32,7 @@ export const Homepage = () => {
             }} >
             <div className="left-side"
                 style={{
-                    height: '100%',
+                    // height: '100%',
                  }}
                     >
                 <Container
@@ -74,11 +74,15 @@ export const Homepage = () => {
                             }}>
                             Most searched result:</Form.Label>
                     </Form.Field>
-                    <Columns>
+                    <Columns
+                        style={{}}>
                         {articles.map((item) => (
                             <Columns.Column
                                 // key={item.id}
-                                className="is-one-third">
+                                className="is-one-third"
+                                style={{
+                                    padding: '10px 5px 0 5px',
+                                }}>
                             <Card
                                 style={{
                                     width: "100%",
@@ -106,7 +110,10 @@ export const Homepage = () => {
                             </Card>
                         </Columns.Column>
                         ))}
-                        <Columns.Column>
+                        <Columns.Column
+                            style={{
+                                padding: '10px 5px 0 5px',
+                            }}>
                             <Card
                                 style={{
                                     width: "100%",
