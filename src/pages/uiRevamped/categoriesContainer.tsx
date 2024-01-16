@@ -2,6 +2,10 @@ import './categoriesContainer.css';
 
 export const CategoriesContainer = () => {
     return (
-        <div className='category'>category</div>
+        <div className='body'>
+            <div className='card'>
+                <div>categories</div>
+            </div>
+        </div>
     )
 }

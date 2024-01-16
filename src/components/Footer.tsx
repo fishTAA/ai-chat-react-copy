@@ -1,6 +1,6 @@
 import { relative } from 'path';
 import React, {useState} from 'react';
-import { Box, Block, Hero, Footer, Container, Content } from "react-bulma-components";
+import { Hero, Footer, Container, Content } from "react-bulma-components";
 
 export const FooterSection = () => {
   return (
@@ -37,7 +37,7 @@ export const FooterSection = () => {
                   </a>
                   <div
                     style={{
-                      paddingTop: '50px'
+                      paddingTop: '10px'
                       }}>
                         © Copyright 2023 Trajector. All Rights Reserved.
                   </div>

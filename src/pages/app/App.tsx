@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
+import { BsSearch } from "react-icons/bs";
 import { NavigationBar } from "../../components/NavigationBar";
 import {
   Card,
@@ -131,12 +132,12 @@ function App() {
         <Hero size="fullheight">
           <Hero.Body
             style={{
-              paddingTop: 100,
+              paddingTop: 120,
             }}
           >
             <Container>
               <Form.Field kind="addons">
-                <Form.Control fullwidth>
+                <Form.Control fullwidth style={{ position: "relative" }}>
                   <Form.Input
                     onChange={(e) => setDocument(e.target.value)}
                     onKeyDown={(e) => {
@@ -144,8 +145,9 @@ function App() {
                         // Execute handleTestEmbeddings on Enter key press
                         handleTestEmbeddings();
                     }}
+                    
                     value={document}
-                    placeholder={"Search "}
+                    placeholder={"  Search "}
                     style={{
                       boxShadow: "2px 2px 5px 0px #888888",
                       borderTopRightRadius: 0,
@@ -153,8 +155,8 @@ function App() {
                       borderTopLeftRadius: 20,
                       borderBottomLeftRadius: 20,
                       borderRight: "none",
-                      maxHeight: "50px",
-                      minHeight: "50px",
+                      maxHeight: "55px",
+                      minHeight: "55px",  
                       overflow: "hidden",
                       resize: "none",
                       marginTop: -50,
@@ -175,8 +177,8 @@ function App() {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       borderLeft: "none",
-                      maxHeight: "50px",
-                      minHeight: "50px",
+                      maxHeight: "55px",
+                      minHeight: "55px",
                       overflow: "hidden",
                       resize: "none",
                       marginTop: -50,
