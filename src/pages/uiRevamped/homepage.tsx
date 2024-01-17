@@ -211,7 +211,7 @@ export const Homepage = () => {
                     className='scrollbar-hide'
                     style={{
                         marginTop: '10px',
-                        maxHeight: '80vh',
+                        maxHeight: '73vh',
                         overflowY: 'auto',
                     }}>
                     {categories.map((category) => (

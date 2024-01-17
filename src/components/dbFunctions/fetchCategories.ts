@@ -4,7 +4,7 @@ export interface Category {
   value: number;
   label: string;
 }
-interface Embedding {
+ export interface Embedding {
   _id: string;
   input: string;
   title: string;
