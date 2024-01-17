@@ -249,13 +249,12 @@ export const Homepage = () => {
                         overflowY: 'auto',
                     }}>
                     {categories.map((category) => (
+                    <>
                     <Card
                         key={category.label}
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
-                            // justifyContent: 'space-between',
-                            // alignContent: 'center',
                             width: "100%",
                             backgroundColor: "#ffffff",
                             borderRadius: '10px',
@@ -264,38 +263,62 @@ export const Homepage = () => {
                             border: '1px solid #bcbcbc',
                             boxShadow: 'none',
                         }}>
-                        <Heading
-                        onClick={() => {
-                            toggleCollapse(category.label);
-                          }}
-                            style={{
-                                fontWeight: '500',
-                                fontSize: '16px',
-                                margin: '0',
-                                cursor: 'pointer',
-                            }}
-                        >{category.label}</Heading>
-                        <Content 
-                            style={{
-                                borderBottom: '1px solid #307FE2',
-                                margin: '5px 0 5px 0',
-                                display: collapsedCategory === category.label ? "block" : "none",
+                            <Heading
+                                onClick={() => {
+                                    toggleCollapse(category.label);
+                                } }
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    fontWeight: '500',
+                                    fontSize: '16px',
+                                    margin: '0',
+                                    cursor: 'pointer',
+                                }}
+                            >{category.label}
+                            </Heading>
+                            <Content
+                                style={{
+                                    borderBottom: '1px solid #307FE2',
+                                    margin: '5px 0 5px 0',
+                                    display: collapsedCategory === category.label ? "block" : "none",
                                 }}>
-                        </Content>
-                        {articles.map((item) => (
-                        <Content
-                            key={item.title}
+                            </Content>
+                            {articles.map((item) => (
+                                <Content
+                                    key={item.title}
+                                    style={{
+                                        fontWeight: '300',
+                                        fontSize: '16px',
+                                        margin: '0px',
+                                        cursor: 'pointer',
+                                        display: collapsedCategory === category.label ? "block" : "none",
+                                    }}>
+                                    {item.title}</Content>
+                            ))}
+                        </Card>
+                        {/* <div
                             style={{
-                                fontWeight: '300',
-                                fontSize: '16px',
-                                margin: '0px',
-                                cursor: 'pointer',
-                                display: collapsedCategory === category.label ? "block" : "none",
+                                display: 'flex',
+                                flexDirection: 'column',
                             }}>
-                            {item.title}</Content>
-                        ))}
-                        {/* <BsArrowDownCircle size={20}/> */}
-                    </Card>
+                        <Button
+                            style={{
+                                fontSize: '12px',
+                                fontWeight: '500',
+                            }}
+                        >Rename
+                        </Button>
+                        <Button
+                            style={{
+                                fontSize: '12px',
+                                fontWeight: '500',
+                            }}
+                        >Delete
+                        </Button>
+                        </div> */}
+                    </>
                     ))}
                 </section>
             </div>
