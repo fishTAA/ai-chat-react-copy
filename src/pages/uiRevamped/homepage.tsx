@@ -2,7 +2,7 @@ import { NavigationBar } from "../../components/NavigationBar";
 import { SearchContainer } from "./searchContainer";
 import { CategoriesContainer } from "./categoriesContainer";
 import { BsArrowDownCircle } from "react-icons/bs";
-import { Box, Button, Card, Columns, Container, Content, Footer, Form, Heading, Hero, Media } from "react-bulma-components";
+import { Box, Button, Card, Columns, Container, Content, Footer, Form, Heading, Hero, Media, Modal } from "react-bulma-components";
 import { FooterSection } from "../../components/Footer";
 import './homepage.css';
 import { articles } from './sampleArticles'
@@ -18,7 +18,8 @@ export const Homepage = () => {
         prevCollapsedCategory === categoryLabel ? null : categoryLabel
         );
     };
-        
+    
+    const [addCategory, setAddCategory] = useState(false);
 
     useEffect(() => {
     FetchCategories().then((categories) => {
@@ -195,8 +196,20 @@ export const Homepage = () => {
                             border: '1px solid #47bd13',
                             color: '#47bd13',
                             }}
+                        onClick={() => {setAddCategory(true);}}
                         >
                         + Add a category</Button>
+                    <Modal
+                        show={addCategory}
+                        onClose={() => setAddCategory(false)}
+                        >
+                        <Modal.Card>
+                            <Modal.Card.Header showClose>
+                                <Modal.Card.Title>Add Category</Modal.Card.Title>
+                            </Modal.Card.Header>
+                            <Modal.Card.Body>put input fields here</Modal.Card.Body>
+                        </Modal.Card>
+                    </Modal>
                     <Button size={"small"}
                         style={{
                             backgroundColor: '#3080e236',
