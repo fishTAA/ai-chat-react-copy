@@ -205,9 +205,30 @@ export const Homepage = () => {
                         >
                         <Modal.Card>
                             <Modal.Card.Header showClose>
-                                <Modal.Card.Title>Add Category</Modal.Card.Title>
+                                <Modal.Card.Title>Add a category</Modal.Card.Title>
                             </Modal.Card.Header>
-                            <Modal.Card.Body>put input fields here</Modal.Card.Body>
+                            <Modal.Card.Body>
+                                <Form.Field>
+                                    <Form.Label>Category name</Form.Label>
+                                    <Form.Input
+                                        type='text'
+                                        placeholder="Input category name">
+                                    </Form.Input>
+                                </Form.Field>
+                            </Modal.Card.Body>
+                            <Modal.Card.Footer>
+                            <Button
+                                style={{
+                                    display: 'flex',
+                                    marginLeft: 'auto',
+                                    backgroundColor: '#3080e236',
+    
+                                    border: '1px solid #307FE2',
+                                    color: '#307FE2',
+                                    fontWeight: '600',
+                                }}
+                                >Submit</Button>
+                            </Modal.Card.Footer>
                         </Modal.Card>
                     </Modal>
                     <Button size={"small"}
