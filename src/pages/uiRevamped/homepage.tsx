@@ -12,8 +12,13 @@ import { useEffect, useState } from "react";
 
 export const Homepage = () => {
     const [categories, setCategories] = useState<Array<Category>>([]);
-    const [collapsed, setCollapsed] = useState(false);
-    const toggleCollapse = () => {setCollapsed(!collapsed);};
+    const [collapsedCategory, setCollapsedCategory] = useState<string | null>(null);
+    const toggleCollapse = (categoryLabel: string) => {
+        setCollapsedCategory((prevCollapsedCategory) =>
+        prevCollapsedCategory === categoryLabel ? null : categoryLabel
+        );
+    };
+        
 
     useEffect(() => {
     FetchCategories().then((categories) => {
@@ -26,18 +31,21 @@ export const Homepage = () => {
             <NavigationBar />
             <Hero.Body style={{
                         paddingInline: '28px',
-                        paddingTop: '60px',
+                        paddingBlock: '60px 28px',
                         display: 'flex',
                         alignItems: 'flex-start',
             }} >
             <div className="left-side"
                 style={{
-                    // height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
                  }}
                     >
                 <Container
                     style={{
                         width: '100%',
+                        flex: 1,
                     }}>
                     <Form.Field
                         style={{
@@ -51,8 +59,9 @@ export const Homepage = () => {
                             <Form.Input 
                                 placeholder="Search"
                                 style={{
-                                    boxShadow: "0 0 5px #888888",
                                     borderRadius: '50px 0 0 50px',
+                                    border: '1px solid #307FE2',
+                                    borderRight: 'none',
                                     height: '60px',
                                     width: '100%',
                                     }}>
@@ -60,8 +69,10 @@ export const Homepage = () => {
                         </Form.Control>
                         <Form.Control>
                             <Button style={{
-                                boxShadow: "0 0 5px #888888",
+                                backgroundColor: '#3080e236',
                                 borderRadius: '0 50px 50px 0',
+                                border: '1px solid #307FE2',
+                                color: '#307FE2',
                                 height: '60px',
                                 }}>Clear
                             </Button>
@@ -77,13 +88,19 @@ export const Homepage = () => {
                             Most searched result:</Form.Label>
                     </Form.Field>
                     <Columns
-                        style={{}}>
+                        style={{
+                            marginTop: '15px',
+                            height: '40%',
+                            flex: 1,
+                        }}>
                         {articles.map((item) => (
                             <Columns.Column
                                 // key={item.id}
                                 className="is-one-third"
                                 style={{
-                                    padding: '10px 5px 0 5px',
+                                    padding: '10px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
                                 }}>
                             <Card
                                 style={{
@@ -91,13 +108,20 @@ export const Homepage = () => {
                                     backgroundColor: "#ffffff",
                                     boxShadow: "0 0 5px #888888",
                                     borderRadius: '10px',
-                                    padding: '10px',
+                                    padding: '15px',
+                                    flex: 1,
                                 }}>
-                                <Heading>{item.title}</Heading>
+                                <Heading
+                                    style={{
+                                        marginBottom: '15px',
+                                    }}>{item.title}</Heading>
                                 <Content
                                     style={{
-                                        height: '10svh',
+                                        height: "47%",
                                         overflow: 'hidden',
+                                        textOverflow: 'ellipsis', 
+                                        flex: 1,
+                                        marginBottom: '15px',
                                     }}>
                                     {item.content}</Content>
                                 <Button
@@ -107,6 +131,8 @@ export const Homepage = () => {
                                         border: '1px solid #307FE2',
                                         color: '#307FE2',
                                         fontWeight: '600',
+                                        position: 'relative',
+                                        marginBottom: '15px',
                                     }}>
                                     View article</Button>
                             </Card>
@@ -114,30 +140,27 @@ export const Homepage = () => {
                         ))}
                         <Columns.Column
                             style={{
-                                padding: '10px 5px 0 5px',
+                                padding: '10px',
+                                display: 'flex',
+                                flexDirection: 'column',
                             }}>
                             <Card
                                 style={{
                                     width: "100%",
-                                    minHeight: "100%",
                                     backgroundColor: "#307FE2",
                                     borderRadius: '10px',
                                     boxShadow: "0 0 5px #888888",
                                     cursor: "pointer",
+                                    padding: '15px',
+                                    flex: 1
                                 }}>
-                                <Card.Content>
-                                    <Media>
-                                    <Media.Item>
-                                        <Heading
-                                        size={4}
-                                        style={{
-                                            color: "white",
-                                        }}
-                                        >
-                                        Submit Ticket
-                                        </Heading>
-                                    </Media.Item>
-                                    </Media>
+                                    <Heading size={4}
+                                    style={{
+                                        color: "white",
+                                    }}
+                                    >
+                                    Submit Ticket
+                                    </Heading>
                                     <Content
                                     style={{
                                         color: "white",
@@ -145,7 +168,6 @@ export const Homepage = () => {
                                     >
                                     Can't find what you're looking for? Submit a ticket!
                                     </Content>
-                                </Card.Content>
                             </Card>
                         </Columns.Column>
                     </Columns>
@@ -155,11 +177,15 @@ export const Homepage = () => {
                 style={{
                     backgroundColor: '',
                 }}>
+                <div
+                    style={{
+                        margin: '0',
+                        fontWeight: '500',
+                    }}>Categories:
+                </div>
                 <section
                     style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'right',
+                        marginTop: '10px',
                     }}
                     >
                     <Button size={"small"}
@@ -182,39 +208,59 @@ export const Homepage = () => {
                         Edit</Button>
                 </section>
                 <section
+                    className='scrollbar-hide'
                     style={{
-                        marginTop: '20px',
+                        marginTop: '10px',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
                     }}>
                     {categories.map((category) => (
                     <Card
+                        key={category.label}
                         style={{
                             display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignContent: 'center',
+                            flexDirection: 'column',
+                            // justifyContent: 'space-between',
+                            // alignContent: 'center',
                             width: "100%",
                             backgroundColor: "#ffffff",
                             borderRadius: '10px',
                             padding: '10px',
-                            marginBlock: '10px',
+                            marginBlock: '0 10px',
                             border: '1px solid #bcbcbc',
                             boxShadow: 'none',
-                            
                         }}>
                         <Heading
+                        onClick={() => {
+                            toggleCollapse(category.label);
+                          }}
                             style={{
-                                fontWeight: '400',
+                                fontWeight: '500',
                                 fontSize: '16px',
-                                margin: '0px'
+                                margin: '0',
+                                cursor: 'pointer',
                             }}
-                        >
-                            {category.label}</Heading>
-                        <Content
+                        >{category.label}</Heading>
+                        <Content 
                             style={{
-                                
+                                borderBottom: '1px solid #307FE2',
+                                margin: '5px 0 5px 0',
+                                display: collapsedCategory === category.label ? "block" : "none",
+                                }}>
+                        </Content>
+                        {articles.map((item) => (
+                        <Content
+                            key={item.title}
+                            style={{
+                                fontWeight: '300',
+                                fontSize: '16px',
+                                margin: '0px',
+                                cursor: 'pointer',
+                                display: collapsedCategory === category.label ? "block" : "none",
                             }}>
-                            </Content>
-                        <BsArrowDownCircle size={20}/>
+                            {item.title}</Content>
+                        ))}
+                        {/* <BsArrowDownCircle size={20}/> */}
                     </Card>
                     ))}
                 </section>
