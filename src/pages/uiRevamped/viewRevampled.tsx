@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
-import { NavigationBar } from '../../components/NavigationBar';
 import { Columns, Container, Heading, Hero, Block, Section, Content, Card } from 'react-bulma-components';
 import Chat from '../../components/chat';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { useAccount, useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
 import './homepage.css';
 import { articlesView} from '../uiRevamped/sample';
+import { NavigationBar } from './NavigationBar';
 
 export interface DocumentUpload {
   input: string;
@@ -133,39 +133,37 @@ function UiRevampView() {
     
     <div
     style={{
-    //   backgroundImage: `url(${image})`,
+      backgroundImage: `url(${image})`,
       height: '100%',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
     }}>
+      <NavigationBar/>
       <Hero
         hasNavbar={true}
         size="fullheight"
         style={{
           flexGrow: 1,
         }} >
-        <NavigationBar/>
-        <Hero.Body style={{display:'block',marginBlock: '40px'}}>
-        <Columns marginless paddingless style={{height:'100%'}}>
+          
+        <Hero.Body style={{display:'flex',alignItems:'stretch',marginBlock: '40px'}}>
+        <Columns paddingless style={{marginBlock: '10px'}}>
          <Columns.Column className="is-two-third" 
         //  style={{border: '1px solid red'}}
          >
-           <div className='mobile-view' style={{
-            width: "100%",
-            backgroundColor: "#ffffff",
-            borderRadius: '10px',
-            padding: '10px',
-            marginBlock: '0 10px',
-            border: '1px solid #bcbcbc',
-            boxShadow: 'none',
-            fontSize:'40px'
-          }}> TITLE: {articlesView[0].title}
+           <div className='mobile-view' 
+          > TITLE: {articlesView[0].title}
           </div>
          <Container style={{
+          
           borderInline: '1px solid #bcbcbc',
           padding: '10px',
-          height: '100%'
+          paddingInline: '20px',
+          height: '100%',
+          textAlign: 'justify',
+          fontSize: '18px',
+          backdropFilter: 'blur(20px)'
           }}>
             {articlesView[0].content}
          </Container>
@@ -174,17 +172,7 @@ function UiRevampView() {
         //  style={{border: '1px solid blue'}}
          >
          <Container>
-          <div className='mobile-view-2' style={{
-            flexDirection: 'column',
-            width: "100%",
-            backgroundColor: "#ffffff",
-            borderRadius: '10px',
-            padding: '10px',
-            marginBlock: '0 10px',
-            border: '1px solid #bcbcbc',
-            boxShadow: 'none',
-            fontSize:'40px'
-          }}> TITLE: {articlesView[0].title}
+          <div className='mobile-view-2'> TITLE: {articlesView[0].title}
           </div>
          </Container>
          <div className='sticky-container'>

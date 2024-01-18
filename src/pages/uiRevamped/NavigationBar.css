@@ -1,3 +1,9 @@
+.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
 .navbar {
     display: flex;
     flex-direction: row;
@@ -6,9 +12,9 @@
     height: 8svh;
     padding: 1%;
     box-shadow: 0 0 5px #888888;
-    background-color: white;
-    position: relative;
+    background-color: rgb(10, 25, 54);
 }
+
 
 .App-logo {
     width: 200px;
@@ -17,14 +23,24 @@
 .btn {
     display: flex;
     flex-direction: row;
-    margin-left: auto;
+    /* margin-left: auto; */
+    width: 100%;
+    justify-content: space-between;
+}
+
+.btn-left{
+    display: flex;
+    flex-direction: row;
+    place-self: start;
 }
 
 .btn-home,
 .btn-manage {
     cursor: pointer;
     padding: 8px 12px 8px 12px;
-    font-weight: 500;   
+    font-weight: 500;  
+    color: white; 
+
 }
 
 .btn-home:hover,
@@ -34,11 +50,13 @@
 
 .btn-logout {
     cursor: pointer;
-    padding: 8px 12px 8px 12px;
-    border-radius: 5px;
-    color: white;
+    padding: 8px 15px 8px 15px;
+    margin-inline: 10px;
+    border-radius: 25px;
+    color: black;
     font-weight: 500;
-    background-color: #307FE2;
+    /* background-color: #307FE2; */
+    background-color: white;
 }
 
 .btn-logout:hover {

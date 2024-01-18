@@ -37,7 +37,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/viewrework",
-    element: <> <NavigationBar/> <UiRevampView /></>
+    element: <> <UiRevampView /></>
   }
  
 ]);
