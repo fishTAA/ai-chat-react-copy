@@ -10,8 +10,48 @@
 .right-side {
     width: 25%;
     height: 92svh;
-    padding: 20px 0 0 28px;
+    padding: 20px 28px 0 28px;
 }
+
+.sticky-container {
+  position: fixed;
+  align-self: center;
+  width: 25%;
+  /* bottom: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-block: 0 10px;
+  border: 1px solid #bcbcbc;
+  box-Shadow: none;
+  font-Size:40px;
+   */
+}
+
+.mobile-view {
+  display: none;
+}
+
+.mobile-view-2 {
+  display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  .mobile-view {
+    display: flex;
+  }
+
+  .mobile-view-2 {
+    display: none;
+  }
+
+  .sticky-container{
+    position: static;
+    width: 100%;
+  }
+}
+
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;

@@ -9,7 +9,6 @@ import image from '../../media/image.png';
 import { BeatLoader } from 'react-spinners';
 import { useAccount, useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
- 
 export interface DocumentUpload {
   input: string;
   solution?: string ;
