@@ -9,7 +9,8 @@ import image from '../../media/image.png';
 import { BeatLoader } from 'react-spinners';
 import { useAccount, useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
- 
+import DOMPurify from 'dompurify'; 
+
 export interface DocumentUpload {
   input: string;
   solution?: string ;
@@ -126,6 +127,16 @@ function App() {
     })
   }
 
+  const handleHTMLSanitization = (str: string) => {
+    console.log("Checking HTML", document?.solution)
+    if (document?.solution && containsHTML(document.solution)){
+      console.log("HTML Found")
+      const sanitizedHTML = DOMPurify.sanitize(str, { ADD_TAGS: ['iframe'], ADD_ATTR: ['allowfullscreen', 'frameborder'] });
+      return sanitizedHTML || '';
+    }
+
+  }
+
   return (
     
     <div
@@ -210,10 +221,11 @@ function App() {
                           borderRadius: 9,
                           boxShadow: '0px 0px 5px #888888',
                         }}>
-
-                        {document?.solution && containsHTML(document.solution) ? (
+                          
+                        {document?.solution !== undefined && containsHTML(document.solution) ? (
                            // Render HTML content safely
-                          <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
+                          // <div dangerouslySetInnerHTML={{ __html: document?.solution }} />
+                          <div dangerouslySetInnerHTML={{ __html: handleHTMLSanitization(document.solution) || ''}} />
                             ) : (
                               // Render plain text
                               <p style={{ whiteSpace: 'pre-wrap'}}>{document?.solution}</p>
