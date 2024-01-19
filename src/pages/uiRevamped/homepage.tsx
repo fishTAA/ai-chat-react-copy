@@ -28,6 +28,8 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleTestEmbeddings } from "../../components/dbFunctions/searchEmbeddings";
+import AdminComponent from "../../components/AdminComponent";
+import { Ticket } from "../../components/Ticket";
 
 export const Homepage = () => {
   const [categories, setCategories] = useState<Array<Category>>([]);
@@ -35,6 +37,7 @@ export const Homepage = () => {
     null
   );
   const [document, setDocument] = useState("");
+  const [showTicketForm, setShowTicketForm] = useState(false);
 
   const [articles, setArticles] = useState<Array<Embedding>>([]);
   const [catarticles, setCatarticles] = useState<Array<Embedding>>([]);
@@ -71,6 +74,10 @@ export const Homepage = () => {
 
   return (
     <>
+      {showTicketForm && (
+        // Render the Ticket component when showTicketForm is true
+        <Ticket setShowTicketForm={setShowTicketForm} />
+      )}
       <Hero size="fullheight">
         <NavigationBar />
         <Hero.Body
@@ -125,6 +132,11 @@ export const Homepage = () => {
                 </Form.Control>
                 <Form.Control>
                   <Button
+                    onClick={() => {
+                      // Clear the document and test results
+                      setDocument("");
+                      setArticles([]);
+                    }}
                     style={{
                       backgroundColor: "#3080e236",
                       borderRadius: "0 50px 50px 0",
@@ -237,6 +249,10 @@ export const Homepage = () => {
                       padding: "15px",
                       flex: 1,
                     }}
+                    onClick={() => {
+                      // Render a card for submitting a ticket
+                      setShowTicketForm(true);
+                    }}
                   >
                     <Heading
                       size={4}
@@ -277,40 +293,43 @@ export const Homepage = () => {
                 marginTop: "10px",
               }}
             >
-              <Button
-                size={"small"}
-                style={{
-                  backgroundColor: "#d9ead3",
-                  fontWeight: "500",
-                  border: "1px solid #47bd13",
-                  color: "#47bd13",
-                }}
-                onClick={() => {
-                  setAddCategory(true);
-                }}
-              >
-                + Add a category
-              </Button>
-              <Modal show={addCategory} onClose={() => setAddCategory(false)}>
-                <Modal.Card>
-                  <Modal.Card.Header showClose>
-                    <Modal.Card.Title>Add Category</Modal.Card.Title>
-                  </Modal.Card.Header>
-                  <Modal.Card.Body>put input fields here</Modal.Card.Body>
-                </Modal.Card>
-              </Modal>
-              <Button
-                size={"small"}
-                style={{
-                  backgroundColor: "#3080e236",
-                  fontWeight: "500",
-                  border: "1px solid #307FE2",
-                  color: "#307FE2",
-                }}
-              >
-                Edit
-              </Button>
+              <AdminComponent>
+                <Button
+                  size={"small"}
+                  style={{
+                    backgroundColor: "#d9ead3",
+                    fontWeight: "500",
+                    border: "1px solid #47bd13",
+                    color: "#47bd13",
+                  }}
+                  onClick={() => {
+                    setAddCategory(true);
+                  }}
+                >
+                  + Add a category
+                </Button>
+                <Modal show={addCategory} onClose={() => setAddCategory(false)}>
+                  <Modal.Card>
+                    <Modal.Card.Header showClose>
+                      <Modal.Card.Title>Add Category</Modal.Card.Title>
+                    </Modal.Card.Header>
+                    <Modal.Card.Body>put input fields here</Modal.Card.Body>
+                  </Modal.Card>
+                </Modal>
+                <Button
+                  size={"small"}
+                  style={{
+                    backgroundColor: "#3080e236",
+                    fontWeight: "500",
+                    border: "1px solid #307FE2",
+                    color: "#307FE2",
+                  }}
+                >
+                  Edit
+                </Button>
+              </AdminComponent>
             </section>
+
             <section
               className="scrollbar-hide"
               style={{
