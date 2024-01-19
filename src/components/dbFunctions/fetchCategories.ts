@@ -27,7 +27,7 @@ export const FetchEmebeddingbyCategory = async (catid: string) => {
     console.log("catid", catid);
     const res = await fetch(`${endPoint}/fillterembeddings`, {
       method: "post",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json"},
       body: JSON.stringify({
         id: catid,
       }),

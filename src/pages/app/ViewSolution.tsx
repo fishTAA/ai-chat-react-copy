@@ -76,7 +76,13 @@ function App() {
    // Retrieve document data
   const retrieveDocumentData = () => {
     setLoadingTest(true);
-    fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
+    fetch(`${endPoint}/findDocument?id=${urlparam.id}`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        }
+      })
     .then((res)=>res.json())
     .then((res)=>{
         console.log(res);
@@ -106,12 +112,15 @@ function App() {
     console.log("query",query)
   }, []);
 
+  const token = localStorage.getItem("token");
+
   const handleTestEmbeddings = () => {
     setLoadingTest(true);
     fetch(`${endPoint}/testEmbedding`, {
       method: "post",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
       },
       body: JSON.stringify({
         keyword: urlQuery,
