@@ -1,5 +1,5 @@
 import './NavigationBar.css';
-import isALogo from "../../media/Trajector Main Logo_Color.png";
+import isALogo from "../../media/Trajector Main Logo_Color_BW.png";
 
 export const NavigationBar = () => {
     return (
