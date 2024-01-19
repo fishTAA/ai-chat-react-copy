@@ -8,6 +8,7 @@ import Manage from "../pages/manage";
 import FullChat from "../pages/app/FullChat";
 import ViewSolution from "../pages/app/ViewSolution";
 import Login from "../pages/login/login";
+import { Homepage } from "../pages/uiRevamped/homepage";
 
 export const routes = createBrowserRouter([
   {
@@ -18,7 +19,8 @@ export const routes = createBrowserRouter([
   {
     path: "/",
     
-    element: <App/>
+    // element: <App/>
+    element: <Homepage/>
   },
   {
     path: "/manage",

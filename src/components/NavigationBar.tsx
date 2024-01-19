@@ -73,8 +73,6 @@ export const NavigationBar = () => {
       style={{
         position: menuOpen ? "absolute" : "fixed",
         width: "-webkit-fill-available",
-        margin: 10,
-        borderRadius: 6,
         zIndex: 100,
         boxShadow: "2px 2px 5px #888888",
         backgroundColor: "white",
@@ -104,28 +102,21 @@ export const NavigationBar = () => {
         }}
         className={`navbar-menu ${menuOpen ? "is-active" : ""}`}
       >
-        <Navbar.Container align="right">
-          <Navbar.Item href="/">Home</Navbar.Item>
-          {/* <Navbar.Item href="/full-chat">Full Screen Chat</Navbar.Item> */}
-        </Navbar.Container>
         <Navbar.Container align="left">
+          <Navbar.Item href="/">Home</Navbar.Item>
+          
           <AdminComponent>
             <Navbar.Item style={{ borderRadius: "6px" }} href="/manage">
               Manage
             </Navbar.Item>
           </AdminComponent>
 
-          {/* <Navbar.Item 
-              style={{
-              borderRadius: "6px"
-            }}
-      href="/manage"
-      >
-        Manage
-    </Navbar.Item> */}
           <Navbar.Item>
             <Button
-              style={{ backgroundColor: "#0078d4", color: "white" }}
+              style={{ 
+                backgroundColor: "#307FE2",
+                color: "white"
+                }}
               onClick={handleLogout}
             >
               Logout

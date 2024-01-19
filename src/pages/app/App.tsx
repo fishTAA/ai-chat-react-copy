@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
+import { BsSearch } from "react-icons/bs";
 import { NavigationBar } from "../../components/NavigationBar";
 import {
   Card,
@@ -33,6 +34,10 @@ import {
 } from "@azure/msal-react";
 import { InteractionStatus, InteractionType } from "@azure/msal-browser";
 import { handleSendTokenToBackend } from "../../components/dbFunctions/sendTokentoBE";
+import {
+  Category,
+  FetchCategories,
+} from "../../components/dbFunctions/fetchCategories";
 
 function App() {
   // Check if the user is authenticated
@@ -57,11 +62,11 @@ function App() {
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
   const [document, setDocument] = useState("");
-
+  const [categories, setCategories] = useState<Array<Category>>([]);
   // Get authentication details and initialize the Microsoft Authentication Library
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}";
-
+  const token = localStorage.getItem("token");
   // Get user account based on the stored account data
   const userAccount = useAccount(JSON.parse(account));
 
@@ -74,6 +79,7 @@ function App() {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
       },
       body: JSON.stringify({
         keyword: document,
@@ -91,6 +97,21 @@ function App() {
       .finally(() => {
         setLoadingTest(false);
       });
+  };
+
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+  useEffect(() => {
+    FetchCategories().then((categories) => {
+      if (categories) {
+        setCategories(categories);
+      }
+    });
+  }, []);
+  const contentStyle = {
+    display: collapsed ? "none" : "block",
   };
 
   return (
@@ -112,12 +133,12 @@ function App() {
         <Hero size="fullheight">
           <Hero.Body
             style={{
-              paddingTop: 100,
+              paddingTop: 120,
             }}
           >
             <Container>
               <Form.Field kind="addons">
-                <Form.Control fullwidth>
+                <Form.Control fullwidth style={{ position: "relative" }}>
                   <Form.Input
                     onChange={(e) => setDocument(e.target.value)}
                     onKeyDown={(e) => {
@@ -125,8 +146,9 @@ function App() {
                         // Execute handleTestEmbeddings on Enter key press
                         handleTestEmbeddings();
                     }}
+                    
                     value={document}
-                    placeholder={"Search "}
+                    placeholder={"  Search "}
                     style={{
                       boxShadow: "2px 2px 5px 0px #888888",
                       borderTopRightRadius: 0,
@@ -134,8 +156,8 @@ function App() {
                       borderTopLeftRadius: 20,
                       borderBottomLeftRadius: 20,
                       borderRight: "none",
-                      maxHeight: "50px",
-                      minHeight: "50px",
+                      maxHeight: "55px",
+                      minHeight: "55px",  
                       overflow: "hidden",
                       resize: "none",
                       marginTop: -50,
@@ -156,8 +178,8 @@ function App() {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       borderLeft: "none",
-                      maxHeight: "50px",
-                      minHeight: "50px",
+                      maxHeight: "55px",
+                      minHeight: "55px",
                       overflow: "hidden",
                       resize: "none",
                       marginTop: -50,
@@ -196,43 +218,44 @@ function App() {
                   }}
                 >
                   {/* Map through the test results and render each one */}
-                  {testResults && testResults.map((res) => {
-                    return (
-                      <Columns.Column
-                        key={res._id}
-                        className="is-one-third"
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Card
+                  {testResults &&
+                    testResults.map((res) => {
+                      return (
+                        <Columns.Column
+                          key={res._id}
+                          className="is-one-third"
                           style={{
-                            maxWidth: "70%",
-                            minWidth: "100%",
-                            margin: 10,
-                            minHeight: "100%",
-                          }}
-                          onClick={() => {
-                            // Navigate to view solution page with relevant information
-                            navigate(
-                              "view-solution/" + res._id + "/" + document
-                            );
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
                           }}
                         >
-                          <Card.Content>
-                            <Media>
-                              <Media.Item>
-                                <Heading size={4}>{res.title}</Heading>
-                              </Media.Item>
-                            </Media>
-                            <Content>{res.input}</Content>
-                          </Card.Content>
-                        </Card>
-                      </Columns.Column>
-                    );
-                  })}
+                          <Card
+                            style={{
+                              maxWidth: "70%",
+                              minWidth: "100%",
+                              margin: 10,
+                              minHeight: "100%",
+                            }}
+                            onClick={() => {
+                              // Navigate to view solution page with relevant information
+                              navigate(
+                                "view-solution/" + res._id + "/" + document
+                              );
+                            }}
+                          >
+                            <Card.Content>
+                              <Media>
+                                <Media.Item>
+                                  <Heading size={4}>{res.title}</Heading>
+                                </Media.Item>
+                              </Media>
+                              <Content>{res.input}</Content>
+                            </Card.Content>
+                          </Card>
+                        </Columns.Column>
+                      );
+                    })}
 
                   <Columns.Column
                     className="is-one-third"
@@ -278,6 +301,41 @@ function App() {
                       </Card.Content>
                     </Card>
                   </Columns.Column>
+                </Columns>
+              </section>
+
+              <section className="category tiles">
+                <Columns style={{ paddingTop: 20 }}>
+                  {categories.map((category) => (
+                    <Columns.Column
+                      key={category.value - 1}
+                      className="is-one-third"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Card
+                        style={{
+                          width: "100%",
+                          margin: 10,
+                          minHeight: "100%",
+                          backgroundColor: "#ffffff",
+                          boxShadow: "2px 2px 8px 0px #888888",
+                          cursor: "pointer",
+                        }}
+                        onClick={toggleCollapse}
+                      >
+                        <Card.Content>
+                          <Heading size={4} style={{ color: "#307FE2" }}>
+                            {category.label} {category.value}
+                          </Heading>
+                          <Content style={contentStyle}>Hello World</Content>
+                        </Card.Content>
+                      </Card>
+                    </Columns.Column>
+                  ))}
                 </Columns>
               </section>
             </Container>
