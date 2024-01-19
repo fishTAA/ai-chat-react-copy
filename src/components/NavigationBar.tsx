@@ -73,27 +73,45 @@ export const NavigationBar = () => {
   }, [inProgress, token]);
 
   return (
-    <>
-      <Authed>
-        <Navbar
-          style={{
-            position: menuOpen ? "absolute" : "fixed",
-            width: "-webkit-fill-available",
-            margin: 10,
-            borderRadius: 6,
-            zIndex: 100,
-            boxShadow: "2px 2px 5px #888888",
-            backgroundColor: "white",
+    <Navbar
+      style={{
+        position: menuOpen ? "absolute" : "fixed",
+        width: "-webkit-fill-available",
+        zIndex: 100,
+        boxShadow: "2px 2px 5px #888888",
+        backgroundColor: "white",
+      }}
+    >
+      <Navbar.Brand>
+        <Navbar.Item renderAs="a" href="/">
+          <img
+            src={logo}
+            className="App-logo"
+            alt="logo"
+            style={{ width: "200px", height: "auto" }}
+          />
+        </Navbar.Item>
+        <Navbar.Burger
+          className={`navbar-burger burger ${menuOpen ? "is-active" : ""}`}
+          onClick={() => {
+            setMenuOpen(!menuOpen);
           }}
-        >
-          <Navbar.Brand>
-            <Navbar.Item renderAs="a" href="/">
-              <img
-                src={logo}
-                className="App-logo"
-                alt="logo"
-                style={{ width: "200px", height: "auto" }}
-              />
+          pull="right"
+        />
+      </Navbar.Brand>
+      <Navbar.Menu
+        pull="left"
+        style={{
+          position: menuOpen ? "absolute" : "unset",
+        }}
+        className={`navbar-menu ${menuOpen ? "is-active" : ""}`}
+      >
+        <Navbar.Container align="left">
+          <Navbar.Item href="/">Home</Navbar.Item>
+          
+          <AdminComponent>
+            <Navbar.Item style={{ borderRadius: "6px" }} href="/manage">
+              Manage
             </Navbar.Item>
             <Navbar.Burger
               className={`navbar-burger burger ${menuOpen ? "is-active" : ""}`}
@@ -121,26 +139,19 @@ export const NavigationBar = () => {
                 </Navbar.Item>
               </AdminComponent>
 
-              {/* <Navbar.Item 
-              style={{
-              borderRadius: "6px"
-            }}
-      href="/manage"
-      >
-        Manage
-    </Navbar.Item> */}
-              <Navbar.Item>
-                <Button
-                  style={{ backgroundColor: "#0078d4", color: "white" }}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-              </Navbar.Item>
-            </Navbar.Container>
-          </Navbar.Menu>
-        </Navbar>
-      </Authed>
-    </>
+          <Navbar.Item>
+            <Button
+              style={{ 
+                backgroundColor: "#307FE2",
+                color: "white"
+                }}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Navbar.Item>
+        </Navbar.Container>
+      </Navbar.Menu>
+    </Navbar>
   );
 };
