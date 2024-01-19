@@ -94,7 +94,7 @@ function Manage() {
   //     }
   //   }
   // }, [inProgress]);
-
+  const token = localStorage.getItem("token");
   // Function to create embeddings
   const handleCreateEmbeddings = () => {
     setCreateEmbeddingSuccess(false);
@@ -103,6 +103,7 @@ function Manage() {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
       },
       body: JSON.stringify({
         title: documentTitle,

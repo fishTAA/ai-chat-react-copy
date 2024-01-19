@@ -37,7 +37,6 @@ import { handleSendTokenToBackend } from "../../components/dbFunctions/sendToken
 import {
   Category,
   FetchCategories,
-  FetchEmebeddingbyCategory,
 } from "../../components/dbFunctions/fetchCategories";
 
 function App() {
@@ -67,7 +66,7 @@ function App() {
   // Get authentication details and initialize the Microsoft Authentication Library
   const { instance, inProgress } = useMsal();
   const account = localStorage.getItem("account") || "{}";
-
+  const token = localStorage.getItem("token");
   // Get user account based on the stored account data
   const userAccount = useAccount(JSON.parse(account));
 
@@ -80,6 +79,7 @@ function App() {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
       },
       body: JSON.stringify({
         keyword: document,
@@ -110,11 +110,6 @@ function App() {
       }
     });
   }, []);
-  const handleCategories = async (id: string) => {
-    console.log("id at handle", id);
-    const data = await FetchEmebeddingbyCategory(id);
-    console.log(data);
-  };
   const contentStyle = {
     display: collapsed ? "none" : "block",
   };
@@ -330,7 +325,7 @@ function App() {
                           boxShadow: "2px 2px 8px 0px #888888",
                           cursor: "pointer",
                         }}
-                        onClick={() => handleCategories(category._id)}
+                        onClick={toggleCollapse}
                       >
                         <Card.Content>
                           <Heading size={4} style={{ color: "#307FE2" }}>
