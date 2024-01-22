@@ -1,7 +1,7 @@
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Columns, Heading, Icon } from "react-bulma-components";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { chatMessage } from "./utils";
 
 interface ChatBubbleParams {
@@ -17,29 +17,28 @@ interface ChatBubbleParams {
 }
 
 export const ChatBubble = (params: ChatBubbleParams) => {
- 
-const navigate = useNavigate();
-const location = useLocation();
-  
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
-  
-    <Box shadowless
-      style={{
-        padding: 0,
-        paddingLeft: 20,
-        paddingRight: 20,
-        marginBottom: 20,
-        marginLeft: params.sender === '_self' ? 20 : 0,
-        marginRight: params.sender === '_self' ? 0 : 20,
-        display: "flex",
-        flexDirection: 'column',
-        alignItems: params.sender === '_self' ? "end" : "start",
-      }}
+
+    <Box shadowless style={{
+      padding: 0,
+      paddingLeft: 20,
+      paddingRight: 20,
+      marginBottom: 20,
+      marginLeft: params.sender === '_self' ? 20 : 0,
+      marginRight: params.sender === '_self' ? 0 : 20,
+      display: "flex",
+      flexDirection: 'column',
+      alignItems: params.sender === '_self' ? "end" : "start",
+    }}
       onClick={() => {
         if (params.sender === 'AI Chat') {
           console.log("userinput", params.userinput);
           // Navigate('view-solution/' + params.id + '/' + params.userinput,{state:{...Location.state},});
-          
+
           // Navigate to the 'view-solution' page when clicking on a message from AI Chat
           navigate('view-solution/' + params.id + '/' + params.userinput)
         }
@@ -51,9 +50,9 @@ const location = useLocation();
           padding: 0,
           fontSize: 12,
           fontWeight: "bold",
-          textAlign: params.sender === '_self' ? "right": "left",
+          textAlign: params.sender === '_self' ? "right" : "left",
         }}>
-      
+
         {params.sender === '_self' ? 'Me' : params.sender}
       </Box>
       <Box
@@ -80,7 +79,7 @@ const location = useLocation();
 
           {
             <>{params.title}</>
-          } 
+          }
 
         </Box>
 
@@ -94,19 +93,19 @@ const location = useLocation();
             fontSize: 14,
             overflowWrap: "anywhere",
           }}>
-          
-          {params.type && params.type == 'file' ? 
+
+          {params.type && params.type == 'file' ?
 
             <>
               <Icon size="small">
-                <FontAwesomeIcon icon={faPaperclip}  size="1x"/>
+                <FontAwesomeIcon icon={faPaperclip} size="1x" />
               </Icon>
-              
+
               {params.fileName}
             </>
             :
             <>{params.message} </>
-          } 
+          }
         </Box>
 
         <Box
@@ -124,7 +123,7 @@ const location = useLocation();
           }}>
 
             {params.timeSent?.toLocaleTimeString()}
-            
+
           </span>
         </Box>
       </Box>
