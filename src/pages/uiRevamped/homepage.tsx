@@ -23,6 +23,8 @@ import {
   Category,
   Embedding,
   FetchCategories,
+  FetchCreateCategory,
+  FetchDeleteCategory,
   FetchEmebeddingbyCategory,
 } from "../../components/dbFunctions/fetchCategories";
 import { useEffect, useState } from "react";
@@ -30,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { handleTestEmbeddings } from "../../components/dbFunctions/searchEmbeddings";
 import AdminComponent from "../../components/AdminComponent";
 import { Ticket } from "../../components/Ticket";
-
+import Chat from "../../components/chat";
 
 export const Homepage = () => {
   // State variables
@@ -64,7 +66,7 @@ export const Homepage = () => {
   // Function to toggle edit mode
   const toggleEditMode = () => {
     setEditMode((prevEditMode) => !prevEditMode);
-    if (editMode) handleCancelEdit()
+    if (editMode) handleCancelEdit();
   };
 
   // Function to handle category title edit
@@ -90,34 +92,27 @@ export const Homepage = () => {
       // Perform the necessary action to save the new category
       // For example, you can implement an API call to add the category to the database
       // Replace the following line with your actual save new category logic
-      const response = await fetch(`/api/categories`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers as needed
-        },
-        body: JSON.stringify({ title: newCategoryTitle }),
-      });
-
-      if (response.ok) {
-        console.log(`New category "${newCategoryTitle}" saved successfully.`);
-        // Fetch updated categories after saving
-        FetchCategories().then((updatedCategories) => {
-          if (updatedCategories) {
-            setCategories(updatedCategories);
-          }
-        });
-        // Reset the new category title and close the modal
-        setNewCategoryTitle("");
-        setAddCategory(false);
-      } else {
-        console.error(`Failed to save new category "${newCategoryTitle}"`);
+      const response = await FetchCreateCategory(newCategoryTitle);
+      console.log(`New category "${newCategoryTitle}" saved successfully.`);
+      // Fetch updated categories after saving
+      if (!response) {
+        return console.error(
+          `Failed to save new category "${newCategoryTitle}"`
+        );
       }
+      FetchCategories().then((updatedCategories) => {
+        if (updatedCategories) {
+          setCategories(updatedCategories);
+        }
+      });
+      // Reset the new category title and close the modal
+      setNewCategoryTitle("");
+      setAddCategory(false);
+      console.log(response);
     } catch (error) {
-      console.error('Error saving new category:', error);
+      console.error("Error saving new category:", error);
     }
   };
-
 
   // Function to handle category title deletion
   const handleDeleteCategoryTitle = async (categoryId: string) => {
@@ -125,16 +120,12 @@ export const Homepage = () => {
       // Perform the necessary action to delete the category title
       // For example, you can implement an API call to delete the category title from the database
       // Replace the following line with your actual delete category title logic
-      const response = await fetch(`/api/categories/${categoryId}/title`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers as needed
-        },
-      });
+      const response = await FetchDeleteCategory(categoryId);
 
-      if (response.ok) {
-        console.log(`Category title with ID ${categoryId} deleted successfully.`);
+      if (response) {
+        console.log(
+          `Category title with ID ${categoryId} deleted successfully.`
+        );
         // Fetch updated categories after deletion
         FetchCategories().then((updatedCategories) => {
           if (updatedCategories) {
@@ -145,10 +136,9 @@ export const Homepage = () => {
         console.error(`Failed to delete category title with ID ${categoryId}`);
       }
     } catch (error) {
-      console.error('Error deleting category title:', error);
+      console.error("Error deleting category title:", error);
     }
   };
-
 
   // Fetch categories on component mount
   useEffect(() => {
@@ -319,9 +309,7 @@ export const Homepage = () => {
                       <section>
                         <Button
                           onClick={() => {
-                            navigate(
-                              "view-solution/" + item._id + "/software"
-                            );
+                            navigate("view-solution/" + item._id + "/software");
                           }}
                           style={{
                             backgroundColor: "#3080e236",
@@ -432,7 +420,9 @@ export const Homepage = () => {
                           <Form.Input
                             placeholder="New Category Title"
                             value={newCategoryTitle}
-                            onChange={(e) => setNewCategoryTitle(e.target.value)}
+                            onChange={(e) =>
+                              setNewCategoryTitle(e.target.value)
+                            }
                             style={{
                               borderRadius: "10px",
                               border: "1px solid #307FE2",
@@ -471,7 +461,6 @@ export const Homepage = () => {
                   onClick={toggleEditMode}
                 >
                   {editMode ? "Cancel Edit Mode" : "Edit Mode"}
-
                 </Button>
               </AdminComponent>
             </section>
@@ -501,16 +490,29 @@ export const Homepage = () => {
                     boxShadow: "none",
                   }}
                   onClick={() =>
-                    editMode ? handleEditCategory(category) : handleCategory(category._id)
+                    editMode
+                      ? handleEditCategory(category)
+                      : handleCategory(category._id)
                   }
                 >
                   {/* Editable Category Title */}
                   {editMode && selectedCategoryId === category._id ? (
                     <Form.Field>
                       <Form.Control>
-                        <Form.Input
-                          placeholder="Edit Category Title"
-                          value={editedCategoryTitle}
+                        <Heading
+                          style={{
+                            fontWeight: "500",
+                            fontSize: "16px",
+                            margin: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {category.label}
+                        </Heading>
+                        {/* comment out to add edit categoryname */}
+                        {/* <Form.Input
+                          // placeholder="Edit Category Title"
+                          value={category.label}
                           onChange={(e) =>
                             setEditedCategoryTitle(e.target.value)
                           }
@@ -520,7 +522,7 @@ export const Homepage = () => {
                             height: "30px",
                             width: "100%",
                           }}
-                        />
+                        /> */}
                       </Form.Control>
                     </Form.Field>
                   ) : (
@@ -544,7 +546,7 @@ export const Homepage = () => {
                   {editMode && selectedCategoryId === category._id && (
                     <Form.Field>
                       <Form.Control>
-                        <Button
+                        {/* <Button
                           size={"small"}
                           style={{
                             backgroundColor: "#3080e236",
@@ -555,7 +557,7 @@ export const Homepage = () => {
                           onClick={handleSaveCategoryTitle}
                         >
                           Save
-                        </Button>
+                        </Button> */}
                         <Button
                           size={"small"}
                           style={{
@@ -564,7 +566,9 @@ export const Homepage = () => {
                             border: "1px solid #d9534f",
                             color: "#fff",
                           }}
-                          onClick={() => handleDeleteCategoryTitle(selectedCategoryId!)}
+                          onClick={() =>
+                            handleDeleteCategoryTitle(selectedCategoryId)
+                          }
                         >
                           Delete
                         </Button>
@@ -576,7 +580,9 @@ export const Homepage = () => {
                   {catarticles.map((item) => (
                     <Content
                       onClick={() => {
-                        navigate("view-solution/" + item._id + "/software");
+                        navigate(
+                          "view-solution/" + item._id + "/" + category.label
+                        );
                       }}
                       key={item.title}
                       style={{
@@ -584,7 +590,11 @@ export const Homepage = () => {
                         fontSize: "16px",
                         margin: "0px",
                         cursor: "pointer",
-                        display: editMode ? "none" : collapsedCategory === category.label ? "block" : "none",
+                        display: editMode
+                          ? "none"
+                          : collapsedCategory === category.label
+                          ? "block"
+                          : "none",
                       }}
                     >
                       {item.title}
@@ -595,6 +605,7 @@ export const Homepage = () => {
             </section>
           </div>
         </Hero.Body>
+        <Chat width={350} />
 
         {/* Hero Footer */}
         <Hero.Footer marginless paddingless>
