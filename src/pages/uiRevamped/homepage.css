@@ -1,0 +1,22 @@
+
+.left-side {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    height: 92svh;
+    padding: 20px 0 0 0;
+}
+
+.right-side {
+    width: 25%;
+    height: 92svh;
+    padding: 20px 0 0 28px;
+}
+
+/* .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  } */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
