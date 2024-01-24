@@ -4,7 +4,7 @@ export interface Category {
   value: number;
   label: string;
 }
- export interface Embedding {
+export interface Embedding {
   _id: string;
   input: string;
   title: string;
@@ -27,12 +27,44 @@ export const FetchEmebeddingbyCategory = async (catid: string) => {
     console.log("catid", catid);
     const res = await fetch(`${endPoint}/fillterembeddings`, {
       method: "post",
-      headers: { "Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         id: catid,
       }),
     });
     const result: Array<Embedding> = await res.json();
     return result;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const FetchCreateCategory = async (cat: string) => {
+  try {
+    console.log("cat", cat);
+    const res = await fetch(`${endPoint}/createCategories`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        value: 1,
+        label: cat,
+      }),
+    });
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const FetchDeleteCategory = async (catid: string) => {
+  try {
+    console.log("deleting", catid);
+    const res = await fetch(`${endPoint}/deleteCategories/${catid}`, {
+      method: "Delete",
+      headers: { "Content-Type": "application/json" },
+    });
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 };
