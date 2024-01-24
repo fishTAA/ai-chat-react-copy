@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Heading } from "react-bulma-components";
 import Select from "react-select";
+import { FetchEmbeddingsCollection } from "../../../components/dbFunctions/fetchEmbeddings";
+import { Embedding } from "../../../components/dbFunctions/fetchCategories";
 interface Editprops {
   handleCloseEditModal: () => void;
   showEditModal: boolean;
@@ -12,6 +14,15 @@ export const EditTab: React.FC<Editprops> = ({
   showEditModal,
   handleEditButtonClick,
 }) => {
+  const [embeddings, setEmbeddings] = useState<Array<Embedding>>([]);
+
+  useEffect(() => {
+    FetchEmbeddingsCollection().then((e) => {
+      if (e) {
+        setEmbeddings(e);
+      }
+    });
+  }, []);
   return (
     <div>
       <Heading size={3} style={{ marginTop: "20px" }}>
@@ -25,20 +36,23 @@ export const EditTab: React.FC<Editprops> = ({
           <th>Action</th>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>test</td>
-            <td>
-              <button
-                className="button is-link is-focus"
-                style={{ marginRight: "5px" }}
-                onClick={handleEditButtonClick}
-              >
-                Edit
-              </button>
-              <button className="button is-danger is-focus">Delete</button>
-            </td>
-          </tr>
+          {embeddings &&
+            embeddings.map((embedding) => (
+              <tr>
+                <td>1</td>
+                <td>{embedding.title}</td>
+                <td>
+                  <button
+                    className="button is-link is-focus"
+                    style={{ marginRight: "5px" }}
+                    onClick={handleEditButtonClick}
+                  >
+                    Edit
+                  </button>
+                  <button className="button is-danger is-focus">Delete</button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
