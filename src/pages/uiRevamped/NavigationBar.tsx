@@ -5,7 +5,7 @@ export const NavigationBar = () => {
     return (
         <div className="sticky" style={{backgroundColor: "rgb(10, 25, 54)"}}>
             <div className="navbar">
-                <div>
+                <div className='imgcontainer'>
                     <img src={isALogo}
                                 className="App-logo"
                                 alt="logo"
