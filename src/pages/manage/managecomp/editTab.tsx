@@ -33,27 +33,33 @@ export const EditTab: React.FC<Editprops> = ({
 
   const handleEeditButtonClick = (embedding: Embedding) => {
     setThisEmbedding(embedding)
-
-    if (embedding) {
-      // set showEditModal to true
-      handleEditButtonClick(embedding.title); // Assuming this function handles the modal display logic
-      if(embedding.categoies){
-      embedding.categoies.map(catid=>{
-        
-      })}
-    }
+  if (embedding) {
+    const foshoCategories: Array<options> = []
+    handleEditButtonClick(embedding.title); // Assuming this function handles the modal display logic
+    if(embedding.categories){
+    embedding.categories.forEach((catid)=>{
+      // console.log("Document has",catid, "Options are", selectOption)
+      const filteredCategories = selectOption.filter((option) =>
+        String(option.value) === (String(catid))
+      )
+      foshoCategories.push(...filteredCategories)
+    })}
+    setDocumentCategory(foshoCategories);
+    // console.log("Now has",documentCategory)
+  }
   }
 
-   //used to change category array to be readable by select component
+   //used to change categories array to be readable by select component
    const SetOptions = (categories: Category[] | undefined) => {
     if (categories) {
-      const newoptions = categories.map((category: Category) => ({
-        value: category._id,
-        label: category.label,
+      const newoptions = categories.map((categories: Category) => ({
+        value: categories._id,
+        label: categories.label,
       }));
       setSelectOption(newoptions);
     }
   };
+
   //fetch the categories array from db
   useEffect(() => {
     FetchCategories().then((categories) => {
@@ -166,7 +172,7 @@ export const EditTab: React.FC<Editprops> = ({
                       onChange={(selectedOptions: any) =>
                       setDocumentCategory(selectedOptions)
                         }
-                      placeholder="Select a category"
+                      placeholder="Select a categories"
                       
                     />
                   </div>

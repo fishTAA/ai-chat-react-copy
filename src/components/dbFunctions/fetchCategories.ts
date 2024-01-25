@@ -9,7 +9,7 @@ export interface Embedding {
   input: string;
   title: string;
   score: number;
-  categoies?: string[];
+  categories?: string[];
   solution?: string;
 }
 export const FetchCategories = async () => {
