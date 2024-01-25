@@ -23,6 +23,8 @@ import {
   Category,
   Embedding,
   FetchCategories,
+  FetchCreateCategory,
+  FetchDeleteCategory,
   FetchEmebeddingbyCategory,
 } from "../../components/dbFunctions/fetchCategories";
 import { useEffect, useState } from "react";
@@ -30,27 +32,115 @@ import { useNavigate } from "react-router-dom";
 import { handleTestEmbeddings } from "../../components/dbFunctions/searchEmbeddings";
 import AdminComponent from "../../components/AdminComponent";
 import { Ticket } from "../../components/Ticket";
+import Chat from "../../components/chat";
 
 export const Homepage = () => {
+  // State variables
   const [categories, setCategories] = useState<Array<Category>>([]);
   const [collapsedCategory, setCollapsedCategory] = useState<string | null>(
     null
   );
   const [document, setDocument] = useState("");
   const [showTicketForm, setShowTicketForm] = useState(false);
+  const [newCategoryTitle, setNewCategoryTitle] = useState("");
 
   const [articles, setArticles] = useState<Array<Embedding>>([]);
   const [catarticles, setCatarticles] = useState<Array<Embedding>>([]);
+  const [addCategory, setAddCategory] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editedCategoryTitle, setEditedCategoryTitle] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
 
+  // React Router navigation hook
+  const navigate = useNavigate();
+
+  // Function to toggle collapse
   const toggleCollapse = (categoryLabel: string) => {
     setCollapsedCategory((prevCollapsedCategory) =>
       prevCollapsedCategory === categoryLabel ? null : categoryLabel
     );
   };
-  const navigate = useNavigate();
 
-  const [addCategory, setAddCategory] = useState(false);
+  // Function to toggle edit mode
+  const toggleEditMode = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
+    if (editMode) handleCancelEdit();
+  };
 
+  // Function to handle category title edit
+  const handleEditCategory = (category: Category) => {
+    setEditedCategoryTitle(category.label);
+    setSelectedCategoryId(category._id);
+    setEditMode(true);
+  };
+
+  // Function to handle category title save
+  const handleSaveCategoryTitle = () => {
+    // Perform the necessary action to save the edited category title
+    // For example, you can implement an API call to update the category title in the database
+    console.log(`Editing category title: ${editedCategoryTitle}`);
+    // Reset the state variables
+    setEditedCategoryTitle("");
+    setSelectedCategoryId(null);
+    setEditMode(false);
+  };
+
+  const handleSaveNewCategory = async () => {
+    try {
+      // Perform the necessary action to save the new category
+      // For example, you can implement an API call to add the category to the database
+      // Replace the following line with your actual save new category logic
+      const response = await FetchCreateCategory(newCategoryTitle);
+      console.log(`New category "${newCategoryTitle}" saved successfully.`);
+      // Fetch updated categories after saving
+      if (!response) {
+        return console.error(
+          `Failed to save new category "${newCategoryTitle}"`
+        );
+      }
+      FetchCategories().then((updatedCategories) => {
+        if (updatedCategories) {
+          setCategories(updatedCategories);
+        }
+      });
+      // Reset the new category title and close the modal
+      setNewCategoryTitle("");
+      setAddCategory(false);
+      console.log(response);
+    } catch (error) {
+      console.error("Error saving new category:", error);
+    }
+  };
+
+  // Function to handle category title deletion
+  const handleDeleteCategoryTitle = async (categoryId: string) => {
+    try {
+      // Perform the necessary action to delete the category title
+      // For example, you can implement an API call to delete the category title from the database
+      // Replace the following line with your actual delete category title logic
+      const response = await FetchDeleteCategory(categoryId);
+
+      if (response) {
+        console.log(
+          `Category title with ID ${categoryId} deleted successfully.`
+        );
+        // Fetch updated categories after deletion
+        FetchCategories().then((updatedCategories) => {
+          if (updatedCategories) {
+            setCategories(updatedCategories);
+          }
+        });
+      } else {
+        console.error(`Failed to delete category title with ID ${categoryId}`);
+      }
+    } catch (error) {
+      console.error("Error deleting category title:", error);
+    }
+  };
+
+  // Fetch categories on component mount
   useEffect(() => {
     FetchCategories().then((categories) => {
       if (categories) {
@@ -58,13 +148,17 @@ export const Homepage = () => {
       }
     });
   }, []);
-  const HandleSearch = async () => {
+
+  // Handle search functionality
+  const handleSearch = async () => {
     const result = await handleTestEmbeddings(document);
     if (result) {
       setArticles(result.related);
     }
   };
-  const HandleCategory = async (id: string) => {
+
+  // Handle category selection
+  const handleCategory = async (id: string) => {
     FetchEmebeddingbyCategory(id).then((articles) => {
       if (articles) {
         setCatarticles(articles);
@@ -72,14 +166,19 @@ export const Homepage = () => {
     });
   };
 
+  const handleCancelEdit = () => {
+    setEditedCategoryTitle("");
+    setSelectedCategoryId(null);
+    setEditMode(false);
+  };
+
   return (
     <>
-      {showTicketForm && (
-        // Render the Ticket component when showTicketForm is true
-        <Ticket setShowTicketForm={setShowTicketForm} />
-      )}
+      {showTicketForm && <Ticket setShowTicketForm={setShowTicketForm} />}
+
       <Hero size="fullheight">
         <NavigationBar />
+
         <Hero.Body
           style={{
             paddingInline: "28px",
@@ -117,9 +216,7 @@ export const Homepage = () => {
                     placeholder="Search"
                     onChange={(e) => setDocument(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === `Enter`)
-                        // Execute handleTestEmbeddings on Enter key press
-                        HandleSearch();
+                      if (e.key === `Enter`) handleSearch();
                     }}
                     style={{
                       borderRadius: "50px 0 0 50px",
@@ -133,7 +230,6 @@ export const Homepage = () => {
                 <Form.Control>
                   <Button
                     onClick={() => {
-                      // Clear the document and test results
                       setDocument("");
                       setArticles([]);
                     }}
@@ -149,6 +245,7 @@ export const Homepage = () => {
                   </Button>
                 </Form.Control>
               </Form.Field>
+
               <Form.Field>
                 <Form.Label
                   style={{
@@ -160,6 +257,7 @@ export const Homepage = () => {
                   Most searched result:
                 </Form.Label>
               </Form.Field>
+
               <Columns
                 style={{
                   marginTop: "15px",
@@ -169,7 +267,6 @@ export const Homepage = () => {
               >
                 {articles.map((item) => (
                   <Columns.Column
-                    // key={item.id}
                     className="is-one-third"
                     style={{
                       padding: "10px",
@@ -185,7 +282,6 @@ export const Homepage = () => {
                         borderRadius: "10px",
                         padding: "15px",
                         height: "100%",
-                        // flex: 1,
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
@@ -209,10 +305,10 @@ export const Homepage = () => {
                           }}
                         ></Content>
                       </section>
+
                       <section>
                         <Button
                           onClick={() => {
-                            // Navigate to view solution page with relevant information
                             navigate("view-solution/" + item._id + "/software");
                           }}
                           style={{
@@ -250,7 +346,6 @@ export const Homepage = () => {
                       flex: 1,
                     }}
                     onClick={() => {
-                      // Render a card for submitting a ticket
                       setShowTicketForm(true);
                     }}
                   >
@@ -274,12 +369,15 @@ export const Homepage = () => {
               </Columns>
             </Container>
           </div>
+
+          {/* Right side content */}
           <div
             className="right-side"
             style={{
               backgroundColor: "",
             }}
           >
+            {/* Categories section */}
             <div
               style={{
                 margin: "0",
@@ -288,12 +386,15 @@ export const Homepage = () => {
             >
               Categories:
             </div>
+
+            {/* Admin section */}
             <section
               style={{
                 marginTop: "10px",
               }}
             >
               <AdminComponent>
+                {/* Add category button */}
                 <Button
                   size={"small"}
                   style={{
@@ -302,34 +403,69 @@ export const Homepage = () => {
                     border: "1px solid #47bd13",
                     color: "#47bd13",
                   }}
-                  onClick={() => {
-                    setAddCategory(true);
-                  }}
+                  onClick={() => setAddCategory(true)}
                 >
                   + Add a category
                 </Button>
+
+                {/* Add Category modal */}
                 <Modal show={addCategory} onClose={() => setAddCategory(false)}>
                   <Modal.Card>
                     <Modal.Card.Header showClose>
                       <Modal.Card.Title>Add Category</Modal.Card.Title>
                     </Modal.Card.Header>
-                    <Modal.Card.Body>put input fields here</Modal.Card.Body>
+                    <Modal.Card.Body>
+                      <Form.Field>
+                        <Form.Control>
+                          <Form.Input
+                            placeholder="New Category Title"
+                            value={newCategoryTitle}
+                            onChange={(e) =>
+                              setNewCategoryTitle(e.target.value)
+                            }
+                            style={{
+                              borderRadius: "10px",
+                              border: "1px solid #307FE2",
+                              height: "30px",
+                              width: "100%",
+                            }}
+                          />
+                        </Form.Control>
+                      </Form.Field>
+                    </Modal.Card.Body>
+                    <Modal.Card.Footer>
+                      <Button
+                        size={"small"}
+                        style={{
+                          backgroundColor: "#3080e236",
+                          fontWeight: "500",
+                          border: "1px solid #307FE2",
+                          color: "#307FE2",
+                        }}
+                        onClick={handleSaveNewCategory}
+                      >
+                        Save
+                      </Button>
+                    </Modal.Card.Footer>
                   </Modal.Card>
                 </Modal>
+                {/* Edit button */}
                 <Button
                   size={"small"}
                   style={{
-                    backgroundColor: "#3080e236",
+                    backgroundColor: editMode ? "#d9534f" : "#3080e236",
                     fontWeight: "500",
                     border: "1px solid #307FE2",
                     color: "#307FE2",
                   }}
+                  onClick={toggleEditMode}
                 >
-                  Edit
+                  {editMode ? "Cancel Edit Mode" : "Edit Mode"}
                 </Button>
               </AdminComponent>
             </section>
 
+            {/* Categories list */}
             <section
               className="scrollbar-hide"
               style={{
@@ -338,14 +474,13 @@ export const Homepage = () => {
                 overflowY: "auto",
               }}
             >
+              {/* Display categories */}
               {categories.map((category) => (
                 <Card
                   key={category.label}
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    // justifyContent: 'space-between',
-                    // alignContent: 'center',
                     width: "100%",
                     backgroundColor: "#ffffff",
                     borderRadius: "10px",
@@ -354,69 +489,129 @@ export const Homepage = () => {
                     border: "1px solid #bcbcbc",
                     boxShadow: "none",
                   }}
-                  onClick={() => HandleCategory(category._id)}
+                  onClick={() =>
+                    editMode
+                      ? handleEditCategory(category)
+                      : handleCategory(category._id)
+                  }
                 >
-                  <Heading
-                    onClick={() => {
-                      toggleCollapse(category.label);
-                    }}
-                    style={{
-                      fontWeight: "500",
-                      fontSize: "16px",
-                      margin: "0",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {category.label}
-                  </Heading>
-                  <Content
-                    style={{
-                      borderBottom: "1px solid #307FE2",
-                      margin: "5px 0 5px 0",
-                      display:
-                        collapsedCategory === category.label ? "block" : "none",
-                    }}
-                  ></Content>
-                  {catarticles.map((item) => {
-                    console.log("test", item);
-                    return (
-                      <Content
-                        onClick={() => {
-                          // Navigate to view solution page with relevant information
-                          navigate("view-solution/" + item._id + "/software");
-                        }}
-                        key={item.title}
-                        style={{
-                          fontWeight: "300",
-                          fontSize: "16px",
-                          margin: "0px",
-                          cursor: "pointer",
-                          display:
-                            collapsedCategory === category.label
-                              ? "block"
-                              : "none",
-                        }}
-                      >
-                        {item.title}
-                      </Content>
-                    );
-                  })}
-                  {/* <BsArrowDownCircle size={20}/> */}
+                  {/* Editable Category Title */}
+                  {editMode && selectedCategoryId === category._id ? (
+                    <Form.Field>
+                      <Form.Control>
+                        <Heading
+                          style={{
+                            fontWeight: "500",
+                            fontSize: "16px",
+                            margin: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {category.label}
+                        </Heading>
+                        {/* comment out to add edit categoryname */}
+                        {/* <Form.Input
+                          // placeholder="Edit Category Title"
+                          value={category.label}
+                          onChange={(e) =>
+                            setEditedCategoryTitle(e.target.value)
+                          }
+                          style={{
+                            borderRadius: "10px",
+                            border: "1px solid #307FE2",
+                            height: "30px",
+                            width: "100%",
+                          }}
+                        /> */}
+                      </Form.Control>
+                    </Form.Field>
+                  ) : (
+                    // Regular Category Heading
+                    <Heading
+                      onClick={() => {
+                        toggleCollapse(category.label);
+                      }}
+                      style={{
+                        fontWeight: "500",
+                        fontSize: "16px",
+                        margin: "0",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {category.label}
+                    </Heading>
+                  )}
+
+                  {/* Save/Edit buttons */}
+                  {editMode && selectedCategoryId === category._id && (
+                    <Form.Field>
+                      <Form.Control>
+                        {/* <Button
+                          size={"small"}
+                          style={{
+                            backgroundColor: "#3080e236",
+                            fontWeight: "500",
+                            border: "1px solid #307FE2",
+                            color: "#307FE2",
+                          }}
+                          onClick={handleSaveCategoryTitle}
+                        >
+                          Save
+                        </Button> */}
+                        <Button
+                          size={"small"}
+                          style={{
+                            backgroundColor: "#d9534f",
+                            fontWeight: "500",
+                            border: "1px solid #d9534f",
+                            color: "#fff",
+                          }}
+                          onClick={() =>
+                            handleDeleteCategoryTitle(selectedCategoryId)
+                          }
+                        >
+                          Delete
+                        </Button>
+                      </Form.Control>
+                    </Form.Field>
+                  )}
+
+                  {/* Display category articles */}
+                  {catarticles.map((item) => (
+                    <Content
+                      onClick={() => {
+                        navigate(
+                          "view-solution/" + item._id + "/" + category.label
+                        );
+                      }}
+                      key={item.title}
+                      style={{
+                        fontWeight: "300",
+                        fontSize: "16px",
+                        margin: "0px",
+                        cursor: "pointer",
+                        display: editMode
+                          ? "none"
+                          : collapsedCategory === category.label
+                          ? "block"
+                          : "none",
+                      }}
+                    >
+                      {item.title}
+                    </Content>
+                  ))}
                 </Card>
               ))}
             </section>
           </div>
         </Hero.Body>
+        <Chat width={350} />
 
+        {/* Hero Footer */}
         <Hero.Footer marginless paddingless>
           <FooterSection />
         </Hero.Footer>
       </Hero>
-
-      {/* <div className='contents'>
-                <SearchContainer/>
-                <CategoriesContainer/>
-            </div> */}
     </>
   );
 };
