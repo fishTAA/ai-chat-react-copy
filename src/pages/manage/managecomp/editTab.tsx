@@ -2,25 +2,63 @@ import React, { useEffect, useState } from "react";
 import { Heading } from "react-bulma-components";
 import Select from "react-select";
 import { FetchEmbeddingsCollection } from "../../../components/dbFunctions/fetchEmbeddings";
-import { Embedding } from "../../../components/dbFunctions/fetchCategories";
+import { Category, Embedding, FetchCategories } from "../../../components/dbFunctions/fetchCategories";
 interface Editprops {
   handleCloseEditModal: () => void;
   showEditModal: boolean;
-  handleEditButtonClick: () => void;
+  handleEditButtonClick: (title: string)  => void;
 }
-
+interface options {
+  value: string;
+  label: string;
+}
 export const EditTab: React.FC<Editprops> = ({
   handleCloseEditModal,
   showEditModal,
   handleEditButtonClick,
 }) => {
   const [embeddings, setEmbeddings] = useState<Array<Embedding>>([]);
+  const [thisEmbedding, setThisEmbedding] = useState<Embedding | undefined>();
+  const [categories, setCategories] = useState<Array<Category>>();
+  const [selectOption, setSelectOption] = useState<Array<options>>([]);
+  const [documentCategory, setDocumentCategory] = useState<Array<options>>([]);
 
   useEffect(() => {
     FetchEmbeddingsCollection().then((e) => {
       if (e) {
         setEmbeddings(e);
       }
+    });
+  }, []);
+
+  const handleEeditButtonClick = (embedding: Embedding) => {
+    setThisEmbedding(embedding)
+
+    if (embedding) {
+      // set showEditModal to true
+      handleEditButtonClick(embedding.title); // Assuming this function handles the modal display logic
+      if(embedding.categoies){
+      embedding.categoies.map(catid=>{
+        
+      })}
+    }
+  }
+
+   //used to change category array to be readable by select component
+   const SetOptions = (categories: Category[] | undefined) => {
+    if (categories) {
+      const newoptions = categories.map((category: Category) => ({
+        value: category._id,
+        label: category.label,
+      }));
+      setSelectOption(newoptions);
+    }
+  };
+  //fetch the categories array from db
+  useEffect(() => {
+    FetchCategories().then((categories) => {
+      setCategories(categories);
+      SetOptions(categories);
     });
   }, []);
   return (
@@ -37,15 +75,18 @@ export const EditTab: React.FC<Editprops> = ({
         </thead>
         <tbody>
           {embeddings &&
-            embeddings.map((embedding) => (
-              <tr>
-                <td>1</td>
+            embeddings.map((embedding,index) => (
+              <tr key={embedding._id}>
+                <td>{index+1}</td>
                 <td>{embedding.title}</td>
                 <td>
                   <button
                     className="button is-link is-focus"
                     style={{ marginRight: "5px" }}
-                    onClick={handleEditButtonClick}
+                    onClick={
+                      ()=>{
+                      handleEeditButtonClick(embedding)}
+                    }
                   >
                     Edit
                   </button>
@@ -81,6 +122,7 @@ export const EditTab: React.FC<Editprops> = ({
                       className="input"
                       type="text"
                       placeholder="Enter Title"
+                      value={thisEmbedding?.title}
                     />
                   </div>
                 </div>
@@ -100,6 +142,7 @@ export const EditTab: React.FC<Editprops> = ({
                       className="input"
                       type="text"
                       placeholder="e.g. mouse problem"
+                      value={thisEmbedding?.input}
                     />
                   </div>
                 </div>
@@ -118,12 +161,13 @@ export const EditTab: React.FC<Editprops> = ({
                     <Select
                       isMulti
                       name="colors"
-                      //   options={selectOption}
-                      // value={documentCategory}
-                      // onChange={(selectedOptions: any) =>
-                      // setDocumentCategory(selectedOptions)
-                      //   }
+                        options={selectOption}
+                      value={documentCategory}
+                      onChange={(selectedOptions: any) =>
+                      setDocumentCategory(selectedOptions)
+                        }
                       placeholder="Select a category"
+                      
                     />
                   </div>
                 </div>
@@ -143,6 +187,7 @@ export const EditTab: React.FC<Editprops> = ({
                       className="textarea"
                       placeholder="Describe the solution"
                       rows={8}
+                      value={thisEmbedding?.solution}
                     ></textarea>
                   </div>
                 </div>
