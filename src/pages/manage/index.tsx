@@ -11,7 +11,7 @@ import { TestTab } from "./managecomp/testTab";
 import { SettingsTab } from "./managecomp/settingsTab";
 
 function Manage() {
-  const [activeTab, setActiveTab] = useState("create");
+  const [activeTab, setActiveTab] = useState("edit");
   const [isEmbeddingEnabled, setIsEmbeddingEnabled] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -23,14 +23,7 @@ function Manage() {
     setIsEmbeddingEnabled(!isEmbeddingEnabled);
   };
 
-  const handleEditButtonClick = () => {
-    setShowEditModal(true);
-  };
-
-  const handleCloseEditModal = () => {
-    setShowEditModal(false);
-  };
-
+ 
   return (
     <>
       <Hero>
@@ -91,13 +84,7 @@ function Manage() {
           </div>
           {/* Add content for the selected tab */}
           {activeTab === "create" && <CreateTab />}
-          {activeTab === "edit" && (
-            <EditTab
-              handleCloseEditModal={handleCloseEditModal}
-              handleEditButtonClick={handleEditButtonClick}
-              showEditModal={showEditModal}
-            />
-          )}
+          {activeTab === "edit" && <EditTab />}
           {activeTab === "test" && <TestTab />}
           {activeTab === "settings" && (
             <SettingsTab

@@ -6,7 +6,8 @@ import FullChat from "../pages/app/FullChat";
 import ViewSolution from "../pages/app/ViewSolution";
 import Login from "../pages/login/login";
 import { Homepage } from "../pages/uiRevamped/homepage";
-
+import UiRevampView from "../pages/uiRevamped/viewRevampled";
+import { NavigationBar } from "../components/NavigationBar";
 export const routes = createBrowserRouter([
   {
     path: "/login",
@@ -31,4 +32,9 @@ export const routes = createBrowserRouter([
     path: "/view-solution/:id/:query",
     element: <ViewSolution />,
   },
+  {
+    path: "/viewrework",
+    element: <> <UiRevampView /></>
+  }
+ 
 ]);
