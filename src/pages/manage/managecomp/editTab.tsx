@@ -1,56 +1,67 @@
 import React, { useEffect, useState } from "react";
-import { Heading } from "react-bulma-components";
+import { Heading, Notification } from "react-bulma-components";
 import Select from "react-select";
 import { FetchEmbeddingsCollection } from "../../../components/dbFunctions/fetchEmbeddings";
-import { Category, Embedding, FetchCategories } from "../../../components/dbFunctions/fetchCategories";
-interface Editprops {
-  handleCloseEditModal: () => void;
-  showEditModal: boolean;
-  handleEditButtonClick: (title: string)  => void;
-}
+import {
+  Category,
+  Embedding,
+  FetchCategories,
+} from "../../../components/dbFunctions/fetchCategories";
+
 interface options {
   value: string;
   label: string;
 }
-export const EditTab: React.FC<Editprops> = ({
-  handleCloseEditModal,
-  showEditModal,
-  handleEditButtonClick,
-}) => {
+const endPoint = process.env.REACT_APP_API_URL || "http://localhost:8000";
+
+export const EditTab = () => {
   const [embeddings, setEmbeddings] = useState<Array<Embedding>>([]);
   const [thisEmbedding, setThisEmbedding] = useState<Embedding | undefined>();
   const [categories, setCategories] = useState<Array<Category>>();
   const [selectOption, setSelectOption] = useState<Array<options>>([]);
   const [documentCategory, setDocumentCategory] = useState<Array<options>>([]);
+  const [onChangeTilte, setOnChangeTitle] = useState<string>();
+  const [onChangeKeyword, setOnChangeKeyword] = useState<string>();
+  const [onChangeSolution, setOnChangeSolution] = useState<string>();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [CreateEmbeddingSuccess, setCreateEmbeddingSuccess] =
+    useState<boolean>(false);
+  const [LoadingEmbedding, setLoadingEmbedding] = useState<boolean>(false);
+  const [embeddingNotification, setEmbeddingNotification] = useState<any>(
+    <></>
+  );
 
+  const GetCollection = async () => {
+    const e = await FetchEmbeddingsCollection();
+    if (e) {
+      setEmbeddings(e);
+    }
+  };
   useEffect(() => {
-    FetchEmbeddingsCollection().then((e) => {
-      if (e) {
-        setEmbeddings(e);
-      }
-    });
+    GetCollection();
   }, []);
 
   const handleEeditButtonClick = (embedding: Embedding) => {
-    setThisEmbedding(embedding)
-  if (embedding) {
-    const foshoCategories: Array<options> = []
-    handleEditButtonClick(embedding.title); // Assuming this function handles the modal display logic
-    if(embedding.categories){
-    embedding.categories.forEach((catid)=>{
-      // console.log("Document has",catid, "Options are", selectOption)
-      const filteredCategories = selectOption.filter((option) =>
-        String(option.value) === (String(catid))
-      )
-      foshoCategories.push(...filteredCategories)
-    })}
-    setDocumentCategory(foshoCategories);
-    // console.log("Now has",documentCategory)
-  }
-  }
+    setThisEmbedding(embedding);
+    if (embedding) {
+      const foshoCategories: Array<options> = [];
+      if (embedding.categories) {
+        embedding.categories.forEach((catid) => {
+          // console.log("Document has",catid, "Options are", selectOption)
+          const filteredCategories = selectOption.filter(
+            (option) => String(option.value) === String(catid)
+          );
+          foshoCategories.push(...filteredCategories);
+        });
+      }
+      setDocumentCategory(foshoCategories);
+      // console.log("Now has",documentCategory)
+    }
+    setShowEditModal(true);
+  };
 
-   //used to change categories array to be readable by select component
-   const SetOptions = (categories: Category[] | undefined) => {
+  //used to change categories array to be readable by select component
+  const SetOptions = (categories: Category[] | undefined) => {
     if (categories) {
       const newoptions = categories.map((categories: Category) => ({
         value: categories._id,
@@ -67,6 +78,54 @@ export const EditTab: React.FC<Editprops> = ({
       SetOptions(categories);
     });
   }, []);
+  useEffect(() => {
+    setOnChangeTitle(thisEmbedding?.title);
+    setOnChangeKeyword(thisEmbedding?.input);
+    setOnChangeSolution(thisEmbedding?.solution);
+  }, [thisEmbedding]);
+
+  const handleCloseEditModal = () => {
+    setThisEmbedding(undefined);
+    setOnChangeTitle("");
+    setOnChangeKeyword("");
+    setOnChangeSolution("");
+    setDocumentCategory([]);
+    setShowEditModal(false);
+  };
+  const HandleUpdateEmbeddings = () => {
+    const token = localStorage.getItem("token");
+    console.log("click at update");
+    setCreateEmbeddingSuccess(false);
+    setLoadingEmbedding(true);
+    fetch(`${endPoint}/updateEmbedding`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        title: onChangeTilte,
+        keyword: onChangeKeyword,
+        input: onChangeSolution,
+        categories: documentCategory.map((option) => option.value),
+        findID: thisEmbedding?._id,
+      }),
+    })
+      .catch((e) => {
+        console.log(e);
+      })
+      .then(() => {
+        setEmbeddingNotification(
+          <Notification color="success">Embedding Created</Notification>
+        );
+        setCreateEmbeddingSuccess(true);
+      })
+      .finally(() => {
+        handleCloseEditModal();
+        setLoadingEmbedding(false);
+        GetCollection();
+      });
+  };
   return (
     <div>
       <Heading size={3} style={{ marginTop: "20px" }}>
@@ -81,18 +140,17 @@ export const EditTab: React.FC<Editprops> = ({
         </thead>
         <tbody>
           {embeddings &&
-            embeddings.map((embedding,index) => (
+            embeddings.map((embedding, index) => (
               <tr key={embedding._id}>
-                <td>{index+1}</td>
+                <td>{index + 1}</td>
                 <td>{embedding.title}</td>
                 <td>
                   <button
                     className="button is-link is-focus"
                     style={{ marginRight: "5px" }}
-                    onClick={
-                      ()=>{
-                      handleEeditButtonClick(embedding)}
-                    }
+                    onClick={() => {
+                      handleEeditButtonClick(embedding);
+                    }}
                   >
                     Edit
                   </button>
@@ -103,7 +161,7 @@ export const EditTab: React.FC<Editprops> = ({
         </tbody>
       </table>
 
-      <div className={`modal ${showEditModal ? "is-active" : ""}`}>
+      <div className={`modal ${showEditModal ? "is-active" : ""} on`}>
         <div className="modal-background"></div>
         <div className="modal-card">
           <header className="modal-card-head">
@@ -114,6 +172,7 @@ export const EditTab: React.FC<Editprops> = ({
               onClick={handleCloseEditModal}
             ></button>
           </header>
+
           <section className="modal-card-body">
             <div className="field is-horizontal">
               <div className="field-label is-normal">
@@ -125,10 +184,13 @@ export const EditTab: React.FC<Editprops> = ({
                 <div className="field">
                   <div className="control">
                     <input
+                      onChange={(e) => {
+                        setOnChangeTitle(e.target.value);
+                      }}
                       className="input"
                       type="text"
                       placeholder="Enter Title"
-                      value={thisEmbedding?.title}
+                      value={onChangeTilte}
                     />
                   </div>
                 </div>
@@ -145,10 +207,13 @@ export const EditTab: React.FC<Editprops> = ({
                 <div className="field">
                   <div className="control">
                     <input
+                      onChange={(e) => {
+                        setOnChangeKeyword(e.target.value);
+                      }}
                       className="input"
                       type="text"
                       placeholder="e.g. mouse problem"
-                      value={thisEmbedding?.input}
+                      value={onChangeKeyword}
                     />
                   </div>
                 </div>
@@ -167,13 +232,12 @@ export const EditTab: React.FC<Editprops> = ({
                     <Select
                       isMulti
                       name="colors"
-                        options={selectOption}
+                      options={selectOption}
                       value={documentCategory}
                       onChange={(selectedOptions: any) =>
-                      setDocumentCategory(selectedOptions)
-                        }
+                        setDocumentCategory(selectedOptions)
+                      }
                       placeholder="Select a categories"
-                      
                     />
                   </div>
                 </div>
@@ -190,10 +254,13 @@ export const EditTab: React.FC<Editprops> = ({
                 <div className="field">
                   <div className="control">
                     <textarea
+                      onChange={(e) => {
+                        setOnChangeSolution(e.target.value);
+                      }}
                       className="textarea"
                       placeholder="Describe the solution"
                       rows={8}
-                      value={thisEmbedding?.solution}
+                      value={onChangeSolution}
                     ></textarea>
                   </div>
                 </div>
@@ -203,7 +270,7 @@ export const EditTab: React.FC<Editprops> = ({
           <footer className="modal-card-foot">
             <button
               className="button is-success"
-              onClick={handleCloseEditModal}
+              onClick={HandleUpdateEmbeddings}
               style={{ marginRight: "5px" }}
             >
               Save changes
