@@ -1,13 +1,12 @@
 import * as React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../pages/app/App";
 import Manage from "../pages/manage";
 import FullChat from "../pages/app/FullChat";
 import ViewSolution from "../pages/app/ViewSolution";
 import Login from "../pages/login/login";
 import { Homepage } from "../pages/uiRevamped/homepage";
-import UiRevampView from "../pages/uiRevamped/viewRevampled";
-import { NavigationBar } from "../components/NavigationBar";
+// import UiRevampView from "../pages/uiRevamped/viewRevampled";
 export const routes = createBrowserRouter([
   {
     path: "/login",
@@ -33,8 +32,7 @@ export const routes = createBrowserRouter([
     element: <ViewSolution />,
   },
   {
-    path: "/viewrework",
-    element: <> <UiRevampView /></>
-  }
- 
+    // path: "/viewrework",
+    // element: <> <UiRevampView /></>
+  },
 ]);

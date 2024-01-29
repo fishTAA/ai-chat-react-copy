@@ -23,7 +23,6 @@ function Manage() {
     setIsEmbeddingEnabled(!isEmbeddingEnabled);
   };
 
- 
   return (
     <>
       <Hero>
@@ -36,17 +35,6 @@ function Manage() {
           </Heading>
           <div className="tabs is-boxed">
             <ul>
-              <li className={activeTab === "create" ? "is-active" : ""}>
-                <a onClick={() => handleTabClick("create")}>
-                  <span
-                    className="icon is-small"
-                    style={{ marginRight: "10px" }}
-                  >
-                    <MdOutlineAddBox />
-                  </span>
-                  <span>Create</span>
-                </a>
-              </li>
               <li className={activeTab === "edit" ? "is-active" : ""}>
                 <a onClick={() => handleTabClick("edit")}>
                   <span
@@ -58,6 +46,18 @@ function Manage() {
                   <span>Edit</span>
                 </a>
               </li>
+              <li className={activeTab === "create" ? "is-active" : ""}>
+                <a onClick={() => handleTabClick("create")}>
+                  <span
+                    className="icon is-small"
+                    style={{ marginRight: "10px" }}
+                  >
+                    <MdOutlineAddBox />
+                  </span>
+                  <span>Create</span>
+                </a>
+              </li>
+
               <li className={activeTab === "test" ? "is-active" : ""}>
                 <a onClick={() => handleTabClick("test")}>
                   <span

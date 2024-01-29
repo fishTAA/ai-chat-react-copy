@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Notification } from "react-bulma-components";
+import { Block, Heading, Notification } from "react-bulma-components";
 import Select from "react-select";
-import { FetchEmbeddingsCollection } from "../../../components/dbFunctions/fetchEmbeddings";
+import {
+  FetchDeleteEmbedding,
+  FetchEmbeddingsCollection,
+} from "../../../components/dbFunctions/fetchEmbeddings";
 import {
   Category,
   Embedding,
   FetchCategories,
 } from "../../../components/dbFunctions/fetchCategories";
+import { BeatLoader } from "react-spinners";
 
 interface options {
   value: string;
@@ -30,11 +34,14 @@ export const EditTab = () => {
   const [embeddingNotification, setEmbeddingNotification] = useState<any>(
     <></>
   );
+  const [loadingTest, setLoadingTest] = useState(false);
 
   const GetCollection = async () => {
+    setLoadingTest(true);
     const e = await FetchEmbeddingsCollection();
     if (e) {
       setEmbeddings(e);
+      setLoadingTest(false);
     }
   };
   useEffect(() => {
@@ -126,6 +133,13 @@ export const EditTab = () => {
         GetCollection();
       });
   };
+
+  const HandleEmbeddingDelete = async (embedding: Embedding) => {
+    await FetchDeleteEmbedding(embedding._id)
+      .then((e) => window.alert("Deleted Succesfully"))
+      .then((e) => GetCollection())
+      .catch((e) => window.alert(e));
+  };
   return (
     <div>
       <Heading size={3} style={{ marginTop: "20px" }}>
@@ -138,6 +152,21 @@ export const EditTab = () => {
           <th>Title</th>
           <th>Action</th>
         </thead>
+        {loadingTest ? (
+          // Display a loading spinner when loadingTest is true
+          <>
+            <Block
+              style={{
+                marginRight: "100px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <BeatLoader color="#36d7b7" size={50} />
+            </Block>
+          </>
+        ) : null}
         <tbody>
           {embeddings &&
             embeddings.map((embedding, index) => (
@@ -154,7 +183,14 @@ export const EditTab = () => {
                   >
                     Edit
                   </button>
-                  <button className="button is-danger is-focus">Delete</button>
+                  <button
+                    className="button is-danger is-focus"
+                    onClick={() => {
+                      HandleEmbeddingDelete(embedding);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

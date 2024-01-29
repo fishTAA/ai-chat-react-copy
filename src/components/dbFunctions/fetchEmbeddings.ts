@@ -20,3 +20,22 @@ export const FetchEmbeddingsCollection = async () => {
     console.error("Error Fetching Categories:", error);
   }
 };
+
+export const FetchDeleteEmbedding = async (embeddingid: string) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    console.log("deleting", embeddingid);
+    const res = await fetch(`${endPoint}/deleteEmbedding/${embeddingid}`, {
+      method: "Delete",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,5 +1,4 @@
 import { NavigationBar } from "../../components/NavigationBar";
-import { SearchContainer } from "./searchContainer";
 import { CategoriesContainer } from "./categoriesContainer";
 import { BsArrowDownCircle } from "react-icons/bs";
 import {
@@ -369,148 +368,151 @@ export const Homepage = () => {
               </Columns>
             </Container>
           </div>
-
-          {/* Right side content */}
-          <div
-            className="right-side"
-            style={{
-              backgroundColor: "",
-            }}
-          >
-            {/* Categories section */}
+          <>
+            {/* Right side content */}
             <div
+              className="right-side"
               style={{
-                margin: "0",
-                fontWeight: "500",
+                backgroundColor: "",
               }}
             >
-              Categories:
-            </div>
+              {/* Categories section */}
+              <div
+                style={{
+                  margin: "0",
+                  fontWeight: "500",
+                }}
+              >
+                Categories:
+              </div>
 
-            {/* Admin section */}
-            <section
-              style={{
-                marginTop: "10px",
-              }}
-            >
-              <AdminComponent>
-                {/* Add category button */}
-                <Button
-                  size={"small"}
-                  style={{
-                    backgroundColor: "#d9ead3",
-                    fontWeight: "500",
-                    border: "1px solid #47bd13",
-                    color: "#47bd13",
-                  }}
-                  onClick={() => setAddCategory(true)}
-                >
-                  + Add a category
-                </Button>
+              {/* Admin section */}
+              <section
+                style={{
+                  marginTop: "10px",
+                }}
+              >
+                <AdminComponent>
+                  {/* Add category button */}
+                  <Button
+                    size={"small"}
+                    style={{
+                      backgroundColor: "#d9ead3",
+                      fontWeight: "500",
+                      border: "1px solid #47bd13",
+                      color: "#47bd13",
+                    }}
+                    onClick={() => setAddCategory(true)}
+                  >
+                    + Add a category
+                  </Button>
 
-                {/* Add Category modal */}
-                <Modal show={addCategory} onClose={() => setAddCategory(false)}>
-                  <Modal.Card>
-                    <Modal.Card.Header showClose>
-                      <Modal.Card.Title>Add Category</Modal.Card.Title>
-                    </Modal.Card.Header>
-                    <Modal.Card.Body>
+                  {/* Add Category modal */}
+                  <Modal
+                    show={addCategory}
+                    onClose={() => setAddCategory(false)}
+                  >
+                    <Modal.Card>
+                      <Modal.Card.Header showClose>
+                        <Modal.Card.Title>Add Category</Modal.Card.Title>
+                      </Modal.Card.Header>
+                      <Modal.Card.Body>
+                        <Form.Field>
+                          <Form.Control>
+                            <Form.Input
+                              placeholder="New Category Title"
+                              value={newCategoryTitle}
+                              onChange={(e) =>
+                                setNewCategoryTitle(e.target.value)
+                              }
+                              style={{
+                                borderRadius: "10px",
+                                border: "1px solid #307FE2",
+                                height: "30px",
+                                width: "100%",
+                              }}
+                            />
+                          </Form.Control>
+                        </Form.Field>
+                      </Modal.Card.Body>
+                      <Modal.Card.Footer>
+                        <Button
+                          size={"small"}
+                          style={{
+                            backgroundColor: "#3080e236",
+                            fontWeight: "500",
+                            border: "1px solid #307FE2",
+                            color: "#307FE2",
+                          }}
+                          onClick={handleSaveNewCategory}
+                        >
+                          Save
+                        </Button>
+                      </Modal.Card.Footer>
+                    </Modal.Card>
+                  </Modal>
+                  {/* Edit button */}
+                  <Button
+                    size={"small"}
+                    style={{
+                      backgroundColor: editMode ? "#d9534f" : "#3080e236",
+                      fontWeight: "500",
+                      border: "1px solid #307FE2",
+                      color: "#307FE2",
+                    }}
+                    onClick={toggleEditMode}
+                  >
+                    {editMode ? "Cancel Edit Mode" : "Edit Mode"}
+                  </Button>
+                </AdminComponent>
+              </section>
+
+              {/* Categories list */}
+              <section
+                className="scrollbar-hide"
+                style={{
+                  marginTop: "10px",
+                  maxHeight: "73vh",
+                  overflowY: "auto",
+                }}
+              >
+                {/* Display categories */}
+                {categories.map((category) => (
+                  <Card
+                    key={category.label}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                      backgroundColor: "#ffffff",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      marginBlock: "0 10px",
+                      border: "1px solid #bcbcbc",
+                      boxShadow: "none",
+                    }}
+                    onClick={() =>
+                      editMode
+                        ? handleEditCategory(category)
+                        : handleCategory(category._id)
+                    }
+                  >
+                    {/* Editable Category Title */}
+                    {editMode && selectedCategoryId === category._id ? (
                       <Form.Field>
                         <Form.Control>
-                          <Form.Input
-                            placeholder="New Category Title"
-                            value={newCategoryTitle}
-                            onChange={(e) =>
-                              setNewCategoryTitle(e.target.value)
-                            }
+                          <Heading
                             style={{
-                              borderRadius: "10px",
-                              border: "1px solid #307FE2",
-                              height: "30px",
-                              width: "100%",
+                              fontWeight: "500",
+                              fontSize: "16px",
+                              margin: "0",
+                              cursor: "pointer",
                             }}
-                          />
-                        </Form.Control>
-                      </Form.Field>
-                    </Modal.Card.Body>
-                    <Modal.Card.Footer>
-                      <Button
-                        size={"small"}
-                        style={{
-                          backgroundColor: "#3080e236",
-                          fontWeight: "500",
-                          border: "1px solid #307FE2",
-                          color: "#307FE2",
-                        }}
-                        onClick={handleSaveNewCategory}
-                      >
-                        Save
-                      </Button>
-                    </Modal.Card.Footer>
-                  </Modal.Card>
-                </Modal>
-                {/* Edit button */}
-                <Button
-                  size={"small"}
-                  style={{
-                    backgroundColor: editMode ? "#d9534f" : "#3080e236",
-                    fontWeight: "500",
-                    border: "1px solid #307FE2",
-                    color: "#307FE2",
-                  }}
-                  onClick={toggleEditMode}
-                >
-                  {editMode ? "Cancel Edit Mode" : "Edit Mode"}
-                </Button>
-              </AdminComponent>
-            </section>
-
-            {/* Categories list */}
-            <section
-              className="scrollbar-hide"
-              style={{
-                marginTop: "10px",
-                maxHeight: "73vh",
-                overflowY: "auto",
-              }}
-            >
-              {/* Display categories */}
-              {categories.map((category) => (
-                <Card
-                  key={category.label}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "100%",
-                    backgroundColor: "#ffffff",
-                    borderRadius: "10px",
-                    padding: "10px",
-                    marginBlock: "0 10px",
-                    border: "1px solid #bcbcbc",
-                    boxShadow: "none",
-                  }}
-                  onClick={() =>
-                    editMode
-                      ? handleEditCategory(category)
-                      : handleCategory(category._id)
-                  }
-                >
-                  {/* Editable Category Title */}
-                  {editMode && selectedCategoryId === category._id ? (
-                    <Form.Field>
-                      <Form.Control>
-                        <Heading
-                          style={{
-                            fontWeight: "500",
-                            fontSize: "16px",
-                            margin: "0",
-                            cursor: "pointer",
-                          }}
-                        >
-                          {category.label}
-                        </Heading>
-                        {/* comment out to add edit categoryname */}
-                        {/* <Form.Input
+                          >
+                            {category.label}
+                          </Heading>
+                          {/* comment out to add edit categoryname */}
+                          {/* <Form.Input
                           // placeholder="Edit Category Title"
                           value={category.label}
                           onChange={(e) =>
@@ -523,30 +525,30 @@ export const Homepage = () => {
                             width: "100%",
                           }}
                         /> */}
-                      </Form.Control>
-                    </Form.Field>
-                  ) : (
-                    // Regular Category Heading
-                    <Heading
-                      onClick={() => {
-                        toggleCollapse(category.label);
-                      }}
-                      style={{
-                        fontWeight: "500",
-                        fontSize: "16px",
-                        margin: "0",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {category.label}
-                    </Heading>
-                  )}
+                        </Form.Control>
+                      </Form.Field>
+                    ) : (
+                      // Regular Category Heading
+                      <Heading
+                        onClick={() => {
+                          toggleCollapse(category.label);
+                        }}
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "16px",
+                          margin: "0",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {category.label}
+                      </Heading>
+                    )}
 
-                  {/* Save/Edit buttons */}
-                  {editMode && selectedCategoryId === category._id && (
-                    <Form.Field>
-                      <Form.Control>
-                        {/* <Button
+                    {/* Save/Edit buttons */}
+                    {editMode && selectedCategoryId === category._id && (
+                      <Form.Field>
+                        <Form.Control>
+                          {/* <Button
                           size={"small"}
                           style={{
                             backgroundColor: "#3080e236",
@@ -558,52 +560,53 @@ export const Homepage = () => {
                         >
                           Save
                         </Button> */}
-                        <Button
-                          size={"small"}
-                          style={{
-                            backgroundColor: "#d9534f",
-                            fontWeight: "500",
-                            border: "1px solid #d9534f",
-                            color: "#fff",
-                          }}
-                          onClick={() =>
-                            handleDeleteCategoryTitle(selectedCategoryId)
-                          }
-                        >
-                          Delete
-                        </Button>
-                      </Form.Control>
-                    </Form.Field>
-                  )}
+                          <Button
+                            size={"small"}
+                            style={{
+                              backgroundColor: "#d9534f",
+                              fontWeight: "500",
+                              border: "1px solid #d9534f",
+                              color: "#fff",
+                            }}
+                            onClick={() =>
+                              handleDeleteCategoryTitle(selectedCategoryId)
+                            }
+                          >
+                            Delete
+                          </Button>
+                        </Form.Control>
+                      </Form.Field>
+                    )}
 
-                  {/* Display category articles */}
-                  {catarticles.map((item) => (
-                    <Content
-                      onClick={() => {
-                        navigate(
-                          "view-solution/" + item._id + "/" + category.label
-                        );
-                      }}
-                      key={item.title}
-                      style={{
-                        fontWeight: "300",
-                        fontSize: "16px",
-                        margin: "0px",
-                        cursor: "pointer",
-                        display: editMode
-                          ? "none"
-                          : collapsedCategory === category.label
-                          ? "block"
-                          : "none",
-                      }}
-                    >
-                      {item.title}
-                    </Content>
-                  ))}
-                </Card>
-              ))}
-            </section>
-          </div>
+                    {/* Display category articles */}
+                    {catarticles.map((item) => (
+                      <Content
+                        onClick={() => {
+                          navigate(
+                            "view-solution/" + item._id + "/" + category.label
+                          );
+                        }}
+                        key={item.title}
+                        style={{
+                          fontWeight: "300",
+                          fontSize: "16px",
+                          margin: "0px",
+                          cursor: "pointer",
+                          display: editMode
+                            ? "none"
+                            : collapsedCategory === category.label
+                            ? "block"
+                            : "none",
+                        }}
+                      >
+                        {item.title}
+                      </Content>
+                    ))}
+                  </Card>
+                ))}
+              </section>
+            </div>
+          </>
         </Hero.Body>
         <Chat width={350} />
 
