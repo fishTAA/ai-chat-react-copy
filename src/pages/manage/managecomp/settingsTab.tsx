@@ -1,13 +1,90 @@
-import React from "react";
-import { Heading } from "react-bulma-components";
+import React, { useEffect, useState } from "react";
+import { Button, Heading } from "react-bulma-components";
 interface Settingsprop {
   handleCheckboxChange: () => void;
   isEmbeddingEnabled: boolean;
 }
+
+interface SettingsInterface {
+  enableEmbedding: boolean;
+  minimumScore: number;
+}
+interface TestInterface {
+  _id: string;
+  input: string;
+  title: string;
+  score: number;
+  solution?: string;
+}
+
 export const SettingsTab: React.FC<Settingsprop> = ({
   handleCheckboxChange,
   isEmbeddingEnabled,
 }) => {
+  const endPoint = process.env.REACT_APP_API_URL || "http://localhost:8000";
+
+  const [settingsData, setSettingsData] = useState<SettingsInterface>({
+    enableEmbedding: false,
+    minimumScore: 90,
+  });
+  const [loadingSave, setLoadingSave] = useState(false);
+  const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
+  const token = localStorage.getItem("token");
+  // Function to fetch and update settings
+  const getSettings = () => {
+    setLoadingSave(true);
+    fetch(`${endPoint}/getSettings`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setSettingsData(res);
+      })
+      .finally(() => {
+        setLoadingSave(false);
+      })
+      .catch((e) => console.log(e));
+  };
+  // Function to save settings
+  const handleSaveSettings = () => {
+    setLoadingSave(true);
+    fetch(`${endPoint}/saveSettings`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        settingsData: settingsData,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setTestResults(res.related);
+      })
+      .finally(() => {
+        setLoadingSave(false);
+      });
+  };
+  // Function to update settings fields
+  const updateSettingsFields = (field: string, value: any) => {
+    setSettingsData({
+      ...settingsData,
+      [field]: value,
+    });
+  };
+  // Fetch and update settings on component mount
+  useEffect(() => {
+    getSettings();
+  }, []);
+
   return (
     <div>
       <Heading size={3} style={{ marginTop: "20px" }}>
@@ -32,8 +109,10 @@ export const SettingsTab: React.FC<Settingsprop> = ({
                 <input
                   type="checkbox"
                   style={{ marginRight: "10px" }}
-                  checked={isEmbeddingEnabled}
-                  onChange={handleCheckboxChange}
+                  checked={settingsData.enableEmbedding}
+                  onChange={(e) =>
+                    updateSettingsFields("enableEmbedding", e.target.checked)
+                  }
                 />
                 {isEmbeddingEnabled ? "Enabled" : "Disabled"}
               </label>
@@ -56,6 +135,10 @@ export const SettingsTab: React.FC<Settingsprop> = ({
                 type="number"
                 placeholder="score"
                 min={0}
+                onChange={(e) =>
+                  updateSettingsFields("minimumScore", e.target.value)
+                }
+                value={settingsData.minimumScore}
               />
             </p>
           </div>
@@ -67,7 +150,13 @@ export const SettingsTab: React.FC<Settingsprop> = ({
         <div className="field-body">
           <div className="field">
             <div className="control">
-              <button className="button is-link">Save</button>
+              <Button
+                color="link"
+                onClick={handleSaveSettings}
+                loading={loadingSave}
+              >
+                Save
+              </Button>
             </div>
           </div>
         </div>

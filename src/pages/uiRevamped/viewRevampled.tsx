@@ -1,213 +1,211 @@
-import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
-import { Columns, Container, Heading, Hero, Block, Section, Content, Card } from 'react-bulma-components';
-import Chat from '../../components/chat';
-import { useParams, useNavigate } from 'react-router-dom';
-import { FooterSection } from '../../components/Footer';
-import image from '../../media/image.png';
-import { BeatLoader } from 'react-spinners';
-import { useAccount, useIsAuthenticated, useMsal } from '@azure/msal-react';
-import { InteractionStatus } from '@azure/msal-browser';
-import './homepage.css';
-import { articlesView} from '../uiRevamped/sample';
-import { NavigationBar } from './NavigationBar';
+import React, { useState, useEffect } from "react";
+// import logo from './logo.svg';
+// import { Columns, Container, Heading, Hero, Block, Section, Content, Card } from 'react-bulma-components';
+// import Chat from '../../components/chat';
+// import { useParams, useNavigate } from 'react-router-dom';
+// import { FooterSection } from '../../components/Footer';
+// import image from '../../media/image.png';
+// import { BeatLoader } from 'react-spinners';
+// import { useAccount, useIsAuthenticated, useMsal } from '@azure/msal-react';
+// import { InteractionStatus } from '@azure/msal-browser';
+// import './homepage.css';
+// import { NavigationBar } from './NavigationBar';
 
-export interface DocumentUpload {
-  input: string;
-  solution?: string ;
-  title?: string;
-  uploadDate: string;
-  embedding: [Number];
-  score?: number;
-  
-}
+// export interface DocumentUpload {
+//   input: string;
+//   solution?: string ;
+//   title?: string;
+//   uploadDate: string;
+//   embedding: [Number];
+//   score?: number;
 
-interface TestInterface {
-  _id: string,
-  input: string,
-  title: string,
-  score: number,
-  solution?: string
-}
+// }
 
+// interface TestInterface {
+//   _id: string,
+//   input: string,
+//   title: string,
+//   score: number,
+//   solution?: string
+// }
 
-function UiRevampView() {
+// function UiRevampView() {
 
-  const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-  const [document, setDocument ] = useState<DocumentUpload |null>(null)
-  const urlparam = useParams();
-  const strurlparam = JSON.stringify(urlparam.id)
-  const [loadingTest, setLoadingTest] = useState(false);
-  const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
-  const [urlQuery, setUrlQuery] = useState("");
-  let navigate = useNavigate();
-  
-  // Check if the user is authenticated
-  const isAuthenticated = useIsAuthenticated();
-  const { instance, inProgress } = useMsal();
-  const account = localStorage.getItem("account") || "{}";
+//   const endPoint = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+//   const [document, setDocument ] = useState<DocumentUpload |null>(null)
+//   const urlparam = useParams();
+//   const strurlparam = JSON.stringify(urlparam.id)
+//   const [loadingTest, setLoadingTest] = useState(false);
+//   const [testResults, setTestResults] = useState<Array<TestInterface>>([]);
+//   const [urlQuery, setUrlQuery] = useState("");
+//   let navigate = useNavigate();
 
-  // useEffect(()=> {
-  //   if (inProgress === InteractionStatus.None && !isAuthenticated) {
-  //     setLoadingTest(true)
-  //     if(account) {
-  //       instance.acquireTokenSilent({
-  //         account: JSON.parse(account),
-  //         scopes: ["openid", "profile"],
-  //       }).then(e => {
-  //         setLoadingTest(false);
-  //       }).catch(e=> {
-  //         console.log("here", e)
-  //         navigate('/login')
-  //       });
-  //     } else {
-  //       navigate('/login')
-  //     }
-  //   }
-  // }, [inProgress]);
+//   // Check if the user is authenticated
+//   const isAuthenticated = useIsAuthenticated();
+//   const { instance, inProgress } = useMsal();
+//   const account = localStorage.getItem("account") || "{}";
 
-  // Handle collapsing of related topics
-  const [collapsed, setCollapsed] = useState(false);
-  const toggleCollapse = () => {
-    setCollapsed(!collapsed);
-  };
+//   // useEffect(()=> {
+//   //   if (inProgress === InteractionStatus.None && !isAuthenticated) {
+//   //     setLoadingTest(true)
+//   //     if(account) {
+//   //       instance.acquireTokenSilent({
+//   //         account: JSON.parse(account),
+//   //         scopes: ["openid", "profile"],
+//   //       }).then(e => {
+//   //         setLoadingTest(false);
+//   //       }).catch(e=> {
+//   //         console.log("here", e)
+//   //         navigate('/login')
+//   //       });
+//   //     } else {
+//   //       navigate('/login')
+//   //     }
+//   //   }
+//   // }, [inProgress]);
 
-  const contentStyle = {
-    display: collapsed ? 'none' : 'block',
-  };
+//   // Handle collapsing of related topics
+//   const [collapsed, setCollapsed] = useState(false);
+//   const toggleCollapse = () => {
+//     setCollapsed(!collapsed);
+//   };
 
-   // Retrieve document data
-  const retrieveDocumentData = () => {
-    setLoadingTest(true);
-    fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
-    .then((res)=>res.json())
-    .then((res)=>{
-        console.log(res);
-        setDocument(res as DocumentUpload)
-    }).finally(()=> {
-      setLoadingTest(false);
-    })
-  }
+//   const contentStyle = {
+//     display: collapsed ? 'none' : 'block',
+//   };
 
-  useEffect(() => {
-    if(urlQuery)
-    handleTestEmbeddings();
-  }, [urlQuery]);
+//    // Retrieve document data
+//   const retrieveDocumentData = () => {
+//     setLoadingTest(true);
+//     fetch(`${endPoint}/findDocument?id=${urlparam.id}`)
+//     .then((res)=>res.json())
+//     .then((res)=>{
+//         console.log(res);
+//         setDocument(res as DocumentUpload)
+//     }).finally(()=> {
+//       setLoadingTest(false);
+//     })
+//   }
 
-  useEffect(() => {
-   retrieveDocumentData()
-  }, [urlparam.id]);
-  
-  // Function to check if a string contains HTML
-  const containsHTML = (str: string) => /<\/?[a-z][\s\S]*>/.test(str);
-  
-  // console.log(headingdata)
-  useEffect(() => {
-    // Set the URL query as a string
-    const query  = JSON.stringify(urlparam.query)
-    setUrlQuery(query);
-    console.log("query",query)
-  }, []);
+//   useEffect(() => {
+//     if(urlQuery)
+//     handleTestEmbeddings();
+//   }, [urlQuery]);
 
-  const handleTestEmbeddings = () => {
-    setLoadingTest(true);
-    fetch(`${endPoint}/testEmbedding`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        keyword: urlQuery,
-      })
-    }).then((res)=> {
-      return res.json()
-    }).then((res)=> {
-      setTestResults(res.related);
-      console.log(res.related);
-    }).finally(()=> {
-      setLoadingTest(false);
-    })
-  }
+//   useEffect(() => {
+//    retrieveDocumentData()
+//   }, [urlparam.id]);
 
-  return (
-    
-    <div
-    style={{
-      backgroundImage: `url(${image})`,
-      height: '100%',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
-    }}>
-      <NavigationBar/>
-      <Hero
-        hasNavbar={true}
-        size="fullheight"
-        style={{
-          flexGrow: 1,
-        }} >
-          
-        <Hero.Body style={{display:'flex',alignItems:'stretch',marginBlock: '40px'}}>
-        <Columns paddingless style={{marginBlock: '10px'}}>
-         <Columns.Column className="is-two-third" 
-        //  style={{border: '1px solid red'}}
-         >
-           <div className='mobile-view' 
-          > TITLE: {articlesView[0].title}
-          </div>
-         <Container style={{
-          
-          borderInline: '1px solid #bcbcbc',
-          padding: '10px',
-          paddingInline: '20px',
-          height: '100%',
-          textAlign: 'justify',
-          fontSize: '18px',
-          backdropFilter: 'blur(20px)'
-          }}>
-            {articlesView[0].content}
-         </Container>
-         </Columns.Column>
-         <Columns.Column className="is-one-third" 
-        //  style={{border: '1px solid blue'}}
-         >
-         <Container>
-          <div className='mobile-view-2'> TITLE: {articlesView[0].title}
-          </div>
-         </Container>
-         <div className='sticky-container'>
-          <Card 
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            // width:'50%',
-            backgroundColor: "#ffffff",
-            borderRadius: '10px',
-            padding: '10px',
-            marginBlock: '0 10px',
-            border: '1px solid #bcbcbc',
-            boxShadow: 'none',
-          }}
-          > <div>Related Items</div>
-          <Content 
-          style={{
-            borderBottom: '1px solid black',
-            margin: '5px 0 5px 0',
-          }}>
-          </Content>
-          {articlesView.map((items)=>
-            (
-              <div>{items.title}</div>
-            ))}
-          </Card>
-            
-         </div>
-         </Columns.Column>
-         </Columns>
-      </Hero.Body>
-      </Hero>
-      <FooterSection/>
-    </div>
-  );
-}
-export default UiRevampView;
+//   // Function to check if a string contains HTML
+//   const containsHTML = (str: string) => /<\/?[a-z][\s\S]*>/.test(str);
+
+//   // console.log(headingdata)
+//   useEffect(() => {
+//     // Set the URL query as a string
+//     const query  = JSON.stringify(urlparam.query)
+//     setUrlQuery(query);
+//     console.log("query",query)
+//   }, []);
+
+//   const handleTestEmbeddings = () => {
+//     setLoadingTest(true);
+//     fetch(`${endPoint}/testEmbedding`, {
+//       method: "post",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({
+//         keyword: urlQuery,
+//       })
+//     }).then((res)=> {
+//       return res.json()
+//     }).then((res)=> {
+//       setTestResults(res.related);
+//       console.log(res.related);
+//     }).finally(()=> {
+//       setLoadingTest(false);
+//     })
+//   }
+
+//   return (
+
+//     <div
+//     style={{
+//       backgroundImage: `url(${image})`,
+//       height: '100%',
+//       backgroundSize: 'cover',
+//       backgroundPosition: 'center',
+//       backgroundAttachment: 'fixed',
+//     }}>
+//       <NavigationBar/>
+//       <Hero
+//         hasNavbar={true}
+//         size="fullheight"
+//         style={{
+//           flexGrow: 1,
+//         }} >
+
+//         <Hero.Body style={{display:'flex',alignItems:'stretch',marginBlock: '40px'}}>
+//         <Columns paddingless style={{marginBlock: '10px'}}>
+//          <Columns.Column className="is-two-third"
+//         //  style={{border: '1px solid red'}}
+//          >
+//            <div className='mobile-view'
+//           > TITLE: {articlesView[0].title}
+//           </div>
+//          <Container style={{
+
+//           borderInline: '1px solid #bcbcbc',
+//           padding: '10px',
+//           paddingInline: '20px',
+//           height: '100%',
+//           textAlign: 'justify',
+//           fontSize: '18px',
+//           backdropFilter: 'blur(20px)'
+//           }}>
+//             {articlesView[0].content}
+//          </Container>
+//          </Columns.Column>
+//          <Columns.Column className="is-one-third"
+//         //  style={{border: '1px solid blue'}}
+//          >
+//          <Container>
+//           <div className='mobile-view-2'> TITLE: {articlesView[0].title}
+//           </div>
+//          </Container>
+//          <div className='sticky-container'>
+//           <Card
+//           style={{
+//             display: 'flex',
+//             flexDirection: 'column',
+//             // width:'50%',
+//             backgroundColor: "#ffffff",
+//             borderRadius: '10px',
+//             padding: '10px',
+//             marginBlock: '0 10px',
+//             border: '1px solid #bcbcbc',
+//             boxShadow: 'none',
+//           }}
+//           > <div>Related Items</div>
+//           <Content
+//           style={{
+//             borderBottom: '1px solid black',
+//             margin: '5px 0 5px 0',
+//           }}>
+//           </Content>
+//           {articlesView.map((items)=>
+//             (
+//               <div>{items.title}</div>
+//             ))}
+//           </Card>
+
+//          </div>
+//          </Columns.Column>
+//          </Columns>
+//       </Hero.Body>
+//       </Hero>
+//       <FooterSection/>
+//     </div>
+//   );
+// }
+// export default UiRevampView;
