@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Block, Heading, Notification } from "react-bulma-components";
+import React, { useEffect, useMemo, useState } from "react";
+import { Block, Heading, Hero, Notification } from "react-bulma-components";
 import Select from "react-select";
 import {
   FetchDeleteEmbedding,
@@ -10,7 +10,8 @@ import {
   Embedding,
   FetchCategories,
 } from "../../../components/dbFunctions/fetchCategories";
-import { BeatLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
+import Pagination from "./pagination";
 
 interface options {
   value: string;
@@ -35,6 +36,27 @@ export const EditTab = () => {
     <></>
   );
   const [loadingTest, setLoadingTest] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const ITEMS_PER_PAGE = 6; // Set the number of items to display per page
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const filteredEmbeddings = useMemo(() => {
+    return embeddings.filter(embedding =>
+      embedding.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }, [searchTerm, embeddings]);
+
+  const paginatedEmbeddings = useMemo(() => {
+    return filteredEmbeddings.slice(startIndex, endIndex);
+  }, [currentPage, searchTerm, filteredEmbeddings, embeddings])
 
   const GetCollection = async () => {
     setLoadingTest(true);
@@ -140,6 +162,8 @@ export const EditTab = () => {
       .then((e) => GetCollection())
       .catch((e) => window.alert(e));
   };
+
+
   return (
     <div>
       <Heading size={3} style={{ marginTop: "20px" }}>
@@ -148,32 +172,28 @@ export const EditTab = () => {
 
       <table className="table is-fullwidth">
         <thead>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Action</th>
+          <tr>
+            <th style={{ width: "50px" }}>ID</th>
+            <th style={{ width: "200px" }}>Title</th>
+            <th style={{ width: "150px" }}>Action</th>
+          </tr>
         </thead>
-        {loadingTest ? (
-          // Display a loading spinner when loadingTest is true
-          <>
-            <Block
-              style={{
-                marginRight: "100px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <BeatLoader color="#36d7b7" size={50} />
-            </Block>
-          </>
-        ) : null}
         <tbody>
-          {embeddings &&
-            embeddings.map((embedding, index) => (
+          {loadingTest ? (
+            // Display a loading spinner when loadingTest is true
+            <tr>
+              <td colSpan={3}>
+                <div className="container is-widescreen has-text-centered" style={{ margin: '125px' }}>
+                  <PulseLoader color="#274d88" size={10} />
+                </div>
+              </td>
+            </tr>
+          ) : (
+            paginatedEmbeddings && paginatedEmbeddings.map((embedding, index) => (
               <tr key={embedding._id}>
-                <td>{index + 1}</td>
-                <td>{embedding.title}</td>
-                <td>
+                <td style={{ width: "50px" }}>{startIndex + index + 1}</td>
+                <td style={{ width: "200px" }}>{embedding.title}</td>
+                <td style={{ width: "150px" }}>
                   <button
                     className="button is-link is-focus"
                     style={{ marginRight: "5px" }}
@@ -193,9 +213,18 @@ export const EditTab = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            ))
+          )}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(filteredEmbeddings.length / ITEMS_PER_PAGE)}
+        onPageChange={onPageChange}
+        maxVisiblePages={3}
+      />
 
       <div className={`modal ${showEditModal ? "is-active" : ""} on`}>
         <div className="modal-background"></div>

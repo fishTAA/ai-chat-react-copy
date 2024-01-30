@@ -32,6 +32,7 @@ import { handleTestEmbeddings } from "../../components/dbFunctions/searchEmbeddi
 import AdminComponent from "../../components/AdminComponent";
 import { Ticket } from "../../components/Ticket";
 import Chat from "../../components/chat";
+import { ClipLoader } from "react-spinners";
 
 export const Homepage = () => {
   // State variables
@@ -48,9 +49,8 @@ export const Homepage = () => {
   const [addCategory, setAddCategory] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editedCategoryTitle, setEditedCategoryTitle] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-    null
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [categoryLoading, setCategoryLoading] = useState<{ [key: string]: boolean }>({});
 
   // React Router navigation hook
   const navigate = useNavigate();
@@ -141,11 +141,12 @@ export const Homepage = () => {
 
   // Fetch categories on component mount
   useEffect(() => {
+  
     FetchCategories().then((categories) => {
       if (categories) {
         setCategories(categories);
       }
-    });
+    })
   }, []);
 
   // Handle search functionality
@@ -157,10 +158,19 @@ export const Homepage = () => {
   };
 
   // Handle category selection
-  const handleCategory = async (id: string) => {
+  const handleCategory = async (id: string, label: string) => {
+    setCategoryLoading((prevLoading) => ({
+      ...prevLoading,
+      [label]: true,
+    }));
+
     FetchEmebeddingbyCategory(id).then((articles) => {
       if (articles) {
         setCatarticles(articles);
+        setCategoryLoading((prevLoading) => ({
+          ...prevLoading,
+          [label]: false,
+        }));
       }
     });
   };
@@ -494,7 +504,7 @@ export const Homepage = () => {
                     onClick={() =>
                       editMode
                         ? handleEditCategory(category)
-                        : handleCategory(category._id)
+                        : handleCategory(category._id, category.label)
                     }
                   >
                     {/* Editable Category Title */}
@@ -540,7 +550,17 @@ export const Homepage = () => {
                           cursor: "pointer",
                         }}
                       >
-                        {category.label}
+                        <div style={{display: "flex", justifyContent: "space-between"}}>
+                          {category.label}
+                          {categoryLoading[category.label] ? (
+                            // Display a loading spinner when loadingTest is true
+                            <>
+                              <div className="">
+                                <ClipLoader color="#274d88" size={15} />
+                              </div>
+                            </>
+                          ) : null}
+                        </div>
                       </Heading>
                     )}
 
@@ -595,8 +615,8 @@ export const Homepage = () => {
                           display: editMode
                             ? "none"
                             : collapsedCategory === category.label
-                            ? "block"
-                            : "none",
+                              ? "block"
+                              : "none",
                         }}
                       >
                         {item.title}
