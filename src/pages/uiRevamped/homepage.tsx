@@ -163,7 +163,7 @@ export const Homepage = () => {
       ...prevLoading,
       [label]: true,
     }));
-
+    setCatarticles([]);
     FetchEmebeddingbyCategory(id).then((articles) => {
       if (articles) {
         setCatarticles(articles);
