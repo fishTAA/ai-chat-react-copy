@@ -318,7 +318,7 @@ export const Homepage = () => {
                       <section>
                         <Button
                           onClick={() => {
-                            navigate("view-solution/" + item._id + "/software");
+                            navigate("view-solution/" + item._id + "/"+document);
                           }}
                           style={{
                             backgroundColor: "#3080e236",

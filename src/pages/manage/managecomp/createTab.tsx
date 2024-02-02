@@ -71,7 +71,15 @@ export const CreateTab = () => {
         setCreateEmbeddingSuccess(true);
       })
       .finally(() => {
+        console.log(document);
         setLoadingEmbedding(false);
+        setDocumentTitle("");
+        setDocument("");
+        setDocumentKeyword("");
+        setDocumentCategory([]);
+        setTimeout(()=>setEmbeddingNotification(
+          <></>
+        ),3000)
       });
   };
 
@@ -96,6 +104,7 @@ export const CreateTab = () => {
                 className="input"
                 type="text"
                 placeholder="Enter Title"
+                value={documentTitle}
               />
             </div>
           </div>
@@ -115,6 +124,7 @@ export const CreateTab = () => {
                 className="input"
                 type="text"
                 placeholder="e.g. mouse problem"
+                value={documentKeyword}
                 onChange={(e) => setDocumentKeyword(e.target.value)}
               />
             </div>
@@ -159,6 +169,7 @@ export const CreateTab = () => {
                 className="textarea"
                 placeholder="Describe the solution"
                 rows={8}
+                value={document}
                 onChange={(e) => setDocument(e.target.value)}
               ></textarea>
             </div>
